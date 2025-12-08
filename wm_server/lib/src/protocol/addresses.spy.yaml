@@ -1,0 +1,16 @@
+class: Addresses
+table: addresses
+fields:
+    userId: int, relation(parent=users)
+    label: String  # e.g. "Home", "Work", "Office"
+    contactName: String  # recipient name
+    contactPhone: String  # recipient phone
+    street: String
+    brgy: String
+    city: String
+    province: String
+    postalCode: String
+    country: String
+    isPrimary: bool
+    createdAt: DateTime
+    updatedAt: DateTime

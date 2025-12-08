@@ -1,0 +1,11 @@
+class: Commissions
+table: commissions
+fields:
+    saleId: int, relation(parent=sale)
+    recipientId: int, relation(parent=users)
+    sourceLevel: int
+    commissionType: String  # e.g. reaper, golden_seat
+    commissionAmount: double
+    isPaid: bool
+    paidAt: DateTime?
+    createdAt: DateTime

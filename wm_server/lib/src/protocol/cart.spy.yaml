@@ -1,0 +1,24 @@
+class: Cart
+table: cart
+fields:
+    userID: int, relation(parent=serverpod_user_info)
+    status: String
+    currency: String
+    totalItems: double
+    subtotal: double
+    discountTotal: double
+    taxTotal: double
+    shippingTotal: double
+    grandTotal: double
+    couponCode: String
+    createdAt: DateTime
+    updatedAt: DateTime
+    expiresAt: DateTime
+    notes: String
+    isActive: bool
+    cartItems: List<CartItem>?, relation
+
+indexes:
+    cart_user_idx:
+        fields: userID
+        unique: true

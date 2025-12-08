@@ -1,0 +1,642 @@
+{
+  "moduleName": "wm",
+  "tables": [
+    {
+      "name": "cdnconfig",
+      "dartName": "Cdnconfig",
+      "module": "wm",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('cdnconfig_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "type",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "domain",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "urlpath",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        }
+      ],
+      "foreignKeys": [],
+      "indexes": [
+        {
+          "indexName": "cdnconfig_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        }
+      ],
+      "managed": true
+    },
+    {
+      "name": "commission_rules",
+      "dartName": "CommissionRule",
+      "module": "wm",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('commission_rules_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "rankId",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "level",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "commissionRate",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "commissionType",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        }
+      ],
+      "foreignKeys": [
+        {
+          "constraintName": "commission_rules_fk_0",
+          "columns": [
+            "rankId"
+          ],
+          "referenceTable": "ranks",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        }
+      ],
+      "indexes": [
+        {
+          "indexName": "commission_rules_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        }
+      ],
+      "managed": true
+    },
+    {
+      "name": "commissions",
+      "dartName": "Commissions",
+      "module": "wm",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('commissions_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "distributorId",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "commissionAmount",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "payoutDate",
+          "columnType": 4,
+          "isNullable": false,
+          "dartType": "DateTime"
+        }
+      ],
+      "foreignKeys": [
+        {
+          "constraintName": "commissions_fk_0",
+          "columns": [
+            "distributorId"
+          ],
+          "referenceTable": "distributors",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        }
+      ],
+      "indexes": [
+        {
+          "indexName": "commissions_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        }
+      ],
+      "managed": true
+    },
+    {
+      "name": "distributors",
+      "dartName": "Distributors",
+      "module": "wm",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('distributors_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "distributorName",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "email",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "uplineId",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "joinDate",
+          "columnType": 4,
+          "isNullable": false,
+          "dartType": "DateTime"
+        },
+        {
+          "name": "currentRankId",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "isActive",
+          "columnType": 1,
+          "isNullable": false,
+          "dartType": "bool"
+        }
+      ],
+      "foreignKeys": [
+        {
+          "constraintName": "distributors_fk_0",
+          "columns": [
+            "currentRankId"
+          ],
+          "referenceTable": "ranks",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        }
+      ],
+      "indexes": [
+        {
+          "indexName": "distributors_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        }
+      ],
+      "managed": true
+    },
+    {
+      "name": "products",
+      "dartName": "Products",
+      "module": "wm",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('products_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "productName",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "description",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "price",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "stock",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "imageName",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "imageURL",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "isActive",
+          "columnType": 1,
+          "isNullable": false,
+          "dartType": "bool"
+        },
+        {
+          "name": "categoryId",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "createdAt",
+          "columnType": 4,
+          "isNullable": false,
+          "dartType": "DateTime"
+        },
+        {
+          "name": "createdBy",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "updatedat",
+          "columnType": 4,
+          "isNullable": false,
+          "dartType": "DateTime"
+        },
+        {
+          "name": "updatedBy",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        }
+      ],
+      "foreignKeys": [],
+      "indexes": [
+        {
+          "indexName": "products_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        },
+        {
+          "indexName": "product_idx",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": false
+        },
+        {
+          "indexName": "product_name_idx",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "productName"
+            }
+          ],
+          "type": "btree",
+          "isUnique": false,
+          "isPrimary": false
+        }
+      ],
+      "managed": true
+    },
+    {
+      "name": "ranks",
+      "dartName": "Ranks",
+      "module": "wm",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('ranks_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "rankName",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "rankCategory",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "minPersonalSalesTarget",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "minGroupSalesTarget",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "minDirectRecruits",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        }
+      ],
+      "foreignKeys": [],
+      "indexes": [
+        {
+          "indexName": "ranks_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        }
+      ],
+      "managed": true
+    },
+    {
+      "name": "sales",
+      "dartName": "Sales",
+      "module": "wm",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('sales_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "productId",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "distributorId",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "saleDate",
+          "columnType": 4,
+          "isNullable": false,
+          "dartType": "DateTime"
+        },
+        {
+          "name": "quantity",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "totalAmount",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        }
+      ],
+      "foreignKeys": [
+        {
+          "constraintName": "sales_fk_0",
+          "columns": [
+            "productId"
+          ],
+          "referenceTable": "products",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        },
+        {
+          "constraintName": "sales_fk_1",
+          "columns": [
+            "distributorId"
+          ],
+          "referenceTable": "distributors",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        }
+      ],
+      "indexes": [
+        {
+          "indexName": "sales_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        }
+      ],
+      "managed": true
+    },
+    {
+      "name": "sales_items",
+      "dartName": "SalesItems",
+      "module": "wm",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('sales_items_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "saleId",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "productId",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "itemQuantity",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "itemPrice",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "itemTotal",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        }
+      ],
+      "foreignKeys": [
+        {
+          "constraintName": "sales_items_fk_0",
+          "columns": [
+            "saleId"
+          ],
+          "referenceTable": "sales",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        },
+        {
+          "constraintName": "sales_items_fk_1",
+          "columns": [
+            "productId"
+          ],
+          "referenceTable": "products",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        }
+      ],
+      "indexes": [
+        {
+          "indexName": "sales_items_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        }
+      ],
+      "managed": true
+    }
+  ],
+  "installedModules": [
+    {
+      "module": "serverpod",
+      "version": "20240516151843329"
+    },
+    {
+      "module": "serverpod_auth",
+      "version": "20240520102713718"
+    }
+  ],
+  "migrationApiVersion": 1
+}

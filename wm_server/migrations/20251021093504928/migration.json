@@ -1,0 +1,84 @@
+{
+  "actions": [
+    {
+      "type": "alterTable",
+      "alterTable": {
+        "name": "menu_items",
+        "schema": "public",
+        "addColumns": [],
+        "deleteColumns": [
+          "createdBy",
+          "updatedAt",
+          "updatedBy"
+        ],
+        "modifyColumns": [],
+        "addIndexes": [],
+        "deleteIndexes": [],
+        "addForeignKeys": [],
+        "deleteForeignKeys": [
+          "menu_items_fk_1",
+          "menu_items_fk_2"
+        ],
+        "warnings": [
+          {
+            "type": "columnDropped",
+            "message": "Column \"createdBy\" of table \"menu_items\" will be dropped.",
+            "table": "menu_items",
+            "columns": [
+              "createdBy"
+            ],
+            "destrucive": true
+          },
+          {
+            "type": "columnDropped",
+            "message": "Column \"updatedAt\" of table \"menu_items\" will be dropped.",
+            "table": "menu_items",
+            "columns": [
+              "updatedAt"
+            ],
+            "destrucive": true
+          },
+          {
+            "type": "columnDropped",
+            "message": "Column \"updatedBy\" of table \"menu_items\" will be dropped.",
+            "table": "menu_items",
+            "columns": [
+              "updatedBy"
+            ],
+            "destrucive": true
+          }
+        ]
+      }
+    }
+  ],
+  "warnings": [
+    {
+      "type": "columnDropped",
+      "message": "Column \"createdBy\" of table \"menu_items\" will be dropped.",
+      "table": "menu_items",
+      "columns": [
+        "createdBy"
+      ],
+      "destrucive": true
+    },
+    {
+      "type": "columnDropped",
+      "message": "Column \"updatedAt\" of table \"menu_items\" will be dropped.",
+      "table": "menu_items",
+      "columns": [
+        "updatedAt"
+      ],
+      "destrucive": true
+    },
+    {
+      "type": "columnDropped",
+      "message": "Column \"updatedBy\" of table \"menu_items\" will be dropped.",
+      "table": "menu_items",
+      "columns": [
+        "updatedBy"
+      ],
+      "destrucive": true
+    }
+  ],
+  "migrationApiVersion": 1
+}

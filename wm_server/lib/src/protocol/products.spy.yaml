@@ -1,0 +1,20 @@
+class: Product
+table: products
+fields:
+    productName: String
+    description: String
+    price: double
+    stock: int
+    imageName: String
+    imageURL: String
+    isActive: bool
+    createdAt: DateTime
+    createdBy: String
+    updatedat: DateTime
+    updatedBy: String
+indexes:
+    product_idx:
+        fields: id
+        unique: true
+    product_name_idx:
+        fields: productName

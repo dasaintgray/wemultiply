@@ -1,0 +1,1118 @@
+{
+  "actions": [
+    {
+      "type": "deleteTable",
+      "deleteTable": "commissions"
+    },
+    {
+      "type": "createTable",
+      "createTable": {
+        "name": "commissions",
+        "dartName": "Commissions",
+        "module": "wm",
+        "schema": "public",
+        "columns": [
+          {
+            "name": "id",
+            "columnType": 6,
+            "isNullable": false,
+            "columnDefault": "nextval('commissions_id_seq'::regclass)",
+            "dartType": "int?"
+          },
+          {
+            "name": "saleId",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          },
+          {
+            "name": "recipientId",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          },
+          {
+            "name": "sourceLevel",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          },
+          {
+            "name": "commissionType",
+            "columnType": 0,
+            "isNullable": false,
+            "dartType": "String"
+          },
+          {
+            "name": "commissionAmount",
+            "columnType": 3,
+            "isNullable": false,
+            "dartType": "double"
+          },
+          {
+            "name": "isPaid",
+            "columnType": 1,
+            "isNullable": false,
+            "dartType": "bool"
+          },
+          {
+            "name": "paidAt",
+            "columnType": 4,
+            "isNullable": true,
+            "dartType": "DateTime?"
+          },
+          {
+            "name": "createdAt",
+            "columnType": 4,
+            "isNullable": false,
+            "dartType": "DateTime"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "constraintName": "commissions_fk_0",
+            "columns": [
+              "saleId"
+            ],
+            "referenceTable": "sales",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          },
+          {
+            "constraintName": "commissions_fk_1",
+            "columns": [
+              "recipientId"
+            ],
+            "referenceTable": "users",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          }
+        ],
+        "indexes": [
+          {
+            "indexName": "commissions_pkey",
+            "elements": [
+              {
+                "type": 0,
+                "definition": "id"
+              }
+            ],
+            "type": "btree",
+            "isUnique": true,
+            "isPrimary": true
+          }
+        ],
+        "managed": true
+      }
+    },
+    {
+      "type": "createTable",
+      "createTable": {
+        "name": "crown_packages",
+        "dartName": "CrownPackage",
+        "module": "wm",
+        "schema": "public",
+        "columns": [
+          {
+            "name": "id",
+            "columnType": 6,
+            "isNullable": false,
+            "columnDefault": "nextval('crown_packages_id_seq'::regclass)",
+            "dartType": "int?"
+          },
+          {
+            "name": "packageId",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          },
+          {
+            "name": "cashBack",
+            "columnType": 3,
+            "isNullable": false,
+            "dartType": "double"
+          },
+          {
+            "name": "netProfit",
+            "columnType": 3,
+            "isNullable": false,
+            "dartType": "double"
+          },
+          {
+            "name": "profitToWeMultiply",
+            "columnType": 3,
+            "isNullable": false,
+            "dartType": "double"
+          },
+          {
+            "name": "profitToCEO",
+            "columnType": 3,
+            "isNullable": false,
+            "dartType": "double"
+          },
+          {
+            "name": "profitToFounders",
+            "columnType": 3,
+            "isNullable": false,
+            "dartType": "double"
+          },
+          {
+            "name": "profitToMembers",
+            "columnType": 3,
+            "isNullable": false,
+            "dartType": "double"
+          },
+          {
+            "name": "profitToTithes",
+            "columnType": 3,
+            "isNullable": false,
+            "dartType": "double"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "constraintName": "crown_packages_fk_0",
+            "columns": [
+              "packageId"
+            ],
+            "referenceTable": "membership_packages",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          }
+        ],
+        "indexes": [
+          {
+            "indexName": "crown_packages_pkey",
+            "elements": [
+              {
+                "type": 0,
+                "definition": "id"
+              }
+            ],
+            "type": "btree",
+            "isUnique": true,
+            "isPrimary": true
+          },
+          {
+            "indexName": "idx_crown_packages_packageid",
+            "elements": [
+              {
+                "type": 0,
+                "definition": "packageId"
+              }
+            ],
+            "type": "btree",
+            "isUnique": true,
+            "isPrimary": false
+          }
+        ],
+        "managed": true
+      }
+    },
+    {
+      "type": "createTable",
+      "createTable": {
+        "name": "golden_seat_commissions",
+        "dartName": "GoldenSeatCommission",
+        "module": "wm",
+        "schema": "public",
+        "columns": [
+          {
+            "name": "id",
+            "columnType": 6,
+            "isNullable": false,
+            "columnDefault": "nextval('golden_seat_commissions_id_seq'::regclass)",
+            "dartType": "int?"
+          },
+          {
+            "name": "seatType",
+            "columnType": 0,
+            "isNullable": false,
+            "dartType": "String"
+          },
+          {
+            "name": "packageId",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          },
+          {
+            "name": "productId",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          },
+          {
+            "name": "netPerMember",
+            "columnType": 3,
+            "isNullable": false,
+            "dartType": "double"
+          },
+          {
+            "name": "netPerBottle",
+            "columnType": 3,
+            "isNullable": false,
+            "dartType": "double"
+          },
+          {
+            "name": "commissionAmount",
+            "columnType": 3,
+            "isNullable": false,
+            "dartType": "double"
+          },
+          {
+            "name": "createdAt",
+            "columnType": 4,
+            "isNullable": false,
+            "dartType": "DateTime"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "constraintName": "golden_seat_commissions_fk_0",
+            "columns": [
+              "packageId"
+            ],
+            "referenceTable": "membership_packages",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          },
+          {
+            "constraintName": "golden_seat_commissions_fk_1",
+            "columns": [
+              "productId"
+            ],
+            "referenceTable": "products",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          }
+        ],
+        "indexes": [
+          {
+            "indexName": "golden_seat_commissions_pkey",
+            "elements": [
+              {
+                "type": 0,
+                "definition": "id"
+              }
+            ],
+            "type": "btree",
+            "isUnique": true,
+            "isPrimary": true
+          },
+          {
+            "indexName": "idx_golden_seat_commissions_seattype_package_product",
+            "elements": [
+              {
+                "type": 0,
+                "definition": "seatType"
+              },
+              {
+                "type": 0,
+                "definition": "packageId"
+              },
+              {
+                "type": 0,
+                "definition": "productId"
+              }
+            ],
+            "type": "btree",
+            "isUnique": true,
+            "isPrimary": false
+          }
+        ],
+        "managed": true
+      }
+    },
+    {
+      "type": "deleteTable",
+      "deleteTable": "golden_seats"
+    },
+    {
+      "type": "createTable",
+      "createTable": {
+        "name": "golden_seats",
+        "dartName": "GoldenSeats",
+        "module": "wm",
+        "schema": "public",
+        "columns": [
+          {
+            "name": "id",
+            "columnType": 6,
+            "isNullable": false,
+            "columnDefault": "nextval('golden_seats_id_seq'::regclass)",
+            "dartType": "int?"
+          },
+          {
+            "name": "seatType",
+            "columnType": 0,
+            "isNullable": false,
+            "dartType": "String"
+          },
+          {
+            "name": "territory",
+            "columnType": 0,
+            "isNullable": false,
+            "dartType": "String"
+          },
+          {
+            "name": "ownerId",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          },
+          {
+            "name": "price",
+            "columnType": 3,
+            "isNullable": false,
+            "dartType": "double"
+          },
+          {
+            "name": "startDate",
+            "columnType": 4,
+            "isNullable": false,
+            "dartType": "DateTime"
+          },
+          {
+            "name": "endDate",
+            "columnType": 4,
+            "isNullable": false,
+            "dartType": "DateTime"
+          },
+          {
+            "name": "isActive",
+            "columnType": 1,
+            "isNullable": false,
+            "dartType": "bool"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "constraintName": "golden_seats_fk_0",
+            "columns": [
+              "ownerId"
+            ],
+            "referenceTable": "users",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          }
+        ],
+        "indexes": [
+          {
+            "indexName": "golden_seats_pkey",
+            "elements": [
+              {
+                "type": 0,
+                "definition": "id"
+              }
+            ],
+            "type": "btree",
+            "isUnique": true,
+            "isPrimary": true
+          },
+          {
+            "indexName": "seat_type_idx",
+            "elements": [
+              {
+                "type": 0,
+                "definition": "seatType"
+              },
+              {
+                "type": 0,
+                "definition": "territory"
+              }
+            ],
+            "type": "btree",
+            "isUnique": true,
+            "isPrimary": false
+          }
+        ],
+        "managed": true
+      }
+    },
+    {
+      "type": "createTable",
+      "createTable": {
+        "name": "membership_packages",
+        "dartName": "MembershipPackage",
+        "module": "wm",
+        "schema": "public",
+        "columns": [
+          {
+            "name": "id",
+            "columnType": 6,
+            "isNullable": false,
+            "columnDefault": "nextval('membership_packages_id_seq'::regclass)",
+            "dartType": "int?"
+          },
+          {
+            "name": "name",
+            "columnType": 0,
+            "isNullable": false,
+            "dartType": "String"
+          },
+          {
+            "name": "price",
+            "columnType": 3,
+            "isNullable": false,
+            "dartType": "double"
+          },
+          {
+            "name": "bottlesIncluded",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          },
+          {
+            "name": "cashback",
+            "columnType": 3,
+            "isNullable": true,
+            "dartType": "double?"
+          },
+          {
+            "name": "description",
+            "columnType": 0,
+            "isNullable": true,
+            "dartType": "String?"
+          }
+        ],
+        "foreignKeys": [],
+        "indexes": [
+          {
+            "indexName": "membership_packages_pkey",
+            "elements": [
+              {
+                "type": 0,
+                "definition": "id"
+              }
+            ],
+            "type": "btree",
+            "isUnique": true,
+            "isPrimary": true
+          },
+          {
+            "indexName": "idx_membership_packages_name",
+            "elements": [
+              {
+                "type": 0,
+                "definition": "name"
+              }
+            ],
+            "type": "btree",
+            "isUnique": true,
+            "isPrimary": false
+          }
+        ],
+        "managed": true
+      }
+    },
+    {
+      "type": "deleteTable",
+      "deleteTable": "menu"
+    },
+    {
+      "type": "createTable",
+      "createTable": {
+        "name": "menu",
+        "dartName": "Menu",
+        "module": "wm",
+        "schema": "public",
+        "columns": [
+          {
+            "name": "id",
+            "columnType": 6,
+            "isNullable": false,
+            "columnDefault": "nextval('menu_id_seq'::regclass)",
+            "dartType": "int?"
+          },
+          {
+            "name": "menuName",
+            "columnType": 0,
+            "isNullable": false,
+            "dartType": "String"
+          },
+          {
+            "name": "menuImagePath",
+            "columnType": 0,
+            "isNullable": false,
+            "dartType": "String"
+          },
+          {
+            "name": "menuItems",
+            "columnType": 8,
+            "isNullable": false,
+            "dartType": "List<protocol:MenuItems>"
+          }
+        ],
+        "foreignKeys": [],
+        "indexes": [
+          {
+            "indexName": "menu_pkey",
+            "elements": [
+              {
+                "type": 0,
+                "definition": "id"
+              }
+            ],
+            "type": "btree",
+            "isUnique": true,
+            "isPrimary": true
+          }
+        ],
+        "managed": true
+      }
+    },
+    {
+      "type": "createTable",
+      "createTable": {
+        "name": "reaper_commissions",
+        "dartName": "ReaperCommission",
+        "module": "wm",
+        "schema": "public",
+        "columns": [
+          {
+            "name": "id",
+            "columnType": 6,
+            "isNullable": false,
+            "columnDefault": "nextval('reaper_commissions_id_seq'::regclass)",
+            "dartType": "int?"
+          },
+          {
+            "name": "packageId",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          },
+          {
+            "name": "level",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          },
+          {
+            "name": "productId",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          },
+          {
+            "name": "commissionAmount",
+            "columnType": 3,
+            "isNullable": false,
+            "dartType": "double"
+          },
+          {
+            "name": "createdAt",
+            "columnType": 4,
+            "isNullable": false,
+            "dartType": "DateTime"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "constraintName": "reaper_commissions_fk_0",
+            "columns": [
+              "packageId"
+            ],
+            "referenceTable": "membership_packages",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          },
+          {
+            "constraintName": "reaper_commissions_fk_1",
+            "columns": [
+              "level"
+            ],
+            "referenceTable": "ranks",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          },
+          {
+            "constraintName": "reaper_commissions_fk_2",
+            "columns": [
+              "productId"
+            ],
+            "referenceTable": "products",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          }
+        ],
+        "indexes": [
+          {
+            "indexName": "reaper_commissions_pkey",
+            "elements": [
+              {
+                "type": 0,
+                "definition": "id"
+              }
+            ],
+            "type": "btree",
+            "isUnique": true,
+            "isPrimary": true
+          },
+          {
+            "indexName": "idx_reaper_commissions_package_product_level",
+            "elements": [
+              {
+                "type": 0,
+                "definition": "packageId"
+              },
+              {
+                "type": 0,
+                "definition": "productId"
+              },
+              {
+                "type": 0,
+                "definition": "level"
+              }
+            ],
+            "type": "btree",
+            "isUnique": true,
+            "isPrimary": false
+          }
+        ],
+        "managed": true
+      }
+    },
+    {
+      "type": "deleteTable",
+      "deleteTable": "sales"
+    },
+    {
+      "type": "createTable",
+      "createTable": {
+        "name": "sales",
+        "dartName": "Sale",
+        "module": "wm",
+        "schema": "public",
+        "columns": [
+          {
+            "name": "id",
+            "columnType": 6,
+            "isNullable": false,
+            "columnDefault": "nextval('sales_id_seq'::regclass)",
+            "dartType": "int?"
+          },
+          {
+            "name": "buyerId",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          },
+          {
+            "name": "packageId",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          },
+          {
+            "name": "productId",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          },
+          {
+            "name": "saleType",
+            "columnType": 0,
+            "isNullable": false,
+            "dartType": "String"
+          },
+          {
+            "name": "amount",
+            "columnType": 3,
+            "isNullable": false,
+            "dartType": "double"
+          },
+          {
+            "name": "saleDate",
+            "columnType": 4,
+            "isNullable": false,
+            "dartType": "DateTime"
+          },
+          {
+            "name": "processedBy",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "constraintName": "sales_fk_0",
+            "columns": [
+              "buyerId"
+            ],
+            "referenceTable": "users",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          },
+          {
+            "constraintName": "sales_fk_1",
+            "columns": [
+              "packageId"
+            ],
+            "referenceTable": "membership_packages",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          },
+          {
+            "constraintName": "sales_fk_2",
+            "columns": [
+              "productId"
+            ],
+            "referenceTable": "products",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          },
+          {
+            "constraintName": "sales_fk_3",
+            "columns": [
+              "processedBy"
+            ],
+            "referenceTable": "users",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          }
+        ],
+        "indexes": [
+          {
+            "indexName": "sales_pkey",
+            "elements": [
+              {
+                "type": 0,
+                "definition": "id"
+              }
+            ],
+            "type": "btree",
+            "isUnique": true,
+            "isPrimary": true
+          }
+        ],
+        "managed": true
+      }
+    },
+    {
+      "type": "createTable",
+      "createTable": {
+        "name": "users",
+        "dartName": "User",
+        "module": "wm",
+        "schema": "public",
+        "columns": [
+          {
+            "name": "id",
+            "columnType": 6,
+            "isNullable": false,
+            "columnDefault": "nextval('users_id_seq'::regclass)",
+            "dartType": "int?"
+          },
+          {
+            "name": "fullName",
+            "columnType": 0,
+            "isNullable": false,
+            "dartType": "String"
+          },
+          {
+            "name": "email",
+            "columnType": 0,
+            "isNullable": false,
+            "dartType": "String"
+          },
+          {
+            "name": "phone",
+            "columnType": 0,
+            "isNullable": true,
+            "dartType": "String?"
+          },
+          {
+            "name": "passwordHash",
+            "columnType": 0,
+            "isNullable": false,
+            "dartType": "String"
+          },
+          {
+            "name": "role",
+            "columnType": 0,
+            "isNullable": false,
+            "dartType": "String"
+          },
+          {
+            "name": "referrerId",
+            "columnType": 6,
+            "isNullable": true,
+            "dartType": "int?"
+          },
+          {
+            "name": "level",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          },
+          {
+            "name": "joinDate",
+            "columnType": 4,
+            "isNullable": false,
+            "dartType": "DateTime"
+          },
+          {
+            "name": "isActive",
+            "columnType": 1,
+            "isNullable": false,
+            "dartType": "bool"
+          },
+          {
+            "name": "membershipPackageId",
+            "columnType": 6,
+            "isNullable": true,
+            "dartType": "int?"
+          },
+          {
+            "name": "longtitude",
+            "columnType": 3,
+            "isNullable": true,
+            "dartType": "double?"
+          },
+          {
+            "name": "latitude",
+            "columnType": 3,
+            "isNullable": true,
+            "dartType": "double?"
+          },
+          {
+            "name": "isUpgraded",
+            "columnType": 1,
+            "isNullable": false,
+            "dartType": "bool"
+          },
+          {
+            "name": "upgradedAt",
+            "columnType": 4,
+            "isNullable": true,
+            "dartType": "DateTime?"
+          },
+          {
+            "name": "lastLoginAt",
+            "columnType": 4,
+            "isNullable": true,
+            "dartType": "DateTime?"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "constraintName": "users_fk_0",
+            "columns": [
+              "membershipPackageId"
+            ],
+            "referenceTable": "membership_packages",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          }
+        ],
+        "indexes": [
+          {
+            "indexName": "users_pkey",
+            "elements": [
+              {
+                "type": 0,
+                "definition": "id"
+              }
+            ],
+            "type": "btree",
+            "isUnique": true,
+            "isPrimary": true
+          },
+          {
+            "indexName": "users_email_index",
+            "elements": [
+              {
+                "type": 0,
+                "definition": "email"
+              }
+            ],
+            "type": "btree",
+            "isUnique": true,
+            "isPrimary": false
+          }
+        ],
+        "managed": true
+      }
+    }
+  ],
+  "warnings": [
+    {
+      "type": "columnDropped",
+      "message": "Column \"distributorId\" of table \"commissions\" will be dropped.",
+      "table": "commissions",
+      "columns": [
+        "distributorId"
+      ],
+      "destrucive": true
+    },
+    {
+      "type": "columnDropped",
+      "message": "Column \"payoutDate\" of table \"commissions\" will be dropped.",
+      "table": "commissions",
+      "columns": [
+        "payoutDate"
+      ],
+      "destrucive": true
+    },
+    {
+      "type": "tableDropped",
+      "message": "One or more columns are added to table \"commissions\" which cannot be added in a table migration. The complete table will be deleted and recreated.",
+      "table": "commissions",
+      "columns": [
+        "saleId"
+      ],
+      "destrucive": true
+    },
+    {
+      "type": "columnDropped",
+      "message": "Column \"gsName\" of table \"golden_seats\" will be dropped.",
+      "table": "golden_seats",
+      "columns": [
+        "gsName"
+      ],
+      "destrucive": true
+    },
+    {
+      "type": "columnDropped",
+      "message": "Column \"gsDescription\" of table \"golden_seats\" will be dropped.",
+      "table": "golden_seats",
+      "columns": [
+        "gsDescription"
+      ],
+      "destrucive": true
+    },
+    {
+      "type": "columnDropped",
+      "message": "Column \"gsImageUrl\" of table \"golden_seats\" will be dropped.",
+      "table": "golden_seats",
+      "columns": [
+        "gsImageUrl"
+      ],
+      "destrucive": true
+    },
+    {
+      "type": "uniqueIndexCreated",
+      "message": "Unique index \"seat_type_idx\" is added to table \"golden_seats\". If there are existing rows with duplicate values, this migration will fail.",
+      "table": "golden_seats",
+      "columns": [
+        "seatType",
+        "territory"
+      ],
+      "destrucive": false
+    },
+    {
+      "type": "tableDropped",
+      "message": "One or more columns are added to table \"golden_seats\" which cannot be added in a table migration. The complete table will be deleted and recreated.",
+      "table": "golden_seats",
+      "columns": [
+        "seatType"
+      ],
+      "destrucive": true
+    },
+    {
+      "type": "tableDropped",
+      "message": "One or more columns are added to table \"menu\" which cannot be added in a table migration. The complete table will be deleted and recreated.",
+      "table": "menu",
+      "columns": [
+        "menuImagePath"
+      ],
+      "destrucive": true
+    },
+    {
+      "type": "columnDropped",
+      "message": "Column \"distributorId\" of table \"sales\" will be dropped.",
+      "table": "sales",
+      "columns": [
+        "distributorId"
+      ],
+      "destrucive": true
+    },
+    {
+      "type": "columnDropped",
+      "message": "Column \"quantity\" of table \"sales\" will be dropped.",
+      "table": "sales",
+      "columns": [
+        "quantity"
+      ],
+      "destrucive": true
+    },
+    {
+      "type": "columnDropped",
+      "message": "Column \"totalAmount\" of table \"sales\" will be dropped.",
+      "table": "sales",
+      "columns": [
+        "totalAmount"
+      ],
+      "destrucive": true
+    },
+    {
+      "type": "tableDropped",
+      "message": "One or more columns are added to table \"sales\" which cannot be added in a table migration. The complete table will be deleted and recreated.",
+      "table": "sales",
+      "columns": [
+        "buyerId"
+      ],
+      "destrucive": true
+    }
+  ],
+  "migrationApiVersion": 1
+}

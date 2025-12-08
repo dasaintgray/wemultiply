@@ -1,0 +1,14 @@
+class: GoldenSeats
+table: golden_seats
+fields:
+    seatType: String
+    territory: String
+    ownerId: int, relation(parent=users)
+    price: double
+    startDate: DateTime
+    endDate: DateTime
+    isActive: bool
+indexes:
+    seat_type_idx:
+        fields: seatType, territory
+        unique: true

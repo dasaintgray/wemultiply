@@ -1,0 +1,27 @@
+class: User
+table: users
+fields:
+    firstName: String
+    middleName: String
+    lastName: String
+    email: String
+    phone: String?
+    passwordHash: String
+    role: String  # e.g. 'member', 'admin', 'golden_seat', 'crown'
+    referrerId: int?  # foreign key to users.id (sower)
+    level: int  # 0 to 7 (for reapers)
+    addressId: int?, relation(parent=addresses)
+    joinDate: DateTime
+    isActive: bool
+    isPioneer: bool
+    membershipPackageId: int?, relation(parent=membership_packages)
+    longtitude: double?
+    latitude: double?
+    isUpgraded: bool
+    upgradedAt: DateTime?
+    lastLoginAt: DateTime?
+    userInfo: module:auth:UserInfo?, relation
+indexes:
+    users_email_index:
+        fields: userInfoId, email
+        unique: true

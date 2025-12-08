@@ -1,0 +1,2529 @@
+{
+  "moduleName": "wm",
+  "tables": [
+    {
+      "name": "addresses",
+      "dartName": "Addresses",
+      "module": "wm",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('addresses_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "userId",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "street",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "brgy",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "city",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "province",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "postalCode",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "country",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "isPrimary",
+          "columnType": 1,
+          "isNullable": false,
+          "dartType": "bool"
+        }
+      ],
+      "foreignKeys": [
+        {
+          "constraintName": "addresses_fk_0",
+          "columns": [
+            "userId"
+          ],
+          "referenceTable": "users",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        }
+      ],
+      "indexes": [
+        {
+          "indexName": "addresses_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        }
+      ],
+      "managed": true
+    },
+    {
+      "name": "cart",
+      "dartName": "Cart",
+      "module": "wm",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('cart_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "userID",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "sessionID",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "status",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "currency",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "totalItems",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "subtotal",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "discountTotal",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "taxTotal",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "shippingTotal",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "grandTotal",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "couponCode",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "createdAt",
+          "columnType": 4,
+          "isNullable": false,
+          "dartType": "DateTime"
+        },
+        {
+          "name": "updatedAt",
+          "columnType": 4,
+          "isNullable": false,
+          "dartType": "DateTime"
+        },
+        {
+          "name": "expiresAt",
+          "columnType": 4,
+          "isNullable": false,
+          "dartType": "DateTime"
+        },
+        {
+          "name": "notes",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "isActive",
+          "columnType": 1,
+          "isNullable": false,
+          "dartType": "bool"
+        }
+      ],
+      "foreignKeys": [
+        {
+          "constraintName": "cart_fk_0",
+          "columns": [
+            "userID"
+          ],
+          "referenceTable": "serverpod_user_info",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        }
+      ],
+      "indexes": [
+        {
+          "indexName": "cart_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        },
+        {
+          "indexName": "cart_user_idx",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "userID"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": false
+        }
+      ],
+      "managed": true
+    },
+    {
+      "name": "cart_item",
+      "dartName": "CartItem",
+      "module": "wm",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('cart_item_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "cartId",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "productId",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "variantId",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "productName",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "productImage",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "quantity",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "price",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "discount",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "tax",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "subtotal",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "metadata",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "addedAt",
+          "columnType": 4,
+          "isNullable": false,
+          "dartType": "DateTime"
+        },
+        {
+          "name": "updatedAt",
+          "columnType": 4,
+          "isNullable": false,
+          "dartType": "DateTime"
+        },
+        {
+          "name": "notes",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "isGift",
+          "columnType": 1,
+          "isNullable": false,
+          "dartType": "bool"
+        },
+        {
+          "name": "shippingAddressID",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "paymentMethod",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "cartSource",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "idempotencyKey",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "_cartCartitemsCartId",
+          "columnType": 6,
+          "isNullable": true,
+          "dartType": "int?"
+        }
+      ],
+      "foreignKeys": [
+        {
+          "constraintName": "cart_item_fk_0",
+          "columns": [
+            "cartId"
+          ],
+          "referenceTable": "cart",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        },
+        {
+          "constraintName": "cart_item_fk_1",
+          "columns": [
+            "productId"
+          ],
+          "referenceTable": "products",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        },
+        {
+          "constraintName": "cart_item_fk_2",
+          "columns": [
+            "_cartCartitemsCartId"
+          ],
+          "referenceTable": "cart",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        }
+      ],
+      "indexes": [
+        {
+          "indexName": "cart_item_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        },
+        {
+          "indexName": "cart_item_cart_idx",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "cartId"
+            }
+          ],
+          "type": "btree",
+          "isUnique": false,
+          "isPrimary": false
+        }
+      ],
+      "managed": true
+    },
+    {
+      "name": "cdnconfig",
+      "dartName": "Cdnconfig",
+      "module": "wm",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('cdnconfig_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "type",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "domain",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "urlpath",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        }
+      ],
+      "foreignKeys": [],
+      "indexes": [
+        {
+          "indexName": "cdnconfig_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        }
+      ],
+      "managed": true
+    },
+    {
+      "name": "commission_rules",
+      "dartName": "CommissionRule",
+      "module": "wm",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('commission_rules_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "rankId",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "level",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "commissionRate",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "commissionType",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        }
+      ],
+      "foreignKeys": [
+        {
+          "constraintName": "commission_rules_fk_0",
+          "columns": [
+            "rankId"
+          ],
+          "referenceTable": "ranks",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        }
+      ],
+      "indexes": [
+        {
+          "indexName": "commission_rules_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        }
+      ],
+      "managed": true
+    },
+    {
+      "name": "commissions",
+      "dartName": "Commissions",
+      "module": "wm",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('commissions_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "saleId",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "recipientId",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "sourceLevel",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "commissionType",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "commissionAmount",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "isPaid",
+          "columnType": 1,
+          "isNullable": false,
+          "dartType": "bool"
+        },
+        {
+          "name": "paidAt",
+          "columnType": 4,
+          "isNullable": true,
+          "dartType": "DateTime?"
+        },
+        {
+          "name": "createdAt",
+          "columnType": 4,
+          "isNullable": false,
+          "dartType": "DateTime"
+        }
+      ],
+      "foreignKeys": [
+        {
+          "constraintName": "commissions_fk_0",
+          "columns": [
+            "saleId"
+          ],
+          "referenceTable": "sale",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        },
+        {
+          "constraintName": "commissions_fk_1",
+          "columns": [
+            "recipientId"
+          ],
+          "referenceTable": "users",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        }
+      ],
+      "indexes": [
+        {
+          "indexName": "commissions_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        }
+      ],
+      "managed": true
+    },
+    {
+      "name": "crown_packages",
+      "dartName": "CrownPackage",
+      "module": "wm",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('crown_packages_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "packageId",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "cashBack",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "netProfit",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "profitToWeMultiply",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "profitToCEO",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "profitToFounders",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "profitToMembers",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "profitToTithes",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        }
+      ],
+      "foreignKeys": [
+        {
+          "constraintName": "crown_packages_fk_0",
+          "columns": [
+            "packageId"
+          ],
+          "referenceTable": "membership_packages",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        }
+      ],
+      "indexes": [
+        {
+          "indexName": "crown_packages_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        },
+        {
+          "indexName": "idx_crown_packages_packageid",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "packageId"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": false
+        }
+      ],
+      "managed": true
+    },
+    {
+      "name": "distributors",
+      "dartName": "Distributors",
+      "module": "wm",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('distributors_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "distributorName",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "email",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "userID",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "joinDate",
+          "columnType": 4,
+          "isNullable": false,
+          "dartType": "DateTime"
+        },
+        {
+          "name": "currentRankId",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "isActive",
+          "columnType": 1,
+          "isNullable": false,
+          "dartType": "bool"
+        }
+      ],
+      "foreignKeys": [
+        {
+          "constraintName": "distributors_fk_0",
+          "columns": [
+            "userID"
+          ],
+          "referenceTable": "serverpod_user_info",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        },
+        {
+          "constraintName": "distributors_fk_1",
+          "columns": [
+            "currentRankId"
+          ],
+          "referenceTable": "ranks",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        }
+      ],
+      "indexes": [
+        {
+          "indexName": "distributors_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        }
+      ],
+      "managed": true
+    },
+    {
+      "name": "golden_seat_commissions",
+      "dartName": "GoldenSeatCommission",
+      "module": "wm",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('golden_seat_commissions_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "seatType",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "packageId",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "productId",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "netPerMember",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "netPerBottle",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "commissionAmount",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "createdAt",
+          "columnType": 4,
+          "isNullable": false,
+          "dartType": "DateTime"
+        }
+      ],
+      "foreignKeys": [
+        {
+          "constraintName": "golden_seat_commissions_fk_0",
+          "columns": [
+            "packageId"
+          ],
+          "referenceTable": "membership_packages",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        },
+        {
+          "constraintName": "golden_seat_commissions_fk_1",
+          "columns": [
+            "productId"
+          ],
+          "referenceTable": "products",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        }
+      ],
+      "indexes": [
+        {
+          "indexName": "golden_seat_commissions_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        },
+        {
+          "indexName": "idx_golden_seat_commissions_seattype_package_product",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "seatType"
+            },
+            {
+              "type": 0,
+              "definition": "packageId"
+            },
+            {
+              "type": 0,
+              "definition": "productId"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": false
+        }
+      ],
+      "managed": true
+    },
+    {
+      "name": "golden_seats",
+      "dartName": "GoldenSeats",
+      "module": "wm",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('golden_seats_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "seatType",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "territory",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "ownerId",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "price",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "startDate",
+          "columnType": 4,
+          "isNullable": false,
+          "dartType": "DateTime"
+        },
+        {
+          "name": "endDate",
+          "columnType": 4,
+          "isNullable": false,
+          "dartType": "DateTime"
+        },
+        {
+          "name": "isActive",
+          "columnType": 1,
+          "isNullable": false,
+          "dartType": "bool"
+        }
+      ],
+      "foreignKeys": [
+        {
+          "constraintName": "golden_seats_fk_0",
+          "columns": [
+            "ownerId"
+          ],
+          "referenceTable": "users",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        }
+      ],
+      "indexes": [
+        {
+          "indexName": "golden_seats_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        },
+        {
+          "indexName": "seat_type_idx",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "seatType"
+            },
+            {
+              "type": 0,
+              "definition": "territory"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": false
+        }
+      ],
+      "managed": true
+    },
+    {
+      "name": "levels",
+      "dartName": "Level",
+      "module": "wm",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('levels_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "levelName",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "description",
+          "columnType": 0,
+          "isNullable": true,
+          "dartType": "String?"
+        },
+        {
+          "name": "isActive",
+          "columnType": 1,
+          "isNullable": false,
+          "dartType": "bool"
+        },
+        {
+          "name": "createdAt",
+          "columnType": 4,
+          "isNullable": false,
+          "dartType": "DateTime"
+        }
+      ],
+      "foreignKeys": [],
+      "indexes": [
+        {
+          "indexName": "levels_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        }
+      ],
+      "managed": true
+    },
+    {
+      "name": "membership_packages",
+      "dartName": "MembershipPackage",
+      "module": "wm",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('membership_packages_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "name",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "price",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "bottlesIncluded",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "cashback",
+          "columnType": 3,
+          "isNullable": true,
+          "dartType": "double?"
+        },
+        {
+          "name": "description",
+          "columnType": 0,
+          "isNullable": true,
+          "dartType": "String?"
+        }
+      ],
+      "foreignKeys": [],
+      "indexes": [
+        {
+          "indexName": "membership_packages_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        },
+        {
+          "indexName": "idx_membership_packages_name",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "name"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": false
+        }
+      ],
+      "managed": true
+    },
+    {
+      "name": "menu",
+      "dartName": "Menu",
+      "module": "wm",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('menu_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "menuName",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "menuImagePath",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "createdAt",
+          "columnType": 4,
+          "isNullable": false,
+          "dartType": "DateTime"
+        },
+        {
+          "name": "isActive",
+          "columnType": 1,
+          "isNullable": false,
+          "dartType": "bool"
+        }
+      ],
+      "foreignKeys": [],
+      "indexes": [
+        {
+          "indexName": "menu_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        }
+      ],
+      "managed": true
+    },
+    {
+      "name": "menu_items",
+      "dartName": "MenuItems",
+      "module": "wm",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('menu_items_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "menuId",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "menuItemDesc",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "menuItemImage",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "isActive",
+          "columnType": 1,
+          "isNullable": false,
+          "dartType": "bool"
+        },
+        {
+          "name": "createdAt",
+          "columnType": 4,
+          "isNullable": false,
+          "dartType": "DateTime"
+        },
+        {
+          "name": "productID",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "productDesc",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "price",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "_menuMenuitemsMenuId",
+          "columnType": 6,
+          "isNullable": true,
+          "dartType": "int?"
+        }
+      ],
+      "foreignKeys": [
+        {
+          "constraintName": "menu_items_fk_0",
+          "columns": [
+            "menuId"
+          ],
+          "referenceTable": "menu",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        },
+        {
+          "constraintName": "menu_items_fk_1",
+          "columns": [
+            "_menuMenuitemsMenuId"
+          ],
+          "referenceTable": "menu",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        }
+      ],
+      "indexes": [
+        {
+          "indexName": "menu_items_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        }
+      ],
+      "managed": true
+    },
+    {
+      "name": "packages",
+      "dartName": "Package",
+      "module": "wm",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('packages_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "packageName",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "packageDescription",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "membershipFee",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "productId",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "createdAt",
+          "columnType": 4,
+          "isNullable": true,
+          "dartType": "DateTime?"
+        },
+        {
+          "name": "createdBy",
+          "columnType": 0,
+          "isNullable": true,
+          "dartType": "String?"
+        },
+        {
+          "name": "updatedAt",
+          "columnType": 4,
+          "isNullable": true,
+          "dartType": "DateTime?"
+        },
+        {
+          "name": "updatedBy",
+          "columnType": 0,
+          "isNullable": true,
+          "dartType": "String?"
+        },
+        {
+          "name": "isActive",
+          "columnType": 1,
+          "isNullable": false,
+          "dartType": "bool"
+        }
+      ],
+      "foreignKeys": [
+        {
+          "constraintName": "packages_fk_0",
+          "columns": [
+            "productId"
+          ],
+          "referenceTable": "products",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        }
+      ],
+      "indexes": [
+        {
+          "indexName": "packages_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        }
+      ],
+      "managed": true
+    },
+    {
+      "name": "pioneer_accounts",
+      "dartName": "PioneerAccounts",
+      "module": "wm",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('pioneer_accounts_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "gsID",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "userId",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "pioneerCode",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "createdAt",
+          "columnType": 4,
+          "isNullable": false,
+          "dartType": "DateTime"
+        },
+        {
+          "name": "isRedeemed",
+          "columnType": 1,
+          "isNullable": false,
+          "dartType": "bool"
+        },
+        {
+          "name": "redeemedAt",
+          "columnType": 4,
+          "isNullable": true,
+          "dartType": "DateTime?"
+        }
+      ],
+      "foreignKeys": [
+        {
+          "constraintName": "pioneer_accounts_fk_0",
+          "columns": [
+            "gsID"
+          ],
+          "referenceTable": "golden_seats",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        },
+        {
+          "constraintName": "pioneer_accounts_fk_1",
+          "columns": [
+            "userId"
+          ],
+          "referenceTable": "users",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        }
+      ],
+      "indexes": [
+        {
+          "indexName": "pioneer_accounts_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        }
+      ],
+      "managed": true
+    },
+    {
+      "name": "products",
+      "dartName": "Product",
+      "module": "wm",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('products_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "productName",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "description",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "price",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "stock",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "imageName",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "imageURL",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "isActive",
+          "columnType": 1,
+          "isNullable": false,
+          "dartType": "bool"
+        },
+        {
+          "name": "createdAt",
+          "columnType": 4,
+          "isNullable": false,
+          "dartType": "DateTime"
+        },
+        {
+          "name": "createdBy",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "updatedat",
+          "columnType": 4,
+          "isNullable": false,
+          "dartType": "DateTime"
+        },
+        {
+          "name": "updatedBy",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        }
+      ],
+      "foreignKeys": [],
+      "indexes": [
+        {
+          "indexName": "products_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        },
+        {
+          "indexName": "product_idx",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": false
+        },
+        {
+          "indexName": "product_name_idx",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "productName"
+            }
+          ],
+          "type": "btree",
+          "isUnique": false,
+          "isPrimary": false
+        }
+      ],
+      "managed": true
+    },
+    {
+      "name": "profit_sharing",
+      "dartName": "ProfitSharing",
+      "module": "wm",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('profit_sharing_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "profitType",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "percentage",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "effectiveDate",
+          "columnType": 4,
+          "isNullable": false,
+          "dartType": "DateTime"
+        },
+        {
+          "name": "createdAt",
+          "columnType": 4,
+          "isNullable": false,
+          "dartType": "DateTime"
+        },
+        {
+          "name": "isActive",
+          "columnType": 1,
+          "isNullable": false,
+          "dartType": "bool"
+        }
+      ],
+      "foreignKeys": [],
+      "indexes": [
+        {
+          "indexName": "profit_sharing_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        }
+      ],
+      "managed": true
+    },
+    {
+      "name": "rank_category",
+      "dartName": "RankCategory",
+      "module": "wm",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('rank_category_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "rankName",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "description",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "createdAt",
+          "columnType": 4,
+          "isNullable": false,
+          "dartType": "DateTime"
+        },
+        {
+          "name": "updatedAt",
+          "columnType": 4,
+          "isNullable": false,
+          "dartType": "DateTime"
+        }
+      ],
+      "foreignKeys": [],
+      "indexes": [
+        {
+          "indexName": "rank_category_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        }
+      ],
+      "managed": true
+    },
+    {
+      "name": "ranks",
+      "dartName": "Ranks",
+      "module": "wm",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('ranks_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "rankName",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "rankCategoryID",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "minPersonalSalesTarget",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "minGroupSalesTarget",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "minDirectRecruits",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        }
+      ],
+      "foreignKeys": [],
+      "indexes": [
+        {
+          "indexName": "ranks_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        }
+      ],
+      "managed": true
+    },
+    {
+      "name": "reaper_commissions",
+      "dartName": "ReaperCommission",
+      "module": "wm",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('reaper_commissions_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "packageId",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "level",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "productId",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "netPerMember",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "repeatOrderNet",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "createdAt",
+          "columnType": 4,
+          "isNullable": false,
+          "dartType": "DateTime"
+        },
+        {
+          "name": "createdBy",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "updatedAt",
+          "columnType": 4,
+          "isNullable": false,
+          "dartType": "DateTime"
+        },
+        {
+          "name": "updatedBy",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        }
+      ],
+      "foreignKeys": [
+        {
+          "constraintName": "reaper_commissions_fk_0",
+          "columns": [
+            "packageId"
+          ],
+          "referenceTable": "packages",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        },
+        {
+          "constraintName": "reaper_commissions_fk_1",
+          "columns": [
+            "level"
+          ],
+          "referenceTable": "levels",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        },
+        {
+          "constraintName": "reaper_commissions_fk_2",
+          "columns": [
+            "productId"
+          ],
+          "referenceTable": "products",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        }
+      ],
+      "indexes": [
+        {
+          "indexName": "reaper_commissions_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        }
+      ],
+      "managed": true
+    },
+    {
+      "name": "sale",
+      "dartName": "Sale",
+      "module": "wm",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('sale_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "saleNumber",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "saleDate",
+          "columnType": 4,
+          "isNullable": false,
+          "dartType": "DateTime"
+        },
+        {
+          "name": "buyerId",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "packageId",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "saleType",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "amount",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "status",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        }
+      ],
+      "foreignKeys": [
+        {
+          "constraintName": "sale_fk_0",
+          "columns": [
+            "buyerId"
+          ],
+          "referenceTable": "users",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        },
+        {
+          "constraintName": "sale_fk_1",
+          "columns": [
+            "packageId"
+          ],
+          "referenceTable": "membership_packages",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        }
+      ],
+      "indexes": [
+        {
+          "indexName": "sale_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        }
+      ],
+      "managed": true
+    },
+    {
+      "name": "sale_items",
+      "dartName": "SaleItem",
+      "module": "wm",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('sale_items_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "saleId",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "productId",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "productName",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "quantity",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "price",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "lineTotal",
+          "columnType": 3,
+          "isNullable": false,
+          "dartType": "double"
+        },
+        {
+          "name": "_saleSalesitemsSaleId",
+          "columnType": 6,
+          "isNullable": true,
+          "dartType": "int?"
+        }
+      ],
+      "foreignKeys": [
+        {
+          "constraintName": "sale_items_fk_0",
+          "columns": [
+            "saleId"
+          ],
+          "referenceTable": "sale",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        },
+        {
+          "constraintName": "sale_items_fk_1",
+          "columns": [
+            "productId"
+          ],
+          "referenceTable": "products",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        },
+        {
+          "constraintName": "sale_items_fk_2",
+          "columns": [
+            "_saleSalesitemsSaleId"
+          ],
+          "referenceTable": "sale",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        }
+      ],
+      "indexes": [
+        {
+          "indexName": "sale_items_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        }
+      ],
+      "managed": true
+    },
+    {
+      "name": "uela",
+      "dartName": "Eula",
+      "module": "wm",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('uela_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "documentType",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "content",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "version",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "effectiveDate",
+          "columnType": 4,
+          "isNullable": false,
+          "dartType": "DateTime"
+        },
+        {
+          "name": "isActive",
+          "columnType": 1,
+          "isNullable": false,
+          "dartType": "bool"
+        },
+        {
+          "name": "language",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        }
+      ],
+      "foreignKeys": [],
+      "indexes": [
+        {
+          "indexName": "uela_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        },
+        {
+          "indexName": "document_type_version_idx",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "documentType"
+            },
+            {
+              "type": 0,
+              "definition": "version"
+            },
+            {
+              "type": 0,
+              "definition": "language"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": false
+        }
+      ],
+      "managed": true
+    },
+    {
+      "name": "users",
+      "dartName": "User",
+      "module": "wm",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('users_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "firstName",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "middleName",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "lastName",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "email",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "phone",
+          "columnType": 0,
+          "isNullable": true,
+          "dartType": "String?"
+        },
+        {
+          "name": "passwordHash",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "role",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "referrerId",
+          "columnType": 6,
+          "isNullable": true,
+          "dartType": "int?"
+        },
+        {
+          "name": "level",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "addressId",
+          "columnType": 6,
+          "isNullable": true,
+          "dartType": "int?"
+        },
+        {
+          "name": "joinDate",
+          "columnType": 4,
+          "isNullable": false,
+          "dartType": "DateTime"
+        },
+        {
+          "name": "isActive",
+          "columnType": 1,
+          "isNullable": false,
+          "dartType": "bool"
+        },
+        {
+          "name": "isPioneer",
+          "columnType": 1,
+          "isNullable": false,
+          "dartType": "bool"
+        },
+        {
+          "name": "membershipPackageId",
+          "columnType": 6,
+          "isNullable": true,
+          "dartType": "int?"
+        },
+        {
+          "name": "longtitude",
+          "columnType": 3,
+          "isNullable": true,
+          "dartType": "double?"
+        },
+        {
+          "name": "latitude",
+          "columnType": 3,
+          "isNullable": true,
+          "dartType": "double?"
+        },
+        {
+          "name": "isUpgraded",
+          "columnType": 1,
+          "isNullable": false,
+          "dartType": "bool"
+        },
+        {
+          "name": "upgradedAt",
+          "columnType": 4,
+          "isNullable": true,
+          "dartType": "DateTime?"
+        },
+        {
+          "name": "lastLoginAt",
+          "columnType": 4,
+          "isNullable": true,
+          "dartType": "DateTime?"
+        },
+        {
+          "name": "userInfoId",
+          "columnType": 6,
+          "isNullable": false,
+          "dartType": "int"
+        }
+      ],
+      "foreignKeys": [
+        {
+          "constraintName": "users_fk_0",
+          "columns": [
+            "addressId"
+          ],
+          "referenceTable": "addresses",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        },
+        {
+          "constraintName": "users_fk_1",
+          "columns": [
+            "membershipPackageId"
+          ],
+          "referenceTable": "membership_packages",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        },
+        {
+          "constraintName": "users_fk_2",
+          "columns": [
+            "userInfoId"
+          ],
+          "referenceTable": "serverpod_user_info",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        }
+      ],
+      "indexes": [
+        {
+          "indexName": "users_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        },
+        {
+          "indexName": "users_email_index",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "userInfoId"
+            },
+            {
+              "type": 0,
+              "definition": "email"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": false
+        }
+      ],
+      "managed": true
+    }
+  ],
+  "installedModules": [
+    {
+      "module": "serverpod",
+      "version": "20240516151843329"
+    },
+    {
+      "module": "serverpod_auth",
+      "version": "20240520102713718"
+    }
+  ],
+  "migrationApiVersion": 1
+}

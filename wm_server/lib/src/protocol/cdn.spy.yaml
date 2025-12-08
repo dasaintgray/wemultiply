@@ -1,0 +1,6 @@
+class: Cdnconfig
+table: cdnconfig
+fields:
+    type: String
+    domain: String
+    urlpath: String

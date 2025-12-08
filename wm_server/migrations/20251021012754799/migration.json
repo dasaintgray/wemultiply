@@ -1,0 +1,147 @@
+{
+  "actions": [
+    {
+      "type": "deleteTable",
+      "deleteTable": "menu_items"
+    },
+    {
+      "type": "createTable",
+      "createTable": {
+        "name": "menu_items",
+        "dartName": "MenuItems",
+        "module": "wm",
+        "schema": "public",
+        "columns": [
+          {
+            "name": "id",
+            "columnType": 6,
+            "isNullable": false,
+            "columnDefault": "nextval('menu_items_id_seq'::regclass)",
+            "dartType": "int?"
+          },
+          {
+            "name": "menuItemDesc",
+            "columnType": 0,
+            "isNullable": false,
+            "dartType": "String"
+          },
+          {
+            "name": "menuItemAction",
+            "columnType": 0,
+            "isNullable": false,
+            "dartType": "String"
+          },
+          {
+            "name": "menuItemImagePath",
+            "columnType": 0,
+            "isNullable": false,
+            "dartType": "String"
+          },
+          {
+            "name": "isActive",
+            "columnType": 1,
+            "isNullable": false,
+            "dartType": "bool"
+          },
+          {
+            "name": "createdAt",
+            "columnType": 4,
+            "isNullable": false,
+            "dartType": "DateTime"
+          },
+          {
+            "name": "createdBy",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          },
+          {
+            "name": "updatedAt",
+            "columnType": 4,
+            "isNullable": false,
+            "dartType": "DateTime"
+          },
+          {
+            "name": "updatedBy",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "constraintName": "menu_items_fk_0",
+            "columns": [
+              "createdBy"
+            ],
+            "referenceTable": "users",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          },
+          {
+            "constraintName": "menu_items_fk_1",
+            "columns": [
+              "updatedBy"
+            ],
+            "referenceTable": "users",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          }
+        ],
+        "indexes": [
+          {
+            "indexName": "menu_items_pkey",
+            "elements": [
+              {
+                "type": 0,
+                "definition": "id"
+              }
+            ],
+            "type": "btree",
+            "isUnique": true,
+            "isPrimary": true
+          }
+        ],
+        "managed": true
+      }
+    }
+  ],
+  "warnings": [
+    {
+      "type": "columnDropped",
+      "message": "Column \"menuItemShortcut\" of table \"menu_items\" will be dropped.",
+      "table": "menu_items",
+      "columns": [
+        "menuItemShortcut"
+      ],
+      "destrucive": true
+    },
+    {
+      "type": "columnDropped",
+      "message": "Column \"menuImagePath\" of table \"menu_items\" will be dropped.",
+      "table": "menu_items",
+      "columns": [
+        "menuImagePath"
+      ],
+      "destrucive": true
+    },
+    {
+      "type": "tableDropped",
+      "message": "One or more columns are added to table \"menu_items\" which cannot be added in a table migration. The complete table will be deleted and recreated.",
+      "table": "menu_items",
+      "columns": [
+        "menuItemImagePath"
+      ],
+      "destrucive": true
+    }
+  ],
+  "migrationApiVersion": 1
+}

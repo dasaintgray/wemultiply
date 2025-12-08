@@ -1,0 +1,7 @@
+class: PaymentEvent
+table: payment_events
+fields:
+  paymentId: int
+  eventType: String     # webhook event type or status change
+  payload: String
+  createdAt: DateTime

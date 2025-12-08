@@ -1,0 +1,128 @@
+{
+  "actions": [
+    {
+      "type": "deleteTable",
+      "deleteTable": "uela"
+    },
+    {
+      "type": "createTable",
+      "createTable": {
+        "name": "eula",
+        "dartName": "Eula",
+        "module": "wm",
+        "schema": "public",
+        "columns": [
+          {
+            "name": "id",
+            "columnType": 6,
+            "isNullable": false,
+            "columnDefault": "nextval('eula_id_seq'::regclass)",
+            "dartType": "int?"
+          },
+          {
+            "name": "documentType",
+            "columnType": 0,
+            "isNullable": false,
+            "dartType": "String"
+          },
+          {
+            "name": "content",
+            "columnType": 0,
+            "isNullable": false,
+            "dartType": "String"
+          },
+          {
+            "name": "version",
+            "columnType": 0,
+            "isNullable": false,
+            "dartType": "String"
+          },
+          {
+            "name": "effectiveDate",
+            "columnType": 4,
+            "isNullable": false,
+            "dartType": "DateTime"
+          },
+          {
+            "name": "isActive",
+            "columnType": 1,
+            "isNullable": false,
+            "dartType": "bool"
+          },
+          {
+            "name": "language",
+            "columnType": 0,
+            "isNullable": false,
+            "dartType": "String"
+          },
+          {
+            "name": "_menuEulaitemsMenuId",
+            "columnType": 6,
+            "isNullable": true,
+            "dartType": "int?"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "constraintName": "eula_fk_0",
+            "columns": [
+              "_menuEulaitemsMenuId"
+            ],
+            "referenceTable": "menu",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          }
+        ],
+        "indexes": [
+          {
+            "indexName": "eula_pkey",
+            "elements": [
+              {
+                "type": 0,
+                "definition": "id"
+              }
+            ],
+            "type": "btree",
+            "isUnique": true,
+            "isPrimary": true
+          },
+          {
+            "indexName": "document_type_version_idx",
+            "elements": [
+              {
+                "type": 0,
+                "definition": "documentType"
+              },
+              {
+                "type": 0,
+                "definition": "version"
+              },
+              {
+                "type": 0,
+                "definition": "language"
+              }
+            ],
+            "type": "btree",
+            "isUnique": true,
+            "isPrimary": false
+          }
+        ],
+        "managed": true
+      }
+    }
+  ],
+  "warnings": [
+    {
+      "type": "tableDropped",
+      "message": "Table \"uela\" will be dropped.",
+      "table": "uela",
+      "columns": [],
+      "destrucive": true
+    }
+  ],
+  "migrationApiVersion": 1
+}

@@ -1,0 +1,18 @@
+class: ReaperCommission
+table: reaper_commissions
+fields:
+    packageId: int, relation(parent=packages)
+    level: int, relation(parent=levels)
+    productId: int, relation(parent=products)
+    netPerMember: double
+    repeatOrderNet: double
+    ronDescription: String?
+    isActive: bool
+    createdBy: String
+    createdAt: DateTime
+    updatedBy: String?
+    updatedAt: DateTime?
+# indexes:
+#     idx_reaper_commissions_package_product_level:
+#       fields: packageId, productId, level
+#       unique: true

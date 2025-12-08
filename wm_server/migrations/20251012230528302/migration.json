@@ -1,0 +1,151 @@
+{
+  "actions": [
+    {
+      "type": "createTable",
+      "createTable": {
+        "name": "rank_category",
+        "dartName": "RankCategory",
+        "module": "wm",
+        "schema": "public",
+        "columns": [
+          {
+            "name": "id",
+            "columnType": 6,
+            "isNullable": false,
+            "columnDefault": "nextval('rank_category_id_seq'::regclass)",
+            "dartType": "int?"
+          },
+          {
+            "name": "rankName",
+            "columnType": 0,
+            "isNullable": false,
+            "dartType": "String"
+          },
+          {
+            "name": "description",
+            "columnType": 0,
+            "isNullable": false,
+            "dartType": "String"
+          },
+          {
+            "name": "createdAt",
+            "columnType": 4,
+            "isNullable": false,
+            "dartType": "DateTime"
+          },
+          {
+            "name": "updatedAt",
+            "columnType": 4,
+            "isNullable": false,
+            "dartType": "DateTime"
+          }
+        ],
+        "foreignKeys": [],
+        "indexes": [
+          {
+            "indexName": "rank_category_pkey",
+            "elements": [
+              {
+                "type": 0,
+                "definition": "id"
+              }
+            ],
+            "type": "btree",
+            "isUnique": true,
+            "isPrimary": true
+          }
+        ],
+        "managed": true
+      }
+    },
+    {
+      "type": "deleteTable",
+      "deleteTable": "ranks"
+    },
+    {
+      "type": "createTable",
+      "createTable": {
+        "name": "ranks",
+        "dartName": "Ranks",
+        "module": "wm",
+        "schema": "public",
+        "columns": [
+          {
+            "name": "id",
+            "columnType": 6,
+            "isNullable": false,
+            "columnDefault": "nextval('ranks_id_seq'::regclass)",
+            "dartType": "int?"
+          },
+          {
+            "name": "rankName",
+            "columnType": 0,
+            "isNullable": false,
+            "dartType": "String"
+          },
+          {
+            "name": "rankCategoryID",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          },
+          {
+            "name": "minPersonalSalesTarget",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          },
+          {
+            "name": "minGroupSalesTarget",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          },
+          {
+            "name": "minDirectRecruits",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          }
+        ],
+        "foreignKeys": [],
+        "indexes": [
+          {
+            "indexName": "ranks_pkey",
+            "elements": [
+              {
+                "type": 0,
+                "definition": "id"
+              }
+            ],
+            "type": "btree",
+            "isUnique": true,
+            "isPrimary": true
+          }
+        ],
+        "managed": true
+      }
+    }
+  ],
+  "warnings": [
+    {
+      "type": "columnDropped",
+      "message": "Column \"rankCategory\" of table \"ranks\" will be dropped.",
+      "table": "ranks",
+      "columns": [
+        "rankCategory"
+      ],
+      "destrucive": true
+    },
+    {
+      "type": "tableDropped",
+      "message": "One or more columns are added to table \"ranks\" which cannot be added in a table migration. The complete table will be deleted and recreated.",
+      "table": "ranks",
+      "columns": [
+        "rankCategoryID"
+      ],
+      "destrucive": true
+    }
+  ],
+  "migrationApiVersion": 1
+}

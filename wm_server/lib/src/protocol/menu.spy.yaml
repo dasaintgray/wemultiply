@@ -1,0 +1,9 @@
+class: Menu
+table: menu
+fields:
+    menuName: String
+    menuImagePath: String
+    createdAt: DateTime
+    isActive: bool
+    menuItems: List<MenuItems>?, relation
+    eulaItems: List<Eula>?, relation

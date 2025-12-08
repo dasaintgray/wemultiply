@@ -1,0 +1,8 @@
+class: ProfitSharing
+table: profit_sharing
+fields:
+    profitType: String
+    percentage: double
+    effectiveDate: DateTime
+    createdAt: DateTime
+    isActive: bool

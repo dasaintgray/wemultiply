@@ -1,0 +1,14 @@
+class: Package
+table: packages
+fields:
+    # gsID: int, relation(parent=golden_seats)
+    packageName: String
+    packageDescription: String
+    membershipFee: double
+    productId: int, relation(parent=products)
+    createdAt: DateTime?
+    createdBy: String?
+    updatedAt: DateTime?
+    updatedBy: String?
+    isActive: bool
+    packageId: List<ReaperCommission>?, relation

@@ -1,0 +1,7 @@
+class: Level
+table: levels
+fields:
+    levelName: String
+    description: String?
+    isActive: bool
+    createdAt: DateTime

@@ -1,0 +1,395 @@
+{
+  "actions": [
+    {
+      "type": "alterTable",
+      "alterTable": {
+        "name": "cart_items",
+        "schema": "public",
+        "addColumns": [
+          {
+            "name": "_cartCartitemsCartId",
+            "columnType": 6,
+            "isNullable": true,
+            "dartType": "int?"
+          }
+        ],
+        "deleteColumns": [
+          "_cartCartidCartId"
+        ],
+        "modifyColumns": [],
+        "addIndexes": [],
+        "deleteIndexes": [],
+        "addForeignKeys": [
+          {
+            "constraintName": "cart_items_fk_2",
+            "columns": [
+              "_cartCartitemsCartId"
+            ],
+            "referenceTable": "cart",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          }
+        ],
+        "deleteForeignKeys": [
+          "cart_items_fk_2"
+        ],
+        "warnings": [
+          {
+            "type": "columnDropped",
+            "message": "Column \"_cartCartidCartId\" of table \"cart_items\" will be dropped.",
+            "table": "cart_items",
+            "columns": [
+              "_cartCartidCartId"
+            ],
+            "destrucive": true
+          }
+        ]
+      }
+    },
+    {
+      "type": "createTable",
+      "createTable": {
+        "name": "order_items",
+        "dartName": "OrderItem",
+        "module": "wm",
+        "schema": "public",
+        "columns": [
+          {
+            "name": "id",
+            "columnType": 6,
+            "isNullable": false,
+            "columnDefault": "nextval('order_items_id_seq'::regclass)",
+            "dartType": "int?"
+          },
+          {
+            "name": "orderId",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          },
+          {
+            "name": "productId",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          },
+          {
+            "name": "quantity",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          },
+          {
+            "name": "unitPrice",
+            "columnType": 3,
+            "isNullable": false,
+            "dartType": "double"
+          },
+          {
+            "name": "totalPrice",
+            "columnType": 3,
+            "isNullable": false,
+            "dartType": "double"
+          },
+          {
+            "name": "createdAt",
+            "columnType": 4,
+            "isNullable": false,
+            "dartType": "DateTime"
+          },
+          {
+            "name": "updatedAt",
+            "columnType": 4,
+            "isNullable": false,
+            "dartType": "DateTime"
+          },
+          {
+            "name": "_ordersOrderitemsOrdersId",
+            "columnType": 6,
+            "isNullable": true,
+            "dartType": "int?"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "constraintName": "order_items_fk_0",
+            "columns": [
+              "orderId"
+            ],
+            "referenceTable": "orders",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          },
+          {
+            "constraintName": "order_items_fk_1",
+            "columns": [
+              "productId"
+            ],
+            "referenceTable": "products",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          },
+          {
+            "constraintName": "order_items_fk_2",
+            "columns": [
+              "_ordersOrderitemsOrdersId"
+            ],
+            "referenceTable": "orders",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          }
+        ],
+        "indexes": [
+          {
+            "indexName": "order_items_pkey",
+            "elements": [
+              {
+                "type": 0,
+                "definition": "id"
+              }
+            ],
+            "type": "btree",
+            "isUnique": true,
+            "isPrimary": true
+          },
+          {
+            "indexName": "order_item_idx",
+            "elements": [
+              {
+                "type": 0,
+                "definition": "orderId"
+              },
+              {
+                "type": 0,
+                "definition": "productId"
+              }
+            ],
+            "type": "btree",
+            "isUnique": true,
+            "isPrimary": false
+          }
+        ],
+        "managed": true
+      }
+    },
+    {
+      "type": "createTable",
+      "createTable": {
+        "name": "orders",
+        "dartName": "Order",
+        "module": "wm",
+        "schema": "public",
+        "columns": [
+          {
+            "name": "id",
+            "columnType": 6,
+            "isNullable": false,
+            "columnDefault": "nextval('orders_id_seq'::regclass)",
+            "dartType": "int?"
+          },
+          {
+            "name": "userID",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          },
+          {
+            "name": "cartId",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          },
+          {
+            "name": "status",
+            "columnType": 0,
+            "isNullable": false,
+            "dartType": "String"
+          },
+          {
+            "name": "currency",
+            "columnType": 0,
+            "isNullable": false,
+            "dartType": "String"
+          },
+          {
+            "name": "subtotal",
+            "columnType": 3,
+            "isNullable": false,
+            "dartType": "double"
+          },
+          {
+            "name": "taxTotal",
+            "columnType": 3,
+            "isNullable": false,
+            "dartType": "double"
+          },
+          {
+            "name": "shippingTotal",
+            "columnType": 3,
+            "isNullable": false,
+            "dartType": "double"
+          },
+          {
+            "name": "discountTotal",
+            "columnType": 3,
+            "isNullable": false,
+            "dartType": "double"
+          },
+          {
+            "name": "grandTotal",
+            "columnType": 3,
+            "isNullable": false,
+            "dartType": "double"
+          },
+          {
+            "name": "paymentMethod",
+            "columnType": 0,
+            "isNullable": false,
+            "dartType": "String"
+          },
+          {
+            "name": "createdAt",
+            "columnType": 4,
+            "isNullable": false,
+            "dartType": "DateTime"
+          },
+          {
+            "name": "updatedAt",
+            "columnType": 4,
+            "isNullable": false,
+            "dartType": "DateTime"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "constraintName": "orders_fk_0",
+            "columns": [
+              "userID"
+            ],
+            "referenceTable": "serverpod_user_info",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          },
+          {
+            "constraintName": "orders_fk_1",
+            "columns": [
+              "cartId"
+            ],
+            "referenceTable": "cart",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          }
+        ],
+        "indexes": [
+          {
+            "indexName": "orders_pkey",
+            "elements": [
+              {
+                "type": 0,
+                "definition": "id"
+              }
+            ],
+            "type": "btree",
+            "isUnique": true,
+            "isPrimary": true
+          },
+          {
+            "indexName": "order_user_idx",
+            "elements": [
+              {
+                "type": 0,
+                "definition": "userID"
+              }
+            ],
+            "type": "btree",
+            "isUnique": false,
+            "isPrimary": false
+          }
+        ],
+        "managed": true
+      }
+    },
+    {
+      "type": "alterTable",
+      "alterTable": {
+        "name": "uela",
+        "schema": "public",
+        "addColumns": [
+          {
+            "name": "_menuEulaitemsMenuId",
+            "columnType": 6,
+            "isNullable": true,
+            "dartType": "int?"
+          }
+        ],
+        "deleteColumns": [],
+        "modifyColumns": [],
+        "addIndexes": [],
+        "deleteIndexes": [],
+        "addForeignKeys": [
+          {
+            "constraintName": "uela_fk_0",
+            "columns": [
+              "_menuEulaitemsMenuId"
+            ],
+            "referenceTable": "menu",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          }
+        ],
+        "deleteForeignKeys": [],
+        "warnings": [
+          {
+            "type": "columnDropped",
+            "message": "Column \"_cartCartidCartId\" of table \"cart_items\" will be dropped.",
+            "table": "cart_items",
+            "columns": [
+              "_cartCartidCartId"
+            ],
+            "destrucive": true
+          }
+        ]
+      }
+    }
+  ],
+  "warnings": [
+    {
+      "type": "columnDropped",
+      "message": "Column \"_cartCartidCartId\" of table \"cart_items\" will be dropped.",
+      "table": "cart_items",
+      "columns": [
+        "_cartCartidCartId"
+      ],
+      "destrucive": true
+    }
+  ],
+  "migrationApiVersion": 1
+}

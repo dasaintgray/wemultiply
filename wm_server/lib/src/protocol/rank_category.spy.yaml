@@ -1,0 +1,7 @@
+class: RankCategory
+table: rank_category
+fields:
+    rankName: String
+    description: String
+    createdAt: DateTime
+    updatedAt: DateTime

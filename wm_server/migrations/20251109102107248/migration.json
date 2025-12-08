@@ -1,0 +1,156 @@
+{
+  "actions": [
+    {
+      "type": "deleteTable",
+      "deleteTable": "cart_item"
+    },
+    {
+      "type": "createTable",
+      "createTable": {
+        "name": "cart_items",
+        "dartName": "CartItem",
+        "module": "wm",
+        "schema": "public",
+        "columns": [
+          {
+            "name": "id",
+            "columnType": 6,
+            "isNullable": false,
+            "columnDefault": "nextval('cart_items_id_seq'::regclass)",
+            "dartType": "int?"
+          },
+          {
+            "name": "cartId",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          },
+          {
+            "name": "productId",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          },
+          {
+            "name": "quantity",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          },
+          {
+            "name": "unitPrice",
+            "columnType": 3,
+            "isNullable": false,
+            "dartType": "double"
+          },
+          {
+            "name": "totalPrice",
+            "columnType": 3,
+            "isNullable": false,
+            "dartType": "double"
+          },
+          {
+            "name": "createdAt",
+            "columnType": 4,
+            "isNullable": false,
+            "dartType": "DateTime"
+          },
+          {
+            "name": "updatedAt",
+            "columnType": 4,
+            "isNullable": false,
+            "dartType": "DateTime"
+          },
+          {
+            "name": "_cartCartitemsCartId",
+            "columnType": 6,
+            "isNullable": true,
+            "dartType": "int?"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "constraintName": "cart_items_fk_0",
+            "columns": [
+              "cartId"
+            ],
+            "referenceTable": "cart",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          },
+          {
+            "constraintName": "cart_items_fk_1",
+            "columns": [
+              "productId"
+            ],
+            "referenceTable": "products",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          },
+          {
+            "constraintName": "cart_items_fk_2",
+            "columns": [
+              "_cartCartitemsCartId"
+            ],
+            "referenceTable": "cart",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          }
+        ],
+        "indexes": [
+          {
+            "indexName": "cart_items_pkey",
+            "elements": [
+              {
+                "type": 0,
+                "definition": "id"
+              }
+            ],
+            "type": "btree",
+            "isUnique": true,
+            "isPrimary": true
+          },
+          {
+            "indexName": "cart_item_idx",
+            "elements": [
+              {
+                "type": 0,
+                "definition": "cartId"
+              },
+              {
+                "type": 0,
+                "definition": "productId"
+              }
+            ],
+            "type": "btree",
+            "isUnique": true,
+            "isPrimary": false
+          }
+        ],
+        "managed": true
+      }
+    }
+  ],
+  "warnings": [
+    {
+      "type": "tableDropped",
+      "message": "Table \"cart_item\" will be dropped.",
+      "table": "cart_item",
+      "columns": [],
+      "destrucive": true
+    }
+  ],
+  "migrationApiVersion": 1
+}

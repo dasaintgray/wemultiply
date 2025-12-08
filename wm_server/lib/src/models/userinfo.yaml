@@ -1,0 +1,10 @@
+class: UserInfo
+fields:
+  id: int
+  userIdentifier: String
+  userName: String
+  fullName: String
+  email: String
+  createdAt: DateTime
+  imageUrl: String
+  blocked: bool

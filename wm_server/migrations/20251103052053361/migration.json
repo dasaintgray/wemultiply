@@ -1,0 +1,38 @@
+{
+  "actions": [
+    {
+      "type": "alterTable",
+      "alterTable": {
+        "name": "menu_items",
+        "schema": "public",
+        "addColumns": [],
+        "deleteColumns": [],
+        "modifyColumns": [],
+        "addIndexes": [],
+        "deleteIndexes": [],
+        "addForeignKeys": [
+          {
+            "constraintName": "menu_items_fk_1",
+            "columns": [
+              "_menuMenuitemsMenuId"
+            ],
+            "referenceTable": "menu",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          }
+        ],
+        "deleteForeignKeys": [
+          "menu_items_fk_2",
+          "menu_items_fk_1"
+        ],
+        "warnings": []
+      }
+    }
+  ],
+  "warnings": [],
+  "migrationApiVersion": 1
+}

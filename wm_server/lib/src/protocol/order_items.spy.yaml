@@ -1,0 +1,14 @@
+class: OrderItem
+table: order_items
+fields:
+    orderId: int, relation(parent=orders)
+    productId: int, relation(parent=products)
+    quantity: int
+    unitPrice: double
+    totalPrice: double
+    createdAt: DateTime
+    updatedAt: DateTime
+indexes:
+    order_item_idx:
+        fields: orderId, productId
+        unique: true

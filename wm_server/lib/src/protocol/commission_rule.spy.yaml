@@ -1,0 +1,7 @@
+class: CommissionRule
+table: commission_rules
+fields:
+    rankId: int, relation(parent=ranks)
+    level: int
+    commissionRate: double
+    commissionType: String  # e.g., 'percentage' or 'fixed'    

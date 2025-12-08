@@ -1,0 +1,20 @@
+class: Eula
+table: eula
+fields:
+    menuId: int
+    # The type of EULA document (e.g., "terms_of_service", "privacy_policy").
+    documentType: String
+    # The content of the EULA document.
+    content: String
+    # The version of the EULA document.
+    version: String
+    # The date when the EULA document became effective.
+    effectiveDate: DateTime
+    # Indicates whether the EULA document is currently active.
+    isActive: bool
+    # The language of the EULA document (e.g., "en", "es").
+    language: String
+indexes:
+    document_type_version_idx:
+        fields: documentType, version, language
+        unique: true

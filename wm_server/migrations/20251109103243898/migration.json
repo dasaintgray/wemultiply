@@ -1,0 +1,66 @@
+{
+  "actions": [
+    {
+      "type": "alterTable",
+      "alterTable": {
+        "name": "cart_items",
+        "schema": "public",
+        "addColumns": [
+          {
+            "name": "_cartCartidCartId",
+            "columnType": 6,
+            "isNullable": true,
+            "dartType": "int?"
+          }
+        ],
+        "deleteColumns": [
+          "_cartCartitemsCartId"
+        ],
+        "modifyColumns": [],
+        "addIndexes": [],
+        "deleteIndexes": [],
+        "addForeignKeys": [
+          {
+            "constraintName": "cart_items_fk_2",
+            "columns": [
+              "_cartCartidCartId"
+            ],
+            "referenceTable": "cart",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          }
+        ],
+        "deleteForeignKeys": [
+          "cart_items_fk_2"
+        ],
+        "warnings": [
+          {
+            "type": "columnDropped",
+            "message": "Column \"_cartCartitemsCartId\" of table \"cart_items\" will be dropped.",
+            "table": "cart_items",
+            "columns": [
+              "_cartCartitemsCartId"
+            ],
+            "destrucive": true
+          }
+        ]
+      }
+    }
+  ],
+  "warnings": [
+    {
+      "type": "columnDropped",
+      "message": "Column \"_cartCartitemsCartId\" of table \"cart_items\" will be dropped.",
+      "table": "cart_items",
+      "columns": [
+        "_cartCartitemsCartId"
+      ],
+      "destrucive": true
+    }
+  ],
+  "migrationApiVersion": 1
+}

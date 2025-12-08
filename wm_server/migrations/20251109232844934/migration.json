@@ -1,0 +1,43 @@
+{
+  "actions": [
+    {
+      "type": "alterTable",
+      "alterTable": {
+        "name": "cart",
+        "schema": "public",
+        "addColumns": [],
+        "deleteColumns": [
+          "sessionID"
+        ],
+        "modifyColumns": [],
+        "addIndexes": [],
+        "deleteIndexes": [],
+        "addForeignKeys": [],
+        "deleteForeignKeys": [],
+        "warnings": [
+          {
+            "type": "columnDropped",
+            "message": "Column \"sessionID\" of table \"cart\" will be dropped.",
+            "table": "cart",
+            "columns": [
+              "sessionID"
+            ],
+            "destrucive": true
+          }
+        ]
+      }
+    }
+  ],
+  "warnings": [
+    {
+      "type": "columnDropped",
+      "message": "Column \"sessionID\" of table \"cart\" will be dropped.",
+      "table": "cart",
+      "columns": [
+        "sessionID"
+      ],
+      "destrucive": true
+    }
+  ],
+  "migrationApiVersion": 1
+}

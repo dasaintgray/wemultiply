@@ -1,0 +1,14 @@
+class: CartItem
+table: cart_items
+fields:
+    cartId: int, relation(parent=cart)
+    productId: int, relation(parent=products)
+    quantity: int
+    unitPrice: double
+    totalPrice: double
+    createdAt: DateTime
+    updatedAt: DateTime
+indexes:
+    cart_item_idx:
+        fields: cartId, productId
+        unique: true

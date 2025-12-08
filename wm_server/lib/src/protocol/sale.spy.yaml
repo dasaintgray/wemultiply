@@ -1,0 +1,11 @@
+class: Sale
+table: sale
+fields:
+    saleNumber: String
+    saleDate: DateTime
+    buyerId: int, relation(parent=users)
+    packageId: int, relation(parent=membership_packages)
+    saleType: String  # e.g., "membership", "product"
+    amount: double
+    status: String  # e.g., "pending", "completed", "failed"
+    salesItems: List<SaleItem>?, relation

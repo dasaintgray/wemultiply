@@ -1,0 +1,11 @@
+class: MenuItems
+table: menu_items
+fields:
+    menuId: int, relation(parent=menu)
+    menuItemDesc: String
+    menuItemImage: String
+    isActive: bool
+    createdAt: DateTime
+    productID: int
+    productDesc: String
+    price: double

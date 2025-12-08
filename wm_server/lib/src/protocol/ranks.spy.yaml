@@ -1,0 +1,8 @@
+class: Ranks
+table: ranks
+fields:
+    rankName: String
+    rankCategoryID: int
+    minPersonalSalesTarget: int
+    minGroupSalesTarget: int
+    minDirectRecruits: int

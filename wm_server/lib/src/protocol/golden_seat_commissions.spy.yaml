@@ -1,0 +1,14 @@
+class: GoldenSeatCommission
+table: golden_seat_commissions
+fields:
+    seatType: String
+    packageId: int, relation(parent=membership_packages)
+    productId: int, relation(parent=products)
+    netPerMember: double
+    netPerBottle: double
+    commissionAmount: double
+    createdAt: DateTime
+indexes:
+    idx_golden_seat_commissions_seattype_package_product:
+      fields: seatType, packageId, productId
+      unique: true

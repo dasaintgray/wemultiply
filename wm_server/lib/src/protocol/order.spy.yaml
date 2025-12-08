@@ -1,0 +1,20 @@
+class: Order
+table: orders
+fields:
+    userID: int, relation(parent=serverpod_user_info)
+    cartId: int, relation(parent=cart)
+    status: String
+    currency: String
+    subtotal: double
+    taxTotal: double
+    shippingTotal: double
+    discountTotal: double
+    grandTotal: double
+    paymentMethod: String
+    createdAt: DateTime
+    updatedAt: DateTime
+    orderItems: List<OrderItem>?, relation
+
+indexes:
+    order_user_idx:
+        fields: userID

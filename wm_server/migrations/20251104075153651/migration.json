@@ -1,0 +1,46 @@
+{
+  "actions": [
+    {
+      "type": "alterTable",
+      "alterTable": {
+        "name": "packages",
+        "schema": "public",
+        "addColumns": [],
+        "deleteColumns": [],
+        "modifyColumns": [
+          {
+            "columnName": "createdAt",
+            "addNullable": true,
+            "removeNullable": false,
+            "changeDefault": false
+          },
+          {
+            "columnName": "createdBy",
+            "addNullable": true,
+            "removeNullable": false,
+            "changeDefault": false
+          },
+          {
+            "columnName": "updatedAt",
+            "addNullable": true,
+            "removeNullable": false,
+            "changeDefault": false
+          },
+          {
+            "columnName": "updatedBy",
+            "addNullable": true,
+            "removeNullable": false,
+            "changeDefault": false
+          }
+        ],
+        "addIndexes": [],
+        "deleteIndexes": [],
+        "addForeignKeys": [],
+        "deleteForeignKeys": [],
+        "warnings": []
+      }
+    }
+  ],
+  "warnings": [],
+  "migrationApiVersion": 1
+}

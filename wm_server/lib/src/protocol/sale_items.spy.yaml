@@ -1,0 +1,9 @@
+class: SaleItem
+table: sale_items
+fields:
+    saleId: int, relation(parent=sale)
+    productId: int, relation(parent=products)
+    productName: String
+    quantity: int
+    price: double
+    lineTotal: double

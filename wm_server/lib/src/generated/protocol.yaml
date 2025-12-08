@@ -1,0 +1,98 @@
+address:
+  - getAddressesByUserId:
+  - getPrimaryAddress:
+  - addAddress:
+  - updateAddress:
+  - deleteAddress:
+  - setPrimaryAddress:
+  - getAddressCount:
+admin:
+  - getAllUsers:
+  - blockUser:
+  - unblockUser:
+cart:
+  - getCartByUserId:
+  - removeFromCart:
+  - updateCartItem:
+  - getCartItemCount:
+  - addItemToCart:
+  - checkOutCart:
+commissions:
+  - getCommissionById:
+  - getAllCommissions:
+  - createCommission:
+  - updateCommission:
+  - deleteCommission:
+  - createMultipleCommissions:
+commissionsRule:
+  - getAllCommissionRules:
+  - createCommissionRule:
+  - createMultipleCommissionRules:
+  - getCommissionRuleById:
+  - updateCommissionRule:
+  - deleteCommissionRule:
+distributors:
+  - getAllDistributors:
+  - createDistributor:
+  - createMultipleDistributors:
+  - getDistributorById:
+  - updateDistributor:
+goldenSeat:
+  - getAllGoldenSeats:
+  - getGoldenSeatById:
+  - createGoldenSeat:
+  - updateGoldenSeat:
+  - deleteGoldenSeat:
+membership:
+  - getAllMembershipPackages:
+  - getMembershipPackageById:
+  - createMembershipPackage:
+  - updateMembershipPackage:
+  - deleteMembershipPackage:
+menu:
+  - getAllActiveMenus:
+  - getMenuWithItems:
+package:
+  - getAllPackages:
+  - createPackage:
+  - getPackageById:
+  - updatePackage:
+  - deletePackage:
+payment:
+  - createInvoice:
+  - createEwallet:
+  - getPaymentByExternalId:
+  - createPayment:
+  - createCardPayment:
+  - captureCardPayment:
+  - getCardPaymentStatus:
+product:
+  - getAllProduct:
+  - createProduct:
+  - createProducts:
+  - getProductById:
+  - updateProduct:
+  - deleteProduct:
+  - deleteProductById:
+ranks:
+  - getAllRanks:
+  - createRanks:
+  - createMultipleRanks:
+  - getRankById:
+  - updateRank:
+  - deleteRank:
+reaperCommission:
+  - getByPackageId:
+sale:
+  - insertSaleWithItems:
+  - getSalesWithItems:
+user:
+  - getUserById:
+  - getUserByAuthId:
+  - updateProfile:
+  - updatePhone:
+  - getFullName:
+webhooks:
+  - xendit:
+greeting:
+  - hello:

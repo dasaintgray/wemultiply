@@ -1,0 +1,15 @@
+class: CrownPackage
+table: crown_packages
+fields:
+    packageId: int, relation(parent=membership_packages)
+    cashBack: double
+    netProfit: double
+    profitToWeMultiply: double
+    profitToCEO: double
+    profitToFounders: double
+    profitToMembers: double
+    profitToTithes: double
+indexes:
+    idx_crown_packages_packageid:
+      fields: packageId
+      unique: true

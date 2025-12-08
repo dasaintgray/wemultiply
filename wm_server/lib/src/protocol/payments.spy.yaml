@@ -1,0 +1,12 @@
+class: Payment
+table: payments
+fields:
+  orderId: String
+  externalId: String    # Xendit external id / reference id
+  channel: String       # e.g. INVOICE, EWALLET_GCASH, CARD, QRPH, PAYPAL (if any)
+  amount: double
+  currency: String
+  status: String        # PENDING, PAID, FAILED, EXPIRED, CANCELLED
+  metadata: String
+  createdAt: DateTime
+  updatedAt: DateTime

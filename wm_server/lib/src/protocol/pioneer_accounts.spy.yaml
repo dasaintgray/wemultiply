@@ -1,0 +1,9 @@
+class: PioneerAccounts
+table: pioneer_accounts
+fields:
+    gsID: int, relation(parent=golden_seats)
+    userId: int, relation(parent=users)
+    pioneerCode: String
+    createdAt: DateTime
+    isRedeemed: bool
+    redeemedAt: DateTime?

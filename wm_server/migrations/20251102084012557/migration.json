@@ -1,0 +1,166 @@
+{
+  "actions": [
+    {
+      "type": "deleteTable",
+      "deleteTable": "menu_items"
+    },
+    {
+      "type": "createTable",
+      "createTable": {
+        "name": "menu_items",
+        "dartName": "MenuItems",
+        "module": "wm",
+        "schema": "public",
+        "columns": [
+          {
+            "name": "id",
+            "columnType": 6,
+            "isNullable": false,
+            "columnDefault": "nextval('menu_items_id_seq'::regclass)",
+            "dartType": "int?"
+          },
+          {
+            "name": "menuId",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          },
+          {
+            "name": "menuItemDesc",
+            "columnType": 0,
+            "isNullable": false,
+            "dartType": "String"
+          },
+          {
+            "name": "menuItemImage",
+            "columnType": 0,
+            "isNullable": false,
+            "dartType": "String"
+          },
+          {
+            "name": "isActive",
+            "columnType": 1,
+            "isNullable": false,
+            "dartType": "bool"
+          },
+          {
+            "name": "createdAt",
+            "columnType": 4,
+            "isNullable": false,
+            "dartType": "DateTime"
+          },
+          {
+            "name": "productID",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          },
+          {
+            "name": "productDesc",
+            "columnType": 0,
+            "isNullable": false,
+            "dartType": "String"
+          },
+          {
+            "name": "price",
+            "columnType": 3,
+            "isNullable": false,
+            "dartType": "double"
+          },
+          {
+            "name": "_menuMenuitemsMenuId",
+            "columnType": 6,
+            "isNullable": true,
+            "dartType": "int?"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "constraintName": "menu_items_fk_0",
+            "columns": [
+              "menuId"
+            ],
+            "referenceTable": "menu",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          },
+          {
+            "constraintName": "menu_items_fk_1",
+            "columns": [
+              "productID"
+            ],
+            "referenceTable": "products",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          },
+          {
+            "constraintName": "menu_items_fk_2",
+            "columns": [
+              "_menuMenuitemsMenuId"
+            ],
+            "referenceTable": "menu",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          }
+        ],
+        "indexes": [
+          {
+            "indexName": "menu_items_pkey",
+            "elements": [
+              {
+                "type": 0,
+                "definition": "id"
+              }
+            ],
+            "type": "btree",
+            "isUnique": true,
+            "isPrimary": true
+          }
+        ],
+        "managed": true
+      }
+    }
+  ],
+  "warnings": [
+    {
+      "type": "columnDropped",
+      "message": "Column \"menuItemAction\" of table \"menu_items\" will be dropped.",
+      "table": "menu_items",
+      "columns": [
+        "menuItemAction"
+      ],
+      "destrucive": true
+    },
+    {
+      "type": "columnDropped",
+      "message": "Column \"menuItemImagePath\" of table \"menu_items\" will be dropped.",
+      "table": "menu_items",
+      "columns": [
+        "menuItemImagePath"
+      ],
+      "destrucive": true
+    },
+    {
+      "type": "tableDropped",
+      "message": "One or more columns are added to table \"menu_items\" which cannot be added in a table migration. The complete table will be deleted and recreated.",
+      "table": "menu_items",
+      "columns": [
+        "menuItemImage"
+      ],
+      "destrucive": true
+    }
+  ],
+  "migrationApiVersion": 1
+}
