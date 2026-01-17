@@ -60,8 +60,14 @@ void main() async {
             )..add(LoadProduct()),
           ),
           BlocProvider(
-            create: (context) =>
-                CartBloc(cartRepository: context.read<CartRepository>()),
+            create: (context) {
+              final cartBloc = CartBloc(cartRepository: context.read<CartRepository>());
+              // Load cart if user is signed in
+              if (SpcCore.isSignedIn && SpcCore.userId != null) {
+                cartBloc.add(LoadCart(SpcCore.userId!));
+              }
+              return cartBloc;
+            },
           ),
           BlocProvider(
             create: (context) =>

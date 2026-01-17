@@ -31,15 +31,8 @@ class AuthRepository {
     await SpcCore.sessionManager.signOutDevice();
   }
 
-  Future<void> resetPassword(String email) async {
-    // Simulate network delay
-    await Future.delayed(Duration(seconds: 2));
-    // Here you would normally call your password reset API
-    if (email.contains('@')) {
-      return;
-    } else {
-      throw Exception('Invalid email address');
-    }
+  Future<bool> resetPassword(String email) async {
+    return await authController.initiatePasswordReset(email);
   }
 
   bool get isSignedIn => SpcCore.sessionManager.isSignedIn;

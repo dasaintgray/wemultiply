@@ -10,7 +10,7 @@
             "request": "launch",
             "type": "dart", 
             "args": [
-                "--dart-define=SERVER_URL=http://192.168.1.30:8080/"
+                "--dart-define=SERVER_URL=http://192.168.1.17:8080/"
             ]
         },
        

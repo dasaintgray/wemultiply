@@ -27,6 +27,47 @@ class _ProfileViewState extends State<ProfileView> {
   // QR Code contains the referral code for easy sharing
   String get _qrData => 'wemultiply://referral/$_referralCode';
 
+  // Stats
+  int _referralsCount = 0;
+  double _totalEarnings = 0.0;
+  int _ordersCount = 0;
+  bool _isLoadingStats = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadStats();
+  }
+
+  Future<void> _loadStats() async {
+    if (!mounted) return;
+    setState(() => _isLoadingStats = true);
+
+    try {
+      final userId = SpcCore.userId;
+      if (userId != null) {
+        // First get the user from our users table
+        final user = await SpcCore.client.user.getOrCreateUser(userId);
+        if (user?.id != null) {
+          final stats = await SpcCore.client.user.getUserStats(user!.id!);
+          if (mounted) {
+            setState(() {
+              _referralsCount = stats['referrals'] as int? ?? 0;
+              _totalEarnings = (stats['earnings'] as num?)?.toDouble() ?? 0.0;
+              _ordersCount = stats['orders'] as int? ?? 0;
+            });
+          }
+        }
+      }
+    } catch (e) {
+      debugPrint('Error loading stats: $e');
+    } finally {
+      if (mounted) {
+        setState(() => _isLoadingStats = false);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -274,7 +315,7 @@ class _ProfileViewState extends State<ProfileView> {
           _buildStatCard(
             theme,
             icon: Icons.people_outline,
-            value: '0',
+            value: _isLoadingStats ? '...' : '$_referralsCount',
             label: 'Referrals',
             color: AppColors.darkBlue,
           ),
@@ -282,7 +323,7 @@ class _ProfileViewState extends State<ProfileView> {
           _buildStatCard(
             theme,
             icon: Icons.account_balance_wallet_outlined,
-            value: '₱0.00',
+            value: _isLoadingStats ? '...' : '₱${_totalEarnings.toStringAsFixed(2)}',
             label: 'Earnings',
             color: AppColors.darkGreen,
           ),
@@ -290,7 +331,7 @@ class _ProfileViewState extends State<ProfileView> {
           _buildStatCard(
             theme,
             icon: Icons.shopping_bag_outlined,
-            value: '0',
+            value: _isLoadingStats ? '...' : '$_ordersCount',
             label: 'Orders',
             color: AppColors.lightBlue,
           ),

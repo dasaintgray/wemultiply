@@ -10,6 +10,15 @@ sealed class CartEvent extends Equatable {
 
 class ClearCart extends CartEvent {}
 
+/// Clear cart on server and locally after successful payment
+class ClearCartAfterPayment extends CartEvent {
+  final int userId;
+  const ClearCartAfterPayment(this.userId);
+
+  @override
+  List<Object?> get props => [userId];
+}
+
 class CheckoutCart extends CartEvent {}
 
 class IncreaseQuantity extends CartEvent {

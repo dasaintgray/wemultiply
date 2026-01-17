@@ -1,0 +1,15 @@
+class: PaymentResponse
+fields:
+  success: bool
+  paymentId: String?
+  externalId: String?
+  referenceId: String?
+  status: String?
+  checkoutUrl: String?
+  invoiceUrl: String?
+  qrString: String?
+  currency: String?
+  amount: double?
+  channel: String?
+  errorCode: String?
+  errorMessage: String?

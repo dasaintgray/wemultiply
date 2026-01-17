@@ -114,3 +114,19 @@ class CardPaymentCompleted extends PaymentState {
   @override
   List<Object?> get props => [externalId, paymentId, status];
 }
+
+/// QR Code payment ready - display QR for user to scan
+class QrPaymentReady extends PaymentState {
+  final String qrString;
+  final String externalId;
+  final String paymentId;
+
+  const QrPaymentReady({
+    required this.qrString,
+    required this.externalId,
+    required this.paymentId,
+  });
+
+  @override
+  List<Object?> get props => [qrString, externalId, paymentId];
+}

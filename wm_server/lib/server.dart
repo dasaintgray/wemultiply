@@ -65,14 +65,12 @@ void run(List<String> args) async {
           );
           return false;
         }
-        session.log('Validation email was sent to $email',
-            level: LogLevel.info);
+        session.log('Validation email was sent to $email', level: LogLevel.info);
         return true;
       },
       sendPasswordResetEmail: (session, userInfo, validationCode) async {
         // ignore: avoid_print
-        print(
-            'Send password reset email to ${userInfo.email} with code: $validationCode');
+        print('Send password reset email to ${userInfo.email} with code: $validationCode');
         // Retrieve the credentials
         final gmailEmail = session.serverpod.getPassword('gmailEmail')!;
         final gmailPassword = session.serverpod.getPassword('gmailPassword')!;

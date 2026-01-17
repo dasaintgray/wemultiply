@@ -16,6 +16,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthSubmitted>(_onSubmitted);
     on<LoginRequested>(onLogin);
     on<AccountRequest>(onAccountRequest);
+    on<AuthPasswordResetRequested>(_onPasswordReset);
+  }
+
+  Future<void> _onPasswordReset(
+    AuthPasswordResetRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    try {
+      await authRepository.resetPassword(event.email);
+    } catch (e) {
+      // Password reset errors are handled silently for security
+    }
   }
 
   Future<void> onAccountRequest(

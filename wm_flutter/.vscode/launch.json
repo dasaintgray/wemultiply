@@ -13,6 +13,14 @@
             ]
         },
         {
+            "name": "wm_flutter (wm network)",
+            "request": "launch",
+            "type": "dart", 
+            "args": [
+                "--dart-define=SERVER_URL=http://10.77.95.14:8080/"
+            ]
+        },
+        {
             "name": "wm_flutter (profile mode)",
             "request": "launch",
             "type": "dart",

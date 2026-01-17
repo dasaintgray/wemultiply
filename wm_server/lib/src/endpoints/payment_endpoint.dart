@@ -7,63 +7,104 @@ import 'package:wm_server/src/generated/protocol.dart';
 class PaymentEndpoint extends Endpoint {
   final XenditService _xendit = XenditService(); //XENDIT SERVICE
 
-  Future<Map<String, dynamic>> createInvoice(
+  Future<PaymentResponse> createInvoice(
       Session session, String orderId, double amount, String? email) async {
     final externalId =
         'order_${orderId}_${DateTime.now().millisecondsSinceEpoch}';
 
-    final invoice = await _xendit.createInvoice(
-      externalId: externalId,
-      amount: amount,
-      customerEmail: email,
-    );
+    try {
+      final invoice = await _xendit.createInvoice(
+        externalId: externalId,
+        amount: amount,
+        customerEmail: email,
+      );
 
-    //persist into database
-    final payment = Payment(
-      orderId: orderId,
-      externalId: invoice['id'] ?? externalId,
-      channel: 'INVOICE',
-      amount: amount,
-      currency: invoice['currency'] ?? 'PHP',
-      status: invoice['status'] ?? 'PENDING',
-      metadata: jsonEncode(invoice),
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-    );
+      //persist into database
+      final payment = Payment(
+        orderId: orderId,
+        externalId: invoice['id'] ?? externalId,
+        channel: 'INVOICE',
+        amount: amount,
+        currency: invoice['currency'] ?? 'PHP',
+        status: invoice['status'] ?? 'PENDING',
+        metadata: jsonEncode(invoice),
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      );
 
-    await Payment.db.insertRow(session, payment);
+      await Payment.db.insertRow(session, payment);
 
-    return invoice;
+      return PaymentResponse(
+        success: true,
+        paymentId: invoice['id'] as String?,
+        externalId: externalId,
+        referenceId: externalId,
+        status: invoice['status'] as String? ?? 'PENDING',
+        invoiceUrl: invoice['invoice_url'] as String?,
+        checkoutUrl: invoice['invoice_url'] as String?,
+        currency: invoice['currency'] as String? ?? 'PHP',
+        amount: amount,
+        channel: 'INVOICE',
+      );
+    } catch (e) {
+      return PaymentResponse(
+        success: false,
+        errorMessage: e.toString(),
+      );
+    }
   }
 
-  Future<Map<String, dynamic>> createEwallet(Session session, String orderId,
+  Future<PaymentResponse> createEwallet(Session session, String orderId,
       double amount, String channelCode) async {
     final referenceId =
         'ewallet_${orderId}_${DateTime.now().millisecondsSinceEpoch}';
-    final resp = await _xendit.createEwalletCharge(
-      referenceId: referenceId,
-      amount: amount,
-      channelCode: channelCode,
-      successRedirectUrl: 'wemultiply://payment/success',
-      failureRedirectUrl: 'wemultiply://payment/failure',
-    );
 
-    // save
-    final payment = Payment(
-      orderId: orderId,
-      externalId: resp['id'] ?? referenceId,
-      channel: 'EWALLET_$channelCode',
-      amount: amount,
-      currency: resp['currency'] ?? 'PHP',
-      status: resp['status'] ?? 'PENDING',
-      metadata: jsonEncode(resp),
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-    );
+    try {
+      final resp = await _xendit.createEwalletCharge(
+        referenceId: referenceId,
+        amount: amount,
+        channelCode: channelCode,
+        successRedirectUrl: 'wemultiply://payment/success',
+        failureRedirectUrl: 'wemultiply://payment/failure',
+      );
 
-    await Payment.db.insertRow(session, payment);
+      // save
+      final payment = Payment(
+        orderId: orderId,
+        externalId: resp['id'] ?? referenceId,
+        channel: 'EWALLET_$channelCode',
+        amount: amount,
+        currency: resp['currency'] ?? 'PHP',
+        status: resp['status'] ?? 'PENDING',
+        metadata: jsonEncode(resp),
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      );
 
-    return resp;
+      await Payment.db.insertRow(session, payment);
+
+      // Extract checkout URL from actions
+      final actions = resp['actions'] as Map<String, dynamic>?;
+      final checkoutUrl = actions?['mobile_web_checkout_url'] as String? ??
+          actions?['desktop_web_checkout_url'] as String?;
+
+      return PaymentResponse(
+        success: true,
+        paymentId: resp['id'] as String?,
+        externalId: resp['id'] as String?,
+        referenceId: referenceId,
+        status: resp['status'] as String? ?? 'PENDING',
+        checkoutUrl: checkoutUrl,
+        currency: resp['currency'] as String? ?? 'PHP',
+        amount: amount,
+        channel: 'EWALLET_$channelCode',
+      );
+    } catch (e) {
+      return PaymentResponse(
+        success: false,
+        errorMessage: e.toString(),
+      );
+    }
   }
 
   Future<Payment?> getPaymentByExternalId(
@@ -72,22 +113,15 @@ class PaymentEndpoint extends Endpoint {
         .findFirstRow(session, where: (t) => t.externalId.equals(externalId));
   }
 
-  Future<Map<String, dynamic>> createPayment(Session session,
+  Future<PaymentResponse> createPayment(Session session,
       {required String orderID,
       required double amount,
       String? userEmail}) async {
-    final invoice = await _xendit.createInvoice(
-      externalId: orderID,
-      amount: amount,
-      customerEmail: userEmail,
-    );
-
-    //store to db
-    return invoice;
+    return createInvoice(session, orderID, amount, userEmail);
   }
 
   /// Creates a direct card payment with 3DS authentication
-  Future<Map<String, dynamic>> createCardPayment(
+  Future<PaymentResponse> createCardPayment(
     Session session, {
     required String orderId,
     required double amount,
@@ -106,75 +140,340 @@ class PaymentEndpoint extends Endpoint {
     final referenceId =
         'card_${orderId}_${DateTime.now().millisecondsSinceEpoch}';
 
-    final response = await _xendit.createCardPaymentRequest(
-      referenceId: referenceId,
-      amount: amount,
-      currency: currency,
-      cardNumber: cardNumber,
-      expiryMonth: expiryMonth,
-      expiryYear: expiryYear,
-      cvn: cvn,
-      cardholderFirstName: cardholderFirstName,
-      cardholderLastName: cardholderLastName,
-      cardholderEmail: cardholderEmail,
-      cardholderPhone: cardholderPhone,
-      description: description ?? 'Payment for order# $orderId',
-      captureMethod: preAuthorize ? 'MANUAL' : 'AUTOMATIC',
-      metadata: {
-        'order_id': orderId,
-      },
-    );
+    try {
+      final response = await _xendit.createCardPaymentRequest(
+        referenceId: referenceId,
+        amount: amount,
+        currency: currency,
+        cardNumber: cardNumber,
+        expiryMonth: expiryMonth,
+        expiryYear: expiryYear,
+        cvn: cvn,
+        cardholderFirstName: cardholderFirstName,
+        cardholderLastName: cardholderLastName,
+        cardholderEmail: cardholderEmail,
+        cardholderPhone: cardholderPhone,
+        description: description ?? 'Payment for order# $orderId',
+        captureMethod: preAuthorize ? 'MANUAL' : 'AUTOMATIC',
+        metadata: {
+          'order_id': orderId,
+        },
+      );
 
-    // Save payment to database
-    final payment = Payment(
-      orderId: orderId,
-      externalId: response['id'] ?? referenceId,
-      channel: 'CARD',
-      amount: amount,
-      currency: currency,
-      status: response['status'] ?? 'PENDING',
-      metadata: jsonEncode(response),
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-    );
+      // Save payment to database
+      final payment = Payment(
+        orderId: orderId,
+        externalId: response['id'] ?? referenceId,
+        channel: 'CARD',
+        amount: amount,
+        currency: currency,
+        status: response['status'] ?? 'PENDING',
+        metadata: jsonEncode(response),
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      );
 
-    await Payment.db.insertRow(session, payment);
+      await Payment.db.insertRow(session, payment);
 
-    return response;
+      // Extract 3DS URL from actions
+      final actions = response['actions'] as List<dynamic>?;
+      String? threeDsUrl;
+      if (actions != null && actions.isNotEmpty) {
+        for (final action in actions) {
+          if (action is Map<String, dynamic> && action['action'] == 'AUTH') {
+            threeDsUrl = action['url'] as String?;
+            break;
+          }
+        }
+      }
+
+      return PaymentResponse(
+        success: true,
+        paymentId: response['id'] as String?,
+        externalId: response['id'] as String?,
+        referenceId: referenceId,
+        status: response['status'] as String? ?? 'PENDING',
+        checkoutUrl: threeDsUrl,
+        currency: currency,
+        amount: amount,
+        channel: 'CARD',
+      );
+    } catch (e) {
+      return PaymentResponse(
+        success: false,
+        errorMessage: e.toString(),
+      );
+    }
   }
 
   /// Captures a pre-authorized card payment
-  Future<Map<String, dynamic>> captureCardPayment(
+  Future<PaymentResponse> captureCardPayment(
     Session session, {
     required String paymentRequestId,
     required double captureAmount,
   }) async {
-    final response = await _xendit.captureCardPayment(
-      paymentRequestId: paymentRequestId,
-      captureAmount: captureAmount,
-    );
+    try {
+      final response = await _xendit.captureCardPayment(
+        paymentRequestId: paymentRequestId,
+        captureAmount: captureAmount,
+      );
 
-    // Update payment status in database
-    final payment = await Payment.db.findFirstRow(
-      session,
-      where: (t) => t.externalId.equals(paymentRequestId),
-    );
+      // Update payment status in database
+      final payment = await Payment.db.findFirstRow(
+        session,
+        where: (t) => t.externalId.equals(paymentRequestId),
+      );
 
-    if (payment != null) {
-      payment.status = response['status'] ?? 'CAPTURED';
-      payment.metadata = jsonEncode(response);
-      payment.updatedAt = DateTime.now();
-      await Payment.db.updateRow(session, payment);
+      if (payment != null) {
+        payment.status = response['status'] ?? 'CAPTURED';
+        payment.metadata = jsonEncode(response);
+        payment.updatedAt = DateTime.now();
+        await Payment.db.updateRow(session, payment);
+      }
+
+      return PaymentResponse(
+        success: true,
+        paymentId: response['id'] as String?,
+        externalId: paymentRequestId,
+        status: response['status'] as String? ?? 'CAPTURED',
+        amount: captureAmount,
+      );
+    } catch (e) {
+      return PaymentResponse(
+        success: false,
+        errorMessage: e.toString(),
+      );
     }
-
-    return response;
   }
 
   /// Gets payment request status from Xendit
-  Future<Map<String, dynamic>> getCardPaymentStatus(
+  Future<PaymentResponse> getCardPaymentStatus(
     Session session,
     String paymentRequestId,
   ) async {
-    return await _xendit.getPaymentRequestStatus(paymentRequestId);
+    try {
+      final response = await _xendit.getPaymentRequestStatus(paymentRequestId);
+      return PaymentResponse(
+        success: true,
+        paymentId: response['id'] as String?,
+        externalId: paymentRequestId,
+        status: response['status'] as String?,
+        amount: (response['amount'] as num?)?.toDouble(),
+        currency: response['currency'] as String?,
+      );
+    } catch (e) {
+      return PaymentResponse(
+        success: false,
+        errorMessage: e.toString(),
+      );
+    }
+  }
+
+  /// Creates a QR PH payment
+  Future<PaymentResponse> createQrPayment(
+    Session session,
+    String orderId,
+    double amount,
+  ) async {
+    final externalId = 'qr_${orderId}_${DateTime.now().millisecondsSinceEpoch}';
+
+    try {
+      final response = await _xendit.createQrCode(
+        externalId: externalId,
+        amount: amount,
+        type: 'DYNAMIC',
+      );
+
+      // Save payment to database
+      final payment = Payment(
+        orderId: orderId,
+        externalId: response['id'] ?? externalId,
+        channel: 'QRPH',
+        amount: amount,
+        currency: response['currency'] ?? 'PHP',
+        status: response['status'] ?? 'PENDING',
+        metadata: jsonEncode(response),
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      );
+
+      await Payment.db.insertRow(session, payment);
+
+      return PaymentResponse(
+        success: true,
+        paymentId: response['id'] as String?,
+        externalId: externalId,
+        referenceId: externalId,
+        status: response['status'] as String? ?? 'PENDING',
+        qrString: response['qr_string'] as String?,
+        currency: response['currency'] as String? ?? 'PHP',
+        amount: amount,
+        channel: 'QRPH',
+      );
+    } catch (e) {
+      return PaymentResponse(
+        success: false,
+        errorMessage: e.toString(),
+      );
+    }
+  }
+
+  /// Creates a PayLater payment (BillEase, Cashalo)
+  Future<PaymentResponse> createPayLater(
+    Session session,
+    String orderId,
+    double amount,
+    String channelCode,
+    String? email,
+    String? phone,
+  ) async {
+    final referenceId =
+        'paylater_${orderId}_${DateTime.now().millisecondsSinceEpoch}';
+
+    try {
+      final response = await _xendit.createPayLaterCharge(
+        referenceId: referenceId,
+        amount: amount,
+        channelCode: channelCode,
+        customerEmail: email,
+        customerPhone: phone,
+        successRedirectUrl: 'wemultiply://payment/success',
+        failureRedirectUrl: 'wemultiply://payment/failure',
+      );
+
+      // Save payment to database
+      final payment = Payment(
+        orderId: orderId,
+        externalId: response['id'] ?? referenceId,
+        channel: 'PAYLATER_$channelCode',
+        amount: amount,
+        currency: response['currency'] ?? 'PHP',
+        status: response['status'] ?? 'PENDING',
+        metadata: jsonEncode(response),
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      );
+
+      await Payment.db.insertRow(session, payment);
+
+      // Extract checkout URL from actions
+      final actions = response['actions'] as Map<String, dynamic>?;
+      final checkoutUrl = actions?['checkout_url'] as String? ??
+          actions?['mobile_web_checkout_url'] as String? ??
+          actions?['desktop_web_checkout_url'] as String?;
+
+      return PaymentResponse(
+        success: true,
+        paymentId: response['id'] as String?,
+        externalId: response['id'] as String?,
+        referenceId: referenceId,
+        status: response['status'] as String? ?? 'PENDING',
+        checkoutUrl: checkoutUrl,
+        currency: response['currency'] as String? ?? 'PHP',
+        amount: amount,
+        channel: 'PAYLATER_$channelCode',
+      );
+    } catch (e) {
+      return PaymentResponse(
+        success: false,
+        errorMessage: e.toString(),
+      );
+    }
+  }
+
+  /// Creates a Direct Debit payment (BPI, UnionBank)
+  Future<PaymentResponse> createDirectDebit(
+    Session session,
+    String orderId,
+    double amount,
+    String channelCode,
+    String? email,
+  ) async {
+    final referenceId =
+        'dd_${orderId}_${DateTime.now().millisecondsSinceEpoch}';
+
+    try {
+      final response = await _xendit.createDirectDebitPayment(
+        referenceId: referenceId,
+        amount: amount,
+        channelCode: channelCode,
+        customerEmail: email,
+        successRedirectUrl: 'wemultiply://payment/success',
+        failureRedirectUrl: 'wemultiply://payment/failure',
+      );
+
+      // Save payment to database
+      final payment = Payment(
+        orderId: orderId,
+        externalId: response['id'] ?? referenceId,
+        channel: 'DIRECT_DEBIT_$channelCode',
+        amount: amount,
+        currency: response['currency'] ?? 'PHP',
+        status: response['status'] ?? 'PENDING',
+        metadata: jsonEncode(response),
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      );
+
+      await Payment.db.insertRow(session, payment);
+
+      // Extract authorization URL from actions
+      final actions = response['actions'] as Map<String, dynamic>?;
+      final checkoutUrl = actions?['authorization_url'] as String? ??
+          actions?['checkout_url'] as String?;
+
+      return PaymentResponse(
+        success: true,
+        paymentId: response['id'] as String?,
+        externalId: response['id'] as String?,
+        referenceId: referenceId,
+        status: response['status'] as String? ?? 'PENDING',
+        checkoutUrl: checkoutUrl,
+        currency: response['currency'] as String? ?? 'PHP',
+        amount: amount,
+        channel: 'DIRECT_DEBIT_$channelCode',
+      );
+    } catch (e) {
+      return PaymentResponse(
+        success: false,
+        errorMessage: e.toString(),
+      );
+    }
+  }
+
+  /// Webhook handler for Xendit payment callbacks
+  Future<void> handleWebhook(
+    Session session,
+    Map<String, dynamic> payload,
+  ) async {
+    final externalId = payload['external_id'] as String? ??
+        payload['reference_id'] as String? ??
+        payload['id'] as String?;
+
+    if (externalId == null) {
+      session.log('Webhook received without external_id', level: LogLevel.warning);
+      return;
+    }
+
+    final status = payload['status'] as String? ?? 'UNKNOWN';
+    final eventType = payload['event'] as String?;
+
+    session.log('Webhook received: $eventType for $externalId with status $status');
+
+    // Find and update payment in database
+    final payment = await Payment.db.findFirstRow(
+      session,
+      where: (t) => t.externalId.equals(externalId),
+    );
+
+    if (payment != null) {
+      payment.status = status;
+      payment.metadata = jsonEncode(payload);
+      payment.updatedAt = DateTime.now();
+      await Payment.db.updateRow(session, payment);
+      session.log('Payment $externalId updated to status: $status');
+    } else {
+      session.log('Payment not found for external_id: $externalId', level: LogLevel.warning);
+    }
   }
 }

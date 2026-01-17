@@ -25,6 +25,8 @@ abstract class Addresses
     required this.province,
     required this.postalCode,
     required this.country,
+    this.latitude,
+    this.longitude,
     required this.isPrimary,
     required this.createdAt,
     required this.updatedAt,
@@ -42,6 +44,8 @@ abstract class Addresses
     required String province,
     required String postalCode,
     required String country,
+    double? latitude,
+    double? longitude,
     required bool isPrimary,
     required DateTime createdAt,
     required DateTime updatedAt,
@@ -60,6 +64,8 @@ abstract class Addresses
       province: jsonSerialization['province'] as String,
       postalCode: jsonSerialization['postalCode'] as String,
       country: jsonSerialization['country'] as String,
+      latitude: (jsonSerialization['latitude'] as num?)?.toDouble(),
+      longitude: (jsonSerialization['longitude'] as num?)?.toDouble(),
       isPrimary: jsonSerialization['isPrimary'] as bool,
       createdAt:
           _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
@@ -95,6 +101,10 @@ abstract class Addresses
 
   String country;
 
+  double? latitude;
+
+  double? longitude;
+
   bool isPrimary;
 
   DateTime createdAt;
@@ -119,6 +129,8 @@ abstract class Addresses
     String? province,
     String? postalCode,
     String? country,
+    double? latitude,
+    double? longitude,
     bool? isPrimary,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -137,6 +149,8 @@ abstract class Addresses
       'province': province,
       'postalCode': postalCode,
       'country': country,
+      if (latitude != null) 'latitude': latitude,
+      if (longitude != null) 'longitude': longitude,
       'isPrimary': isPrimary,
       'createdAt': createdAt.toJson(),
       'updatedAt': updatedAt.toJson(),
@@ -157,6 +171,8 @@ abstract class Addresses
       'province': province,
       'postalCode': postalCode,
       'country': country,
+      if (latitude != null) 'latitude': latitude,
+      if (longitude != null) 'longitude': longitude,
       'isPrimary': isPrimary,
       'createdAt': createdAt.toJson(),
       'updatedAt': updatedAt.toJson(),
@@ -208,6 +224,8 @@ class _AddressesImpl extends Addresses {
     required String province,
     required String postalCode,
     required String country,
+    double? latitude,
+    double? longitude,
     required bool isPrimary,
     required DateTime createdAt,
     required DateTime updatedAt,
@@ -223,6 +241,8 @@ class _AddressesImpl extends Addresses {
           province: province,
           postalCode: postalCode,
           country: country,
+          latitude: latitude,
+          longitude: longitude,
           isPrimary: isPrimary,
           createdAt: createdAt,
           updatedAt: updatedAt,
@@ -244,6 +264,8 @@ class _AddressesImpl extends Addresses {
     String? province,
     String? postalCode,
     String? country,
+    Object? latitude = _Undefined,
+    Object? longitude = _Undefined,
     bool? isPrimary,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -260,6 +282,8 @@ class _AddressesImpl extends Addresses {
       province: province ?? this.province,
       postalCode: postalCode ?? this.postalCode,
       country: country ?? this.country,
+      latitude: latitude is double? ? latitude : this.latitude,
+      longitude: longitude is double? ? longitude : this.longitude,
       isPrimary: isPrimary ?? this.isPrimary,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -309,6 +333,14 @@ class AddressesTable extends _i1.Table<int?> {
       'country',
       this,
     );
+    latitude = _i1.ColumnDouble(
+      'latitude',
+      this,
+    );
+    longitude = _i1.ColumnDouble(
+      'longitude',
+      this,
+    );
     isPrimary = _i1.ColumnBool(
       'isPrimary',
       this,
@@ -343,6 +375,10 @@ class AddressesTable extends _i1.Table<int?> {
 
   late final _i1.ColumnString country;
 
+  late final _i1.ColumnDouble latitude;
+
+  late final _i1.ColumnDouble longitude;
+
   late final _i1.ColumnBool isPrimary;
 
   late final _i1.ColumnDateTime createdAt;
@@ -362,6 +398,8 @@ class AddressesTable extends _i1.Table<int?> {
         province,
         postalCode,
         country,
+        latitude,
+        longitude,
         isPrimary,
         createdAt,
         updatedAt,

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:wm_client/wm_client.dart';
 import 'package:wm_flutter/core/spc_core.dart';
@@ -24,15 +26,23 @@ class _DeliveryAddressesViewState extends State<DeliveryAddressesView> {
   Future<void> _loadAddresses() async {
     setState(() => _isLoading = true);
     try {
-      final userId = SpcCore.userId;
-      if (userId != null) {
-        final addresses = await SpcCore.client.address.getAddressesByUserId(
-          userId,
-        );
-        setState(() {
-          _addresses = addresses;
-          _isLoading = false;
-        });
+      final userInfoId = SpcCore.userId;
+      if (userInfoId != null) {
+        // Get the actual user from users table
+        final user = await SpcCore.client.user.getOrCreateUser(userInfoId);
+        if (user?.id != null) {
+          final addresses = await SpcCore.client.address.getAddressesByUserId(
+            user!.id!,
+          );
+          setState(() {
+            _addresses = addresses;
+            _isLoading = false;
+          });
+        } else {
+          setState(() => _isLoading = false);
+        }
+      } else {
+        setState(() => _isLoading = false);
       }
     } catch (e) {
       setState(() => _isLoading = false);
@@ -304,10 +314,14 @@ class _DeliveryAddressesViewState extends State<DeliveryAddressesView> {
 
   Future<void> _setPrimary(Addresses address) async {
     try {
-      final userId = SpcCore.userId;
-      if (userId != null && address.id != null) {
-        await SpcCore.client.address.setPrimaryAddress(address.id!, userId);
-        _loadAddresses();
+      final userInfoId = SpcCore.userId;
+      if (userInfoId != null && address.id != null) {
+        // Get the actual user from users table
+        final user = await SpcCore.client.user.getOrCreateUser(userInfoId);
+        if (user?.id != null) {
+          await SpcCore.client.address.setPrimaryAddress(address.id!, user!.id!);
+          _loadAddresses();
+        }
       }
     } catch (e) {
       if (mounted) {
@@ -341,10 +355,14 @@ class _DeliveryAddressesViewState extends State<DeliveryAddressesView> {
 
     if (confirmed == true) {
       try {
-        final userId = SpcCore.userId;
-        if (userId != null && address.id != null) {
-          await SpcCore.client.address.deleteAddress(address.id!, userId);
-          _loadAddresses();
+        final userInfoId = SpcCore.userId;
+        if (userInfoId != null && address.id != null) {
+          // Get the actual user from users table
+          final user = await SpcCore.client.user.getOrCreateUser(userInfoId);
+          if (user?.id != null) {
+            await SpcCore.client.address.deleteAddress(address.id!, user!.id!);
+            _loadAddresses();
+          }
         }
       } catch (e) {
         if (mounted) {
@@ -390,6 +408,9 @@ class _AddressFormSheetState extends State<AddressFormSheet> {
   late TextEditingController _countryController;
   bool _isPrimary = false;
   bool _isLoading = false;
+  bool _isGettingLocation = false;
+  double? _latitude;
+  double? _longitude;
 
   bool get _isEditing => widget.address != null;
 
@@ -418,6 +439,118 @@ class _AddressFormSheetState extends State<AddressFormSheet> {
       text: widget.address?.country ?? 'Philippines',
     );
     _isPrimary = widget.address?.isPrimary ?? false;
+    _latitude = widget.address?.latitude;
+    _longitude = widget.address?.longitude;
+  }
+
+  Future<void> _getCurrentLocation() async {
+    setState(() => _isGettingLocation = true);
+    try {
+      // Check if location services are enabled
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Location services are disabled. Please enable them.'),
+            ),
+          );
+        }
+        return;
+      }
+
+      // Check and request permission
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Location permission denied.')),
+            );
+          }
+          return;
+        }
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Location permissions are permanently denied.'),
+            ),
+          );
+        }
+        return;
+      }
+
+      // Get current position
+      final position = await Geolocator.getCurrentPosition(
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.high,
+        ),
+      );
+
+      setState(() {
+        _latitude = position.latitude;
+        _longitude = position.longitude;
+      });
+
+      // Get address from coordinates and auto-fill fields
+      await _fillAddressFromCoordinates(position.latitude, position.longitude);
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Location detected and address filled!'),
+            backgroundColor: AppColors.darkGreen,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error getting location: $e')),
+        );
+      }
+    } finally {
+      setState(() => _isGettingLocation = false);
+    }
+  }
+
+  Future<void> _fillAddressFromCoordinates(double lat, double lng) async {
+    try {
+      final placemarks = await placemarkFromCoordinates(lat, lng);
+      if (placemarks.isNotEmpty && mounted) {
+        final place = placemarks.first;
+        setState(() {
+          if (_streetController.text.isEmpty && place.street != null) {
+            _streetController.text = place.street!;
+          }
+          if (_brgyController.text.isEmpty && place.subLocality != null) {
+            _brgyController.text = place.subLocality!;
+          }
+          if (_cityController.text.isEmpty && place.locality != null) {
+            _cityController.text = place.locality!;
+          }
+          if (_provinceController.text.isEmpty && place.administrativeArea != null) {
+            _provinceController.text = place.administrativeArea!;
+          }
+          if (_postalCodeController.text.isEmpty && place.postalCode != null) {
+            _postalCodeController.text = place.postalCode!;
+          }
+          if (place.country != null) {
+            _countryController.text = place.country!;
+          }
+        });
+      }
+    } catch (e) {
+      debugPrint('Error getting address from coordinates: $e');
+    }
   }
 
   @override
@@ -486,6 +619,64 @@ class _AddressFormSheetState extends State<AddressFormSheet> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildLabelChips(),
+                    SizedBox(height: 2.h),
+                    // Get Location Button
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton.icon(
+                        onPressed: _isGettingLocation ? null : _getCurrentLocation,
+                        icon: _isGettingLocation
+                            ? const SizedBox(
+                                height: 18,
+                                width: 18,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: AppColors.darkGreen,
+                                ),
+                              )
+                            : const Icon(Icons.my_location),
+                        label: Text(
+                          _isGettingLocation ? 'Getting Location...' : 'Use Current Location',
+                        ),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: AppColors.darkGreen,
+                          padding: EdgeInsets.symmetric(vertical: 1.5.h),
+                          side: const BorderSide(color: AppColors.darkGreen),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
+                    ),
+                    if (_latitude != null && _longitude != null) ...[
+                      SizedBox(height: 1.h),
+                      Container(
+                        padding: EdgeInsets.all(3.w),
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryLight,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.check_circle,
+                              color: AppColors.darkGreen,
+                              size: 18,
+                            ),
+                            SizedBox(width: 2.w),
+                            Expanded(
+                              child: Text(
+                                'GPS: ${_latitude!.toStringAsFixed(6)}, ${_longitude!.toStringAsFixed(6)}',
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  color: AppColors.darkGreen,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                     SizedBox(height: 2.h),
                     _buildTextField(
                       _contactNameController,
@@ -686,7 +877,12 @@ class _AddressFormSheetState extends State<AddressFormSheet> {
   }
 
   Future<void> _saveAddress() async {
-    if (!_formKey.currentState!.validate()) return;
+    debugPrint('=== _saveAddress called ===');
+
+    if (!_formKey.currentState!.validate()) {
+      debugPrint('Form validation failed');
+      return;
+    }
     if (_labelController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please select an address label')),
@@ -697,13 +893,20 @@ class _AddressFormSheetState extends State<AddressFormSheet> {
     setState(() => _isLoading = true);
 
     try {
-      final userId = SpcCore.userId;
-      if (userId == null) throw Exception('User not logged in');
+      // Get the auth user info ID first
+      final userInfoId = SpcCore.userId;
+      debugPrint('userInfoId: $userInfoId');
+      if (userInfoId == null) throw Exception('User not logged in');
+
+      // Get the actual user from users table (or create if not exists)
+      final user = await SpcCore.client.user.getOrCreateUser(userInfoId);
+      debugPrint('User from users table: ${user?.id}');
+      if (user?.id == null) throw Exception('Failed to get user profile');
 
       final now = DateTime.now();
       final address = Addresses(
         id: widget.address?.id,
-        userId: userId,
+        userId: user!.id!,  // Use the actual user ID from users table
         label: _labelController.text,
         contactName: _contactNameController.text,
         contactPhone: _contactPhoneController.text,
@@ -715,17 +918,24 @@ class _AddressFormSheetState extends State<AddressFormSheet> {
         country: _countryController.text.isEmpty
             ? 'Philippines'
             : _countryController.text,
+        latitude: _latitude,
+        longitude: _longitude,
         isPrimary: _isPrimary,
         createdAt: widget.address?.createdAt ?? now,
         updatedAt: now,
       );
 
+      debugPrint('Saving address with userId: ${address.userId}');
+
       if (_isEditing) {
+        debugPrint('Updating existing address...');
         await SpcCore.client.address.updateAddress(address);
       } else {
+        debugPrint('Adding new address...');
         await SpcCore.client.address.addAddress(address);
       }
 
+      debugPrint('Address saved successfully!');
       widget.onSaved();
       if (mounted) Navigator.pop(context);
     } catch (e) {

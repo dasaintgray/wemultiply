@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:wm_client/wm_client.dart';
 import 'package:wm_flutter/core/repositories/cart_repository.dart';
+import 'package:wm_flutter/core/spc_core.dart';
 
 part 'cart_event.dart';
 part 'cart_state.dart';
@@ -10,8 +11,13 @@ part 'cart_state.dart';
 class CartBloc extends Bloc<CartEvent, CartState> {
   final CartRepository cartRepository;
   CartBloc({required this.cartRepository}) : super(CartInitial()) {
-    // on<CartEvent>((event, emit) {});
     on<AddItemToCart>(addItemToCart);
+    on<LoadCart>(loadCart);
+    on<RemoveFromCart>(removeFromCart);
+    on<UpdateCartItem>(updateCartItem);
+    on<ClearCart>(_onClearCart);
+    on<ClearCartAfterPayment>(_onClearCartAfterPayment);
+    on<ConfirmCheckout>(onConfirmCHeckout);
   }
 
   Future<void> addItemToCart(
@@ -20,14 +26,21 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   ) async {
     try {
       emit(CartLoading());
-      final updateCart = await cartRepository.addToCart(
+      // ignore: avoid_print
+      print('=== addItemToCart: Adding product ${event.product.id} qty ${event.qty} ===');
+      final updatedCart = await cartRepository.addToCart(
         event.product,
         event.qty,
       );
-      if (updateCart != null) {
-        emit(CartItemSuccess('Item successfully added to cart'));
+      if (updatedCart != null) {
+        // ignore: avoid_print
+        print('Cart returned: id=${updatedCart.id}, isActive=${updatedCart.isActive}, status=${updatedCart.status}, items=${updatedCart.cartItems?.length ?? 0}');
+        // Emit CartLoaded with the updated cart so UI updates
+        emit(CartLoaded([updatedCart]));
       }
     } catch (e) {
+      // ignore: avoid_print
+      print('Error adding to cart: $e');
       emit(CartError(e.toString()));
     }
   }
@@ -106,6 +119,33 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       }
     } catch (e) {
       emit(CartError('Failed to update cart item: $e'));
+    }
+  }
+
+  void _onClearCart(ClearCart event, Emitter<CartState> emit) {
+    emit(CartLoaded([]));
+  }
+
+  Future<void> _onClearCartAfterPayment(
+    ClearCartAfterPayment event,
+    Emitter<CartState> emit,
+  ) async {
+    // ignore: avoid_print
+    print('=== ClearCartAfterPayment called for userId: ${event.userId} ===');
+    try {
+      // Clear cart on server
+      final result = await SpcCore.client.cart.clearUserCart(event.userId);
+      // ignore: avoid_print
+      print('clearUserCart result: $result');
+      // Clear local state
+      emit(CartLoaded([]));
+      // ignore: avoid_print
+      print('Cart cleared locally');
+    } catch (e) {
+      // ignore: avoid_print
+      print('Error clearing cart: $e');
+      // Even if server call fails, clear local state
+      emit(CartLoaded([]));
     }
   }
 }

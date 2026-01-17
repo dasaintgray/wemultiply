@@ -1,12 +1,15 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:wm_client/wm_client.dart';
 import 'package:wm_flutter/core/repositories/payment_repository.dart';
+import 'package:wm_flutter/core/spc_core.dart';
 
 part 'payment_event.dart';
 part 'payment_state.dart';
 
 class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
   final PaymentRepository _repository;
+  final Client _client = SpcCore.client;
 
   PaymentBloc({PaymentRepository? repository})
     : _repository = repository ?? PaymentRepository(),
@@ -16,6 +19,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
     on<CheckPaymentStatus>(_onCheckPaymentStatus);
     on<ResetPayment>(_onResetPayment);
     on<SelectPaymentMethod>(_onSelectPaymentMethod);
+    on<CompletePaymentAndClearCart>(_onCompletePaymentAndClearCart);
   }
 
   Future<void> _onCreatePayment(
@@ -33,18 +37,29 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
       );
 
       if (result.success) {
-        final checkoutUrl = result.checkoutUrl ?? result.invoiceUrl;
-        if (checkoutUrl != null) {
+        // Handle QR payments separately
+        if (event.method == PaymentMethod.qrph && result.qrString != null) {
           emit(
-            PaymentReady(
-              checkoutUrl: checkoutUrl,
+            QrPaymentReady(
+              qrString: result.qrString!,
               externalId: result.externalId ?? '',
               paymentId: result.paymentId ?? '',
-              method: event.method,
             ),
           );
         } else {
-          emit(const PaymentFailure('No checkout URL received'));
+          final checkoutUrl = result.checkoutUrl ?? result.invoiceUrl;
+          if (checkoutUrl != null) {
+            emit(
+              PaymentReady(
+                checkoutUrl: checkoutUrl,
+                externalId: result.externalId ?? '',
+                paymentId: result.paymentId ?? '',
+                method: event.method,
+              ),
+            );
+          } else {
+            emit(const PaymentFailure('No checkout URL received'));
+          }
         }
       } else {
         emit(PaymentFailure(result.error ?? 'Payment creation failed'));
@@ -117,10 +132,33 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
       );
 
       if (isCompleted) {
+        // Clear cart and mark order as paid if we have the user and order info
+        // ignore: avoid_print
+        print('=== Payment completed! userId: ${event.userId}, orderId: ${event.orderId} ===');
+        if (event.userId != null && event.orderId != null) {
+          try {
+            // ignore: avoid_print
+            print('Calling markOrderPaidAndClearCart...');
+            final result = await _client.cart.markOrderPaidAndClearCart(
+              userId: event.userId!,
+              orderId: event.orderId!,
+            );
+            // ignore: avoid_print
+            print('markOrderPaidAndClearCart result: $result');
+          } catch (e) {
+            // Log error but don't fail - payment was successful
+            // ignore: avoid_print
+            print('Failed to clear cart: $e');
+          }
+        } else {
+          // ignore: avoid_print
+          print('WARNING: userId or orderId is null, cannot clear cart!');
+        }
+
         emit(
           PaymentSuccess(
             externalId: event.externalId,
-            message: 'Payment completed successfully!',
+            message: 'Payment completed successfully! Your order has been placed.',
           ),
         );
       } else {
@@ -145,5 +183,34 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
     Emitter<PaymentState> emit,
   ) {
     emit(PaymentMethodSelected(event.method));
+  }
+
+  Future<void> _onCompletePaymentAndClearCart(
+    CompletePaymentAndClearCart event,
+    Emitter<PaymentState> emit,
+  ) async {
+    try {
+      // Mark order as paid and clear the cart on the server
+      await _client.cart.markOrderPaidAndClearCart(
+        userId: event.userId,
+        orderId: event.orderId,
+      );
+
+      emit(
+        PaymentSuccess(
+          externalId: event.externalId,
+          message: 'Payment completed successfully! Your order has been placed.',
+        ),
+      );
+    } catch (e) {
+      // Still emit success even if cart clearing fails
+      // The payment was successful, just log the error
+      emit(
+        PaymentSuccess(
+          externalId: event.externalId,
+          message: 'Payment completed successfully!',
+        ),
+      );
+    }
   }
 }

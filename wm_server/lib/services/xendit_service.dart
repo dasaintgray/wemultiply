@@ -61,9 +61,35 @@ class XenditService {
     String? phone,
     String? successRedirectUrl,
     String? failureRedirectUrl,
+    String? cancelRedirectUrl,
+    String? callbackUrl,
     Map<String, dynamic>? metadata,
   }) async {
     final url = Uri.parse('$_baseUrl/ewallets/charges');
+    final effectiveCallbackUrl = callbackUrl ??
+        _env['XENDIT_CALLBACK_URL'] ??
+        'https://wmapi.mooo.com/webhook/xendit';
+    final effectiveSuccessUrl = successRedirectUrl ??
+        _env['XENDIT_SUCCESS_REDIRECT_URL'] ??
+        'wemultiply://payment/success';
+    final effectiveFailureUrl = failureRedirectUrl ??
+        _env['XENDIT_FAILURE_REDIRECT_URL'] ??
+        'wemultiply://payment/failure';
+    final effectiveCancelUrl = cancelRedirectUrl ??
+        _env['XENDIT_CANCEL_REDIRECT_URL'] ??
+        'wemultiply://payment/cancel';
+
+    // Build channel_properties based on channel code
+    final channelProperties = <String, dynamic>{
+      'success_redirect_url': effectiveSuccessUrl,
+      'failure_redirect_url': effectiveFailureUrl,
+    };
+
+    // PayMaya (PH_PAYMAYA) requires cancel_redirect_url
+    if (channelCode == 'PH_PAYMAYA' || channelCode == 'PAYMAYA') {
+      channelProperties['cancel_redirect_url'] = effectiveCancelUrl;
+    }
+
     final body = {
       'reference_id': referenceId,
       'amount': amount,
@@ -71,16 +97,20 @@ class XenditService {
       'checkout_method': 'ONE_TIME_PAYMENT',
       'channel_code': channelCode,
       if (phone != null) 'mobile_number': phone,
-      'channel_properties': {
-        if (successRedirectUrl != null)
-          'success_redirect_url': successRedirectUrl,
-        if (failureRedirectUrl != null)
-          'failure_redirect_url': failureRedirectUrl,
-      },
+      'channel_properties': channelProperties,
+      // Add callback URL in body for webhook notifications
+      'callback_url': effectiveCallbackUrl,
       if (metadata != null) 'metadata': metadata,
     };
+
+    // Add callback URL headers for e-wallet webhooks (both formats for compatibility)
+    final headers = _authHeaders(extraHeader: {
+      'X-CALLBACK-URL': effectiveCallbackUrl,
+      'webhook-url': effectiveCallbackUrl,
+    });
+
     final res =
-        await http.post(url, headers: _authHeaders(), body: jsonEncode(body));
+        await http.post(url, headers: headers, body: jsonEncode(body));
     if (res.statusCode >= 400) {
       throw Exception('Xendit ewallet error ${res.statusCode}: ${res.body}');
     }
@@ -140,26 +170,99 @@ class XenditService {
     return jsonDecode(res.body) as Map<String, dynamic>;
   }
 
-  //QR PH
-  Future<Map<String, dynamic>> createQrPh({
+  /// Creates a QR Code payment (QR PH)
+  Future<Map<String, dynamic>> createQrCode({
     required String externalId,
     required num amount,
-    required String
-        type, // 'STATIC' or 'DYNAMIC' allowed depending on Xendit product
+    required String type, // 'STATIC' or 'DYNAMIC'
+    String? callbackUrl,
     Map<String, dynamic>? metadata,
   }) async {
-    final url = Uri.parse(
-        '$_baseUrl/qr_codes'); // hypothetical endpoint; verify via docs
+    final url = Uri.parse('$_baseUrl/qr_codes');
     final body = {
       'external_id': externalId,
       'type': type,
+      'currency': 'PHP',
       'amount': amount,
+      'callback_url': callbackUrl ?? _env['XENDIT_CALLBACK_URL'] ?? 'https://wmapi.mooo.com/webhook/xendit',
       if (metadata != null) 'metadata': metadata,
     };
     final res =
         await http.post(url, headers: _authHeaders(), body: jsonEncode(body));
     if (res.statusCode >= 400) {
-      throw Exception('Xendit qr error ${res.statusCode}: ${res.body}');
+      throw Exception('Xendit QR error ${res.statusCode}: ${res.body}');
+    }
+    return jsonDecode(res.body) as Map<String, dynamic>;
+  }
+
+  /// Creates a PayLater/BNPL charge (BillEase, Cashalo)
+  Future<Map<String, dynamic>> createPayLaterCharge({
+    required String referenceId,
+    required num amount,
+    required String channelCode,
+    String? customerEmail,
+    String? customerPhone,
+    String? successRedirectUrl,
+    String? failureRedirectUrl,
+    Map<String, dynamic>? metadata,
+  }) async {
+    final url = Uri.parse('$_baseUrl/paylater/charges');
+    final body = {
+      'reference_id': referenceId,
+      'currency': 'PHP',
+      'amount': amount,
+      'checkout_method': 'ONE_TIME_PAYMENT',
+      'channel_code': channelCode,
+      if (customerEmail != null || customerPhone != null)
+        'customer': {
+          if (customerEmail != null) 'email': customerEmail,
+          if (customerPhone != null) 'mobile_number': customerPhone,
+        },
+      'channel_properties': {
+        if (successRedirectUrl != null) 'success_redirect_url': successRedirectUrl,
+        if (failureRedirectUrl != null) 'failure_redirect_url': failureRedirectUrl,
+      },
+      if (metadata != null) 'metadata': metadata,
+    };
+    final res =
+        await http.post(url, headers: _authHeaders(), body: jsonEncode(body));
+    if (res.statusCode >= 400) {
+      throw Exception('Xendit PayLater error ${res.statusCode}: ${res.body}');
+    }
+    return jsonDecode(res.body) as Map<String, dynamic>;
+  }
+
+  /// Creates a Direct Debit payment (BPI, UnionBank)
+  Future<Map<String, dynamic>> createDirectDebitPayment({
+    required String referenceId,
+    required num amount,
+    required String channelCode,
+    String? customerEmail,
+    String? successRedirectUrl,
+    String? failureRedirectUrl,
+    Map<String, dynamic>? metadata,
+  }) async {
+    final url = Uri.parse('$_baseUrl/direct_debits');
+    final body = {
+      'reference_id': referenceId,
+      'currency': 'PHP',
+      'amount': amount,
+      'channel_code': channelCode,
+      'checkout_method': 'ONE_TIME_PAYMENT',
+      if (customerEmail != null)
+        'customer': {
+          'email': customerEmail,
+        },
+      'channel_properties': {
+        if (successRedirectUrl != null) 'success_redirect_url': successRedirectUrl,
+        if (failureRedirectUrl != null) 'failure_redirect_url': failureRedirectUrl,
+      },
+      if (metadata != null) 'metadata': metadata,
+    };
+    final res =
+        await http.post(url, headers: _authHeaders(), body: jsonEncode(body));
+    if (res.statusCode >= 400) {
+      throw Exception('Xendit DirectDebit error ${res.statusCode}: ${res.body}');
     }
     return jsonDecode(res.body) as Map<String, dynamic>;
   }
@@ -198,12 +301,32 @@ class XenditService {
     required String channelCode,
   }) async {
     final url = Uri.parse('$_baseUrl/ewallets/charges');
+    final effectiveCallbackUrl = _env['XENDIT_CALLBACK_URL'] ??
+        'https://wmapi.mooo.com/webhook/xendit';
+    final effectiveSuccessUrl = _env['XENDIT_SUCCESS_REDIRECT_URL'] ??
+        'wemultiply://payment/success';
+    final effectiveFailureUrl = _env['XENDIT_FAILURE_REDIRECT_URL'] ??
+        'wemultiply://payment/failure';
+    final effectiveCancelUrl = _env['XENDIT_CANCEL_REDIRECT_URL'] ??
+        'wemultiply://payment/cancel';
+
+    // Build channel_properties based on channel code
+    final channelProperties = <String, dynamic>{
+      'success_redirect_url': effectiveSuccessUrl,
+      'failure_redirect_url': effectiveFailureUrl,
+    };
+
+    // PayMaya (PH_PAYMAYA) requires cancel_redirect_url
+    if (channelCode == 'PH_PAYMAYA' || channelCode == 'PAYMAYA') {
+      channelProperties['cancel_redirect_url'] = effectiveCancelUrl;
+    }
 
     final response = await http.post(
       url,
       headers: {
         'Authorization': 'Basic ${base64Encode(utf8.encode('$_secreKey:'))}',
         'Content-Type': 'application/json',
+        'x-callback-url': effectiveCallbackUrl,
       },
       body: jsonEncode({
         'reference_id': externalId,
@@ -211,12 +334,7 @@ class XenditService {
         'amount': amount,
         'checkout_method': 'ONE_TIME_PAYMENT',
         'channel_code': channelCode,
-        'channel_properties': {
-          'success_redirect_url': _env['XENDIT_SUCCESS_REDIRECT_URL'] ??
-              'wemultiply://payment/success',
-          'failure_redirect_url': _env['XENDIT_FAILURE_REDIRECT_URL'] ??
-              'wemultiply://payment/failure',
-        }
+        'channel_properties': channelProperties,
       }),
     );
     return jsonDecode(response.body);

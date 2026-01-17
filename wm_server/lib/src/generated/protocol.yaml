@@ -17,6 +17,9 @@ cart:
   - getCartItemCount:
   - addItemToCart:
   - checkOutCart:
+  - markOrderPaidAndClearCart:
+  - clearUserCart:
+  - debugCartStatus:
 commissions:
   - getCommissionById:
   - getAllCommissions:
@@ -66,6 +69,10 @@ payment:
   - createCardPayment:
   - captureCardPayment:
   - getCardPaymentStatus:
+  - createQrPayment:
+  - createPayLater:
+  - createDirectDebit:
+  - handleWebhook:
 product:
   - getAllProduct:
   - createProduct:
@@ -89,9 +96,15 @@ sale:
 user:
   - getUserById:
   - getUserByAuthId:
+  - getOrCreateUser:
   - updateProfile:
   - updatePhone:
   - getFullName:
+  - updateLocation:
+  - getUserStats:
+  - getReferralsCount:
+  - getTotalEarnings:
+  - getOrdersCount:
 webhooks:
   - xendit:
 greeting:

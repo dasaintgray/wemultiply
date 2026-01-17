@@ -11,6 +11,8 @@ fields:
     province: String
     postalCode: String
     country: String
+    latitude: double?
+    longitude: double?
     isPrimary: bool
     createdAt: DateTime
     updatedAt: DateTime

@@ -9,11 +9,13 @@ import 'package:wm_flutter/core/extensions/core_extensions.dart';
 import 'package:wm_flutter/core/spc_core.dart';
 import 'package:wm_flutter/core/styles/color_styles.dart';
 import 'package:wm_flutter/core/utils/core_utils.dart';
+import 'package:wm_flutter/views/cart_view.dart';
 import 'package:wm_flutter/views/home_view.dart';
 import 'package:wm_flutter/views/login_view.dart';
 import 'package:wm_flutter/views/profile_view.dart';
 
 import 'package:wm_flutter/views/submenu_view.dart';
+import 'package:wm_flutter/widgets/floating_cart_button.dart';
 
 class MenuView extends StatelessWidget {
   const MenuView({super.key});
@@ -30,6 +32,45 @@ class MenuView extends StatelessWidget {
                 backgroundColor: AppColors.lightBackground,
                 elevation: 0,
                 actions: [
+                  // Cart icon with badge
+                  BlocBuilder<CartBloc, CartState>(
+                    builder: (context, cartState) {
+                      int itemCount = 0;
+                      if (cartState is CartLoaded) {
+                        itemCount = cartState.cartItems
+                            .expand((cart) => cart.cartItems ?? [])
+                            .length;
+                      }
+                      return IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => BlocProvider.value(
+                                value: context.read<CartBloc>(),
+                                child: const CartView(),
+                              ),
+                            ),
+                          );
+                        },
+                        icon: Badge(
+                          isLabelVisible: itemCount > 0,
+                          label: Text(
+                            itemCount.toString(),
+                            style: const TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          backgroundColor: AppColors.dangerColor,
+                          child: const Icon(
+                            Icons.shopping_cart_outlined,
+                            color: AppColors.darkGreen,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                   if (isSignedIn)
                     Padding(
                       padding: const EdgeInsets.only(right: 8),
@@ -69,6 +110,7 @@ class MenuView extends StatelessWidget {
                     ),
                 ],
               ),
+              floatingActionButton: const FloatingCartButtonSmall(),
               body: SafeArea(
                 child: BlocBuilder<MenuBloc, MenuState>(
                   builder: (context, state) {

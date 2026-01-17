@@ -26,14 +26,15 @@ class CreatePaymentRequest extends PaymentEvent {
 }
 
 /// Event to check payment status
-///
 class CheckPaymentStatus extends PaymentEvent {
   final String externalId;
+  final String? orderId;
+  final int? userId;
 
-  const CheckPaymentStatus(this.externalId);
+  const CheckPaymentStatus(this.externalId, {this.orderId, this.userId});
 
   @override
-  List<Object?> get props => [externalId];
+  List<Object?> get props => [externalId, orderId, userId];
 }
 
 /// Event to reset payment state
@@ -99,4 +100,20 @@ class CreateCardPaymentRequest extends PaymentEvent {
     description,
     preAuthorize,
   ];
+}
+
+/// Event to complete payment and clear cart
+class CompletePaymentAndClearCart extends PaymentEvent {
+  final String orderId;
+  final String externalId;
+  final int userId;
+
+  const CompletePaymentAndClearCart({
+    required this.orderId,
+    required this.externalId,
+    required this.userId,
+  });
+
+  @override
+  List<Object?> get props => [orderId, externalId, userId];
 }

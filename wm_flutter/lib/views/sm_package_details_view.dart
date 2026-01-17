@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:wm_client/wm_client.dart';
+import 'package:wm_flutter/bloc/cart/cart_bloc.dart';
 import 'package:wm_flutter/bloc/product/product_bloc.dart';
 import 'package:wm_flutter/core/constant/core_constant.dart';
 import 'package:wm_flutter/core/extensions/core_extensions.dart';
@@ -13,6 +14,7 @@ import 'package:wm_flutter/core/styles/color_styles.dart';
 import 'package:wm_flutter/core/utils/core_utils.dart';
 import 'package:wm_flutter/views/login_view.dart';
 import 'package:wm_flutter/views/payment_view.dart';
+import 'package:wm_flutter/widgets/floating_cart_button.dart';
 
 class SmPackageDetailsView extends StatelessWidget {
   final MenuItems submenuItem;
@@ -38,6 +40,7 @@ class SmPackageDetailsView extends StatelessWidget {
             elevation: 0,
             iconTheme: IconThemeData(color: AppColors.primaryTextTitle),
           ),
+          floatingActionButton: const FloatingCartButtonSmall(),
           body: SafeArea(
             child: BlocProvider(
               create: (context) => ProductBloc(
@@ -137,12 +140,16 @@ class SmPackageDetailsView extends StatelessWidget {
                                     SpcCore.sessionManager.isSignedIn;
 
                                 if (isSignedIn) {
+                                  // Generate unique order ID
+                                  final orderId = 'PKG-${product.id}-${DateTime.now().millisecondsSinceEpoch}';
+
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (_) => PaymentView(
-                                        orderId: '1',
-                                        amount: 100,
+                                        orderId: orderId,
+                                        amount: submenuItem.price.toDouble(),
+                                        description: '${submenuItem.productDesc} - ${product.productName}',
                                       ),
                                     ),
                                   );
@@ -193,21 +200,44 @@ class SmPackageDetailsView extends StatelessWidget {
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                             ),
-                            // ElevatedButton(
-                            //   onPressed: () {},
-                            //   style: ElevatedButton.styleFrom(
-                            //     foregroundColor: AppColors.lightBackground,
-                            //     backgroundColor: AppColors.darkGreen,
-                            //     minimumSize: const Size(100, 50),
-                            //     elevation: 1,
-                            //   ),
-                            //   child: Text(
-                            //     'Add to Cart',
-                            //     style: TextStyle(
-                            //       fontWeight: FontWeight.bold,
-                            //     ),
-                            //   ),
-                            // ),
+                            ElevatedButton(
+                              onPressed: () {
+                                final isSignedIn =
+                                    SpcCore.sessionManager.isSignedIn;
+
+                                if (isSignedIn) {
+                                  context.read<CartBloc>().add(
+                                        AddItemToCart(product, 1),
+                                      );
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        '${product.productName} added to cart',
+                                      ),
+                                      backgroundColor: AppColors.darkGreen,
+                                      duration: const Duration(seconds: 2),
+                                    ),
+                                  );
+                                } else {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => LoginView(),
+                                    ),
+                                  );
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                foregroundColor: AppColors.lightBackground,
+                                backgroundColor: AppColors.darkGreen,
+                                minimumSize: const Size(100, 50),
+                                elevation: 1,
+                              ),
+                              child: Text(
+                                'Add to Cart',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ),
                           ],
                         ).paddingAll(16.sp),
                       ],

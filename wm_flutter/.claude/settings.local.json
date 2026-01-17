@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(flutter pub get:*)",
+      "Bash(serverpod generate:*)",
+      "Bash(d:)",
+      "Bash(cmd /c \"cd /d d:\\\\projects\\\\wemultiply\\\\dev\\\\wm\\\\wm_server && serverpod generate\")",
+      "Bash(cmd /c \"cd /d d:\\\\projects\\\\wemultiply\\\\dev\\\\wm\\\\wm_server && dart run serverpod generate\")",
+      "Bash(cmd /c \"d: && cd d:\\\\projects\\\\wemultiply\\\\dev\\\\wm\\\\wm_server && dart run serverpod generate\")",
+      "Bash(powershell -Command \"Set-Location ''d:\\\\projects\\\\wemultiply\\\\dev\\\\wm\\\\wm_server''; dart run serverpod generate\")",
+      "Bash(powershell -Command \"Set-Location ''d:\\\\projects\\\\wemultiply\\\\dev\\\\wm\\\\wm_server''; serverpod generate\")",
+      "Bash(powershell -Command \"Set-Location ''d:\\\\projects\\\\wemultiply\\\\dev\\\\wm\\\\wm_flutter''; flutter pub get\")",
+      "Bash(powershell -Command \"Set-Location ''d:\\\\projects\\\\wemultiply\\\\dev\\\\wm\\\\wm_flutter''; flutter analyze lib/views/edit_profile_view.dart 2>&1 | Select-Object -First 30\")",
+      "Bash(powershell -Command:*)",
+      "Bash(where:*)",
+      "Bash(dart run:*)",
+      "Bash(taskkill:*)"
+    ]
+  }
+}

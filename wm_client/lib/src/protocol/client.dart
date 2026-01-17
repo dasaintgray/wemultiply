@@ -22,14 +22,15 @@ import 'package:wm_client/src/protocol/golden_seats.dart' as _i10;
 import 'package:wm_client/src/protocol/membership_package.dart' as _i11;
 import 'package:wm_client/src/protocol/menu.dart' as _i12;
 import 'package:wm_client/src/protocol/packages.dart' as _i13;
-import 'package:wm_client/src/protocol/payments.dart' as _i14;
-import 'package:wm_client/src/protocol/products.dart' as _i15;
-import 'package:wm_client/src/protocol/ranks.dart' as _i16;
-import 'package:wm_client/src/protocol/reaper_commissions.dart' as _i17;
-import 'package:wm_client/src/protocol/sale.dart' as _i18;
-import 'package:wm_client/src/protocol/users.dart' as _i19;
-import 'package:wm_client/src/protocol/greeting.dart' as _i20;
-import 'protocol.dart' as _i21;
+import 'package:wm_client/src/protocol/payment_response.dart' as _i14;
+import 'package:wm_client/src/protocol/payments.dart' as _i15;
+import 'package:wm_client/src/protocol/products.dart' as _i16;
+import 'package:wm_client/src/protocol/ranks.dart' as _i17;
+import 'package:wm_client/src/protocol/reaper_commissions.dart' as _i18;
+import 'package:wm_client/src/protocol/sale.dart' as _i19;
+import 'package:wm_client/src/protocol/users.dart' as _i20;
+import 'package:wm_client/src/protocol/greeting.dart' as _i21;
+import 'protocol.dart' as _i22;
 
 /// {@category Endpoint}
 class EndpointAddress extends _i1.EndpointRef {
@@ -194,6 +195,35 @@ class EndpointCart extends _i1.EndpointRef {
           'userID': userID,
           'paymentMethod': paymentMethod,
         },
+      );
+
+  /// Mark order as paid and clear the cart after successful payment
+  _i2.Future<bool> markOrderPaidAndClearCart({
+    required int userId,
+    required String orderId,
+  }) =>
+      caller.callServerEndpoint<bool>(
+        'cart',
+        'markOrderPaidAndClearCart',
+        {
+          'userId': userId,
+          'orderId': orderId,
+        },
+      );
+
+  /// Clear all active carts for a user (used after successful payment)
+  _i2.Future<bool> clearUserCart(int userId) => caller.callServerEndpoint<bool>(
+        'cart',
+        'clearUserCart',
+        {'userId': userId},
+      );
+
+  /// Debug method to check cart status for a user
+  _i2.Future<Map<String, dynamic>> debugCartStatus(int userId) =>
+      caller.callServerEndpoint<Map<String, dynamic>>(
+        'cart',
+        'debugCartStatus',
+        {'userId': userId},
       );
 }
 
@@ -506,12 +536,12 @@ class EndpointPayment extends _i1.EndpointRef {
   @override
   String get name => 'payment';
 
-  _i2.Future<Map<String, dynamic>> createInvoice(
+  _i2.Future<_i14.PaymentResponse> createInvoice(
     String orderId,
     double amount,
     String? email,
   ) =>
-      caller.callServerEndpoint<Map<String, dynamic>>(
+      caller.callServerEndpoint<_i14.PaymentResponse>(
         'payment',
         'createInvoice',
         {
@@ -521,12 +551,12 @@ class EndpointPayment extends _i1.EndpointRef {
         },
       );
 
-  _i2.Future<Map<String, dynamic>> createEwallet(
+  _i2.Future<_i14.PaymentResponse> createEwallet(
     String orderId,
     double amount,
     String channelCode,
   ) =>
-      caller.callServerEndpoint<Map<String, dynamic>>(
+      caller.callServerEndpoint<_i14.PaymentResponse>(
         'payment',
         'createEwallet',
         {
@@ -536,19 +566,19 @@ class EndpointPayment extends _i1.EndpointRef {
         },
       );
 
-  _i2.Future<_i14.Payment?> getPaymentByExternalId(String externalId) =>
-      caller.callServerEndpoint<_i14.Payment?>(
+  _i2.Future<_i15.Payment?> getPaymentByExternalId(String externalId) =>
+      caller.callServerEndpoint<_i15.Payment?>(
         'payment',
         'getPaymentByExternalId',
         {'externalId': externalId},
       );
 
-  _i2.Future<Map<String, dynamic>> createPayment({
+  _i2.Future<_i14.PaymentResponse> createPayment({
     required String orderID,
     required double amount,
     String? userEmail,
   }) =>
-      caller.callServerEndpoint<Map<String, dynamic>>(
+      caller.callServerEndpoint<_i14.PaymentResponse>(
         'payment',
         'createPayment',
         {
@@ -559,7 +589,7 @@ class EndpointPayment extends _i1.EndpointRef {
       );
 
   /// Creates a direct card payment with 3DS authentication
-  _i2.Future<Map<String, dynamic>> createCardPayment({
+  _i2.Future<_i14.PaymentResponse> createCardPayment({
     required String orderId,
     required double amount,
     required String currency,
@@ -574,7 +604,7 @@ class EndpointPayment extends _i1.EndpointRef {
     String? description,
     required bool preAuthorize,
   }) =>
-      caller.callServerEndpoint<Map<String, dynamic>>(
+      caller.callServerEndpoint<_i14.PaymentResponse>(
         'payment',
         'createCardPayment',
         {
@@ -595,11 +625,11 @@ class EndpointPayment extends _i1.EndpointRef {
       );
 
   /// Captures a pre-authorized card payment
-  _i2.Future<Map<String, dynamic>> captureCardPayment({
+  _i2.Future<_i14.PaymentResponse> captureCardPayment({
     required String paymentRequestId,
     required double captureAmount,
   }) =>
-      caller.callServerEndpoint<Map<String, dynamic>>(
+      caller.callServerEndpoint<_i14.PaymentResponse>(
         'payment',
         'captureCardPayment',
         {
@@ -609,12 +639,72 @@ class EndpointPayment extends _i1.EndpointRef {
       );
 
   /// Gets payment request status from Xendit
-  _i2.Future<Map<String, dynamic>> getCardPaymentStatus(
+  _i2.Future<_i14.PaymentResponse> getCardPaymentStatus(
           String paymentRequestId) =>
-      caller.callServerEndpoint<Map<String, dynamic>>(
+      caller.callServerEndpoint<_i14.PaymentResponse>(
         'payment',
         'getCardPaymentStatus',
         {'paymentRequestId': paymentRequestId},
+      );
+
+  /// Creates a QR PH payment
+  _i2.Future<_i14.PaymentResponse> createQrPayment(
+    String orderId,
+    double amount,
+  ) =>
+      caller.callServerEndpoint<_i14.PaymentResponse>(
+        'payment',
+        'createQrPayment',
+        {
+          'orderId': orderId,
+          'amount': amount,
+        },
+      );
+
+  /// Creates a PayLater payment (BillEase, Cashalo)
+  _i2.Future<_i14.PaymentResponse> createPayLater(
+    String orderId,
+    double amount,
+    String channelCode,
+    String? email,
+    String? phone,
+  ) =>
+      caller.callServerEndpoint<_i14.PaymentResponse>(
+        'payment',
+        'createPayLater',
+        {
+          'orderId': orderId,
+          'amount': amount,
+          'channelCode': channelCode,
+          'email': email,
+          'phone': phone,
+        },
+      );
+
+  /// Creates a Direct Debit payment (BPI, UnionBank)
+  _i2.Future<_i14.PaymentResponse> createDirectDebit(
+    String orderId,
+    double amount,
+    String channelCode,
+    String? email,
+  ) =>
+      caller.callServerEndpoint<_i14.PaymentResponse>(
+        'payment',
+        'createDirectDebit',
+        {
+          'orderId': orderId,
+          'amount': amount,
+          'channelCode': channelCode,
+          'email': email,
+        },
+      );
+
+  /// Webhook handler for Xendit payment callbacks
+  _i2.Future<void> handleWebhook(Map<String, dynamic> payload) =>
+      caller.callServerEndpoint<void>(
+        'payment',
+        'handleWebhook',
+        {'payload': payload},
       );
 }
 
@@ -625,42 +715,42 @@ class EndpointProduct extends _i1.EndpointRef {
   @override
   String get name => 'product';
 
-  _i2.Future<List<_i15.Product>> getAllProduct() =>
-      caller.callServerEndpoint<List<_i15.Product>>(
+  _i2.Future<List<_i16.Product>> getAllProduct() =>
+      caller.callServerEndpoint<List<_i16.Product>>(
         'product',
         'getAllProduct',
         {},
       );
 
-  _i2.Future<_i15.Product?> createProduct(_i15.Product product) =>
-      caller.callServerEndpoint<_i15.Product?>(
+  _i2.Future<_i16.Product?> createProduct(_i16.Product product) =>
+      caller.callServerEndpoint<_i16.Product?>(
         'product',
         'createProduct',
         {'product': product},
       );
 
-  _i2.Future<List<_i15.Product>> createProducts(List<_i15.Product> products) =>
-      caller.callServerEndpoint<List<_i15.Product>>(
+  _i2.Future<List<_i16.Product>> createProducts(List<_i16.Product> products) =>
+      caller.callServerEndpoint<List<_i16.Product>>(
         'product',
         'createProducts',
         {'products': products},
       );
 
-  _i2.Future<_i15.Product?> getProductById(int id) =>
-      caller.callServerEndpoint<_i15.Product?>(
+  _i2.Future<_i16.Product?> getProductById(int id) =>
+      caller.callServerEndpoint<_i16.Product?>(
         'product',
         'getProductById',
         {'id': id},
       );
 
-  _i2.Future<_i15.Product?> updateProduct(_i15.Product product) =>
-      caller.callServerEndpoint<_i15.Product?>(
+  _i2.Future<_i16.Product?> updateProduct(_i16.Product product) =>
+      caller.callServerEndpoint<_i16.Product?>(
         'product',
         'updateProduct',
         {'product': product},
       );
 
-  _i2.Future<void> deleteProduct(_i15.Product prod) =>
+  _i2.Future<void> deleteProduct(_i16.Product prod) =>
       caller.callServerEndpoint<void>(
         'product',
         'deleteProduct',
@@ -681,42 +771,42 @@ class EndpointRanks extends _i1.EndpointRef {
   @override
   String get name => 'ranks';
 
-  _i2.Future<List<_i16.Ranks>> getAllRanks() =>
-      caller.callServerEndpoint<List<_i16.Ranks>>(
+  _i2.Future<List<_i17.Ranks>> getAllRanks() =>
+      caller.callServerEndpoint<List<_i17.Ranks>>(
         'ranks',
         'getAllRanks',
         {},
       );
 
-  _i2.Future<_i16.Ranks?> createRanks(_i16.Ranks rank) =>
-      caller.callServerEndpoint<_i16.Ranks?>(
+  _i2.Future<_i17.Ranks?> createRanks(_i17.Ranks rank) =>
+      caller.callServerEndpoint<_i17.Ranks?>(
         'ranks',
         'createRanks',
         {'rank': rank},
       );
 
-  _i2.Future<List<_i16.Ranks>> createMultipleRanks(List<_i16.Ranks> ranks) =>
-      caller.callServerEndpoint<List<_i16.Ranks>>(
+  _i2.Future<List<_i17.Ranks>> createMultipleRanks(List<_i17.Ranks> ranks) =>
+      caller.callServerEndpoint<List<_i17.Ranks>>(
         'ranks',
         'createMultipleRanks',
         {'ranks': ranks},
       );
 
-  _i2.Future<_i16.Ranks?> getRankById(int id) =>
-      caller.callServerEndpoint<_i16.Ranks?>(
+  _i2.Future<_i17.Ranks?> getRankById(int id) =>
+      caller.callServerEndpoint<_i17.Ranks?>(
         'ranks',
         'getRankById',
         {'id': id},
       );
 
-  _i2.Future<_i16.Ranks?> updateRank(_i16.Ranks rank) =>
-      caller.callServerEndpoint<_i16.Ranks?>(
+  _i2.Future<_i17.Ranks?> updateRank(_i17.Ranks rank) =>
+      caller.callServerEndpoint<_i17.Ranks?>(
         'ranks',
         'updateRank',
         {'rank': rank},
       );
 
-  _i2.Future<void> deleteRank(_i16.Ranks rank) =>
+  _i2.Future<void> deleteRank(_i17.Ranks rank) =>
       caller.callServerEndpoint<void>(
         'ranks',
         'deleteRank',
@@ -731,8 +821,8 @@ class EndpointReaperCommission extends _i1.EndpointRef {
   @override
   String get name => 'reaperCommission';
 
-  _i2.Future<List<_i17.ReaperCommission>> getByPackageId(int packageId) =>
-      caller.callServerEndpoint<List<_i17.ReaperCommission>>(
+  _i2.Future<List<_i18.ReaperCommission>> getByPackageId(int packageId) =>
+      caller.callServerEndpoint<List<_i18.ReaperCommission>>(
         'reaperCommission',
         'getByPackageId',
         {'packageId': packageId},
@@ -746,15 +836,15 @@ class EndpointSale extends _i1.EndpointRef {
   @override
   String get name => 'sale';
 
-  _i2.Future<_i18.Sale?> insertSaleWithItems(_i18.Sale sale) =>
-      caller.callServerEndpoint<_i18.Sale?>(
+  _i2.Future<_i19.Sale?> insertSaleWithItems(_i19.Sale sale) =>
+      caller.callServerEndpoint<_i19.Sale?>(
         'sale',
         'insertSaleWithItems',
         {'sale': sale},
       );
 
-  _i2.Future<List<_i18.Sale>?> getSalesWithItems(int saleID) =>
-      caller.callServerEndpoint<List<_i18.Sale>?>(
+  _i2.Future<List<_i19.Sale>?> getSalesWithItems(int saleID) =>
+      caller.callServerEndpoint<List<_i19.Sale>?>(
         'sale',
         'getSalesWithItems',
         {'saleID': saleID},
@@ -769,29 +859,37 @@ class EndpointUser extends _i1.EndpointRef {
   String get name => 'user';
 
   /// Get user profile by user ID
-  _i2.Future<_i19.User?> getUserById(int userId) =>
-      caller.callServerEndpoint<_i19.User?>(
+  _i2.Future<_i20.User?> getUserById(int userId) =>
+      caller.callServerEndpoint<_i20.User?>(
         'user',
         'getUserById',
         {'userId': userId},
       );
 
   /// Get user profile by auth user info ID
-  _i2.Future<_i19.User?> getUserByAuthId(int userInfoId) =>
-      caller.callServerEndpoint<_i19.User?>(
+  _i2.Future<_i20.User?> getUserByAuthId(int userInfoId) =>
+      caller.callServerEndpoint<_i20.User?>(
         'user',
         'getUserByAuthId',
         {'userInfoId': userInfoId},
       );
 
+  /// Get or create user profile - creates a new user if one doesn't exist for the given auth ID
+  _i2.Future<_i20.User?> getOrCreateUser(int userInfoId) =>
+      caller.callServerEndpoint<_i20.User?>(
+        'user',
+        'getOrCreateUser',
+        {'userInfoId': userInfoId},
+      );
+
   /// Update user profile (name fields only)
-  _i2.Future<_i19.User?> updateProfile({
+  _i2.Future<_i20.User?> updateProfile({
     required int userId,
     required String firstName,
     required String middleName,
     required String lastName,
   }) =>
-      caller.callServerEndpoint<_i19.User?>(
+      caller.callServerEndpoint<_i20.User?>(
         'user',
         'updateProfile',
         {
@@ -803,11 +901,11 @@ class EndpointUser extends _i1.EndpointRef {
       );
 
   /// Update user phone number
-  _i2.Future<_i19.User?> updatePhone({
+  _i2.Future<_i20.User?> updatePhone({
     required int userId,
     required String phone,
   }) =>
-      caller.callServerEndpoint<_i19.User?>(
+      caller.callServerEndpoint<_i20.User?>(
         'user',
         'updatePhone',
         {
@@ -821,6 +919,53 @@ class EndpointUser extends _i1.EndpointRef {
       caller.callServerEndpoint<String?>(
         'user',
         'getFullName',
+        {'userId': userId},
+      );
+
+  /// Update user location (latitude and longitude)
+  _i2.Future<_i20.User?> updateLocation({
+    required int userId,
+    required double latitude,
+    required double longitude,
+  }) =>
+      caller.callServerEndpoint<_i20.User?>(
+        'user',
+        'updateLocation',
+        {
+          'userId': userId,
+          'latitude': latitude,
+          'longitude': longitude,
+        },
+      );
+
+  /// Get user stats (referrals count, total earnings, orders count)
+  _i2.Future<Map<String, dynamic>> getUserStats(int userId) =>
+      caller.callServerEndpoint<Map<String, dynamic>>(
+        'user',
+        'getUserStats',
+        {'userId': userId},
+      );
+
+  /// Get referrals count for a user
+  _i2.Future<int> getReferralsCount(int userId) =>
+      caller.callServerEndpoint<int>(
+        'user',
+        'getReferralsCount',
+        {'userId': userId},
+      );
+
+  /// Get total earnings for a user
+  _i2.Future<double> getTotalEarnings(int userId) =>
+      caller.callServerEndpoint<double>(
+        'user',
+        'getTotalEarnings',
+        {'userId': userId},
+      );
+
+  /// Get orders count for a user
+  _i2.Future<int> getOrdersCount(int userId) => caller.callServerEndpoint<int>(
+        'user',
+        'getOrdersCount',
         {'userId': userId},
       );
 }
@@ -858,8 +1003,8 @@ class EndpointGreeting extends _i1.EndpointRef {
   String get name => 'greeting';
 
   /// Returns a personalized greeting message: "Hello {name}".
-  _i2.Future<_i20.Greeting> hello(String name) =>
-      caller.callServerEndpoint<_i20.Greeting>(
+  _i2.Future<_i21.Greeting> hello(String name) =>
+      caller.callServerEndpoint<_i21.Greeting>(
         'greeting',
         'hello',
         {'name': name},
@@ -890,7 +1035,7 @@ class Client extends _i1.ServerpodClientShared {
     bool? disconnectStreamsOnLostInternetConnection,
   }) : super(
           host,
-          _i21.Protocol(),
+          _i22.Protocol(),
           securityContext: securityContext,
           authenticationKeyManager: authenticationKeyManager,
           streamingConnectionTimeout: streamingConnectionTimeout,

@@ -33,29 +33,30 @@ import 'order.dart' as _i21;
 import 'order_items.dart' as _i22;
 import 'packages.dart' as _i23;
 import 'payment_events.dart' as _i24;
-import 'payments.dart' as _i25;
-import 'pioneer_accounts.dart' as _i26;
-import 'products.dart' as _i27;
-import 'profit_sharing.dart' as _i28;
-import 'rank_category.dart' as _i29;
-import 'ranks.dart' as _i30;
-import 'reaper_commissions.dart' as _i31;
-import 'sale.dart' as _i32;
-import 'sale_items.dart' as _i33;
-import 'users.dart' as _i34;
-import 'package:wm_server/src/generated/addresses.dart' as _i35;
-import 'package:wm_server/src/generated/cart.dart' as _i36;
-import 'package:wm_server/src/generated/commissions.dart' as _i37;
-import 'package:wm_server/src/generated/commission_rule.dart' as _i38;
-import 'package:wm_server/src/generated/distributors.dart' as _i39;
-import 'package:wm_server/src/generated/golden_seats.dart' as _i40;
-import 'package:wm_server/src/generated/membership_package.dart' as _i41;
-import 'package:wm_server/src/generated/menu.dart' as _i42;
-import 'package:wm_server/src/generated/packages.dart' as _i43;
-import 'package:wm_server/src/generated/products.dart' as _i44;
-import 'package:wm_server/src/generated/ranks.dart' as _i45;
-import 'package:wm_server/src/generated/reaper_commissions.dart' as _i46;
-import 'package:wm_server/src/generated/sale.dart' as _i47;
+import 'payment_response.dart' as _i25;
+import 'payments.dart' as _i26;
+import 'pioneer_accounts.dart' as _i27;
+import 'products.dart' as _i28;
+import 'profit_sharing.dart' as _i29;
+import 'rank_category.dart' as _i30;
+import 'ranks.dart' as _i31;
+import 'reaper_commissions.dart' as _i32;
+import 'sale.dart' as _i33;
+import 'sale_items.dart' as _i34;
+import 'users.dart' as _i35;
+import 'package:wm_server/src/generated/addresses.dart' as _i36;
+import 'package:wm_server/src/generated/cart.dart' as _i37;
+import 'package:wm_server/src/generated/commissions.dart' as _i38;
+import 'package:wm_server/src/generated/commission_rule.dart' as _i39;
+import 'package:wm_server/src/generated/distributors.dart' as _i40;
+import 'package:wm_server/src/generated/golden_seats.dart' as _i41;
+import 'package:wm_server/src/generated/membership_package.dart' as _i42;
+import 'package:wm_server/src/generated/menu.dart' as _i43;
+import 'package:wm_server/src/generated/packages.dart' as _i44;
+import 'package:wm_server/src/generated/products.dart' as _i45;
+import 'package:wm_server/src/generated/ranks.dart' as _i46;
+import 'package:wm_server/src/generated/reaper_commissions.dart' as _i47;
+import 'package:wm_server/src/generated/sale.dart' as _i48;
 export 'greeting.dart';
 export 'userinfo.dart';
 export 'addresses.dart';
@@ -77,6 +78,7 @@ export 'order.dart';
 export 'order_items.dart';
 export 'packages.dart';
 export 'payment_events.dart';
+export 'payment_response.dart';
 export 'payments.dart';
 export 'pioneer_accounts.dart';
 export 'products.dart';
@@ -168,6 +170,18 @@ class Protocol extends _i1.SerializationManagerServer {
           columnType: _i2.ColumnType.text,
           isNullable: false,
           dartType: 'String',
+        ),
+        _i2.ColumnDefinition(
+          name: 'latitude',
+          columnType: _i2.ColumnType.doublePrecision,
+          isNullable: true,
+          dartType: 'double?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'longitude',
+          columnType: _i2.ColumnType.doublePrecision,
+          isNullable: true,
+          dartType: 'double?',
         ),
         _i2.ColumnDefinition(
           name: 'isPrimary',
@@ -3043,35 +3057,38 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i24.PaymentEvent) {
       return _i24.PaymentEvent.fromJson(data) as T;
     }
-    if (t == _i25.Payment) {
-      return _i25.Payment.fromJson(data) as T;
+    if (t == _i25.PaymentResponse) {
+      return _i25.PaymentResponse.fromJson(data) as T;
     }
-    if (t == _i26.PioneerAccounts) {
-      return _i26.PioneerAccounts.fromJson(data) as T;
+    if (t == _i26.Payment) {
+      return _i26.Payment.fromJson(data) as T;
     }
-    if (t == _i27.Product) {
-      return _i27.Product.fromJson(data) as T;
+    if (t == _i27.PioneerAccounts) {
+      return _i27.PioneerAccounts.fromJson(data) as T;
     }
-    if (t == _i28.ProfitSharing) {
-      return _i28.ProfitSharing.fromJson(data) as T;
+    if (t == _i28.Product) {
+      return _i28.Product.fromJson(data) as T;
     }
-    if (t == _i29.RankCategory) {
-      return _i29.RankCategory.fromJson(data) as T;
+    if (t == _i29.ProfitSharing) {
+      return _i29.ProfitSharing.fromJson(data) as T;
     }
-    if (t == _i30.Ranks) {
-      return _i30.Ranks.fromJson(data) as T;
+    if (t == _i30.RankCategory) {
+      return _i30.RankCategory.fromJson(data) as T;
     }
-    if (t == _i31.ReaperCommission) {
-      return _i31.ReaperCommission.fromJson(data) as T;
+    if (t == _i31.Ranks) {
+      return _i31.Ranks.fromJson(data) as T;
     }
-    if (t == _i32.Sale) {
-      return _i32.Sale.fromJson(data) as T;
+    if (t == _i32.ReaperCommission) {
+      return _i32.ReaperCommission.fromJson(data) as T;
     }
-    if (t == _i33.SaleItem) {
-      return _i33.SaleItem.fromJson(data) as T;
+    if (t == _i33.Sale) {
+      return _i33.Sale.fromJson(data) as T;
     }
-    if (t == _i34.User) {
-      return _i34.User.fromJson(data) as T;
+    if (t == _i34.SaleItem) {
+      return _i34.SaleItem.fromJson(data) as T;
+    }
+    if (t == _i35.User) {
+      return _i35.User.fromJson(data) as T;
     }
     if (t == _i1.getType<_i4.Greeting?>()) {
       return (data != null ? _i4.Greeting.fromJson(data) : null) as T;
@@ -3137,35 +3154,38 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i1.getType<_i24.PaymentEvent?>()) {
       return (data != null ? _i24.PaymentEvent.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i25.Payment?>()) {
-      return (data != null ? _i25.Payment.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i25.PaymentResponse?>()) {
+      return (data != null ? _i25.PaymentResponse.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i26.PioneerAccounts?>()) {
-      return (data != null ? _i26.PioneerAccounts.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i26.Payment?>()) {
+      return (data != null ? _i26.Payment.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i27.Product?>()) {
-      return (data != null ? _i27.Product.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i27.PioneerAccounts?>()) {
+      return (data != null ? _i27.PioneerAccounts.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i28.ProfitSharing?>()) {
-      return (data != null ? _i28.ProfitSharing.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i28.Product?>()) {
+      return (data != null ? _i28.Product.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i29.RankCategory?>()) {
-      return (data != null ? _i29.RankCategory.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i29.ProfitSharing?>()) {
+      return (data != null ? _i29.ProfitSharing.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i30.Ranks?>()) {
-      return (data != null ? _i30.Ranks.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i30.RankCategory?>()) {
+      return (data != null ? _i30.RankCategory.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i31.ReaperCommission?>()) {
-      return (data != null ? _i31.ReaperCommission.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i31.Ranks?>()) {
+      return (data != null ? _i31.Ranks.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i32.Sale?>()) {
-      return (data != null ? _i32.Sale.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i32.ReaperCommission?>()) {
+      return (data != null ? _i32.ReaperCommission.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i33.SaleItem?>()) {
-      return (data != null ? _i33.SaleItem.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i33.Sale?>()) {
+      return (data != null ? _i33.Sale.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i34.User?>()) {
-      return (data != null ? _i34.User.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i34.SaleItem?>()) {
+      return (data != null ? _i34.SaleItem.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i35.User?>()) {
+      return (data != null ? _i35.User.fromJson(data) : null) as T;
     }
     if (t == _i1.getType<List<_i8.CartItem>?>()) {
       return (data != null
@@ -3187,83 +3207,83 @@ class Protocol extends _i1.SerializationManagerServer {
           ? (data as List).map((e) => deserialize<_i22.OrderItem>(e)).toList()
           : null) as T;
     }
-    if (t == _i1.getType<List<_i31.ReaperCommission>?>()) {
+    if (t == _i1.getType<List<_i32.ReaperCommission>?>()) {
       return (data != null
           ? (data as List)
-              .map((e) => deserialize<_i31.ReaperCommission>(e))
+              .map((e) => deserialize<_i32.ReaperCommission>(e))
               .toList()
           : null) as T;
     }
-    if (t == _i1.getType<List<_i33.SaleItem>?>()) {
+    if (t == _i1.getType<List<_i34.SaleItem>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i33.SaleItem>(e)).toList()
+          ? (data as List).map((e) => deserialize<_i34.SaleItem>(e)).toList()
           : null) as T;
     }
-    if (t == List<_i35.Addresses>) {
-      return (data as List).map((e) => deserialize<_i35.Addresses>(e)).toList()
+    if (t == List<_i36.Addresses>) {
+      return (data as List).map((e) => deserialize<_i36.Addresses>(e)).toList()
           as T;
     }
     if (t == List<_i3.UserInfo>) {
       return (data as List).map((e) => deserialize<_i3.UserInfo>(e)).toList()
           as T;
     }
-    if (t == List<_i36.Cart>) {
-      return (data as List).map((e) => deserialize<_i36.Cart>(e)).toList() as T;
-    }
-    if (t == List<_i37.Commissions>) {
-      return (data as List)
-          .map((e) => deserialize<_i37.Commissions>(e))
-          .toList() as T;
-    }
-    if (t == List<_i38.CommissionRule>) {
-      return (data as List)
-          .map((e) => deserialize<_i38.CommissionRule>(e))
-          .toList() as T;
-    }
-    if (t == List<_i39.Distributors>) {
-      return (data as List)
-          .map((e) => deserialize<_i39.Distributors>(e))
-          .toList() as T;
-    }
-    if (t == List<_i40.GoldenSeats>) {
-      return (data as List)
-          .map((e) => deserialize<_i40.GoldenSeats>(e))
-          .toList() as T;
-    }
-    if (t == List<_i41.MembershipPackage>) {
-      return (data as List)
-          .map((e) => deserialize<_i41.MembershipPackage>(e))
-          .toList() as T;
-    }
-    if (t == _i1.getType<List<_i42.Menu>?>()) {
-      return (data != null
-          ? (data as List).map((e) => deserialize<_i42.Menu>(e)).toList()
-          : null) as T;
-    }
-    if (t == List<_i43.Package>) {
-      return (data as List).map((e) => deserialize<_i43.Package>(e)).toList()
-          as T;
+    if (t == List<_i37.Cart>) {
+      return (data as List).map((e) => deserialize<_i37.Cart>(e)).toList() as T;
     }
     if (t == Map<String, dynamic>) {
       return (data as Map).map((k, v) =>
           MapEntry(deserialize<String>(k), deserialize<dynamic>(v))) as T;
     }
-    if (t == List<_i44.Product>) {
-      return (data as List).map((e) => deserialize<_i44.Product>(e)).toList()
-          as T;
-    }
-    if (t == List<_i45.Ranks>) {
-      return (data as List).map((e) => deserialize<_i45.Ranks>(e)).toList()
-          as T;
-    }
-    if (t == List<_i46.ReaperCommission>) {
+    if (t == List<_i38.Commissions>) {
       return (data as List)
-          .map((e) => deserialize<_i46.ReaperCommission>(e))
+          .map((e) => deserialize<_i38.Commissions>(e))
           .toList() as T;
     }
-    if (t == _i1.getType<List<_i47.Sale>?>()) {
+    if (t == List<_i39.CommissionRule>) {
+      return (data as List)
+          .map((e) => deserialize<_i39.CommissionRule>(e))
+          .toList() as T;
+    }
+    if (t == List<_i40.Distributors>) {
+      return (data as List)
+          .map((e) => deserialize<_i40.Distributors>(e))
+          .toList() as T;
+    }
+    if (t == List<_i41.GoldenSeats>) {
+      return (data as List)
+          .map((e) => deserialize<_i41.GoldenSeats>(e))
+          .toList() as T;
+    }
+    if (t == List<_i42.MembershipPackage>) {
+      return (data as List)
+          .map((e) => deserialize<_i42.MembershipPackage>(e))
+          .toList() as T;
+    }
+    if (t == _i1.getType<List<_i43.Menu>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i47.Sale>(e)).toList()
+          ? (data as List).map((e) => deserialize<_i43.Menu>(e)).toList()
+          : null) as T;
+    }
+    if (t == List<_i44.Package>) {
+      return (data as List).map((e) => deserialize<_i44.Package>(e)).toList()
+          as T;
+    }
+    if (t == List<_i45.Product>) {
+      return (data as List).map((e) => deserialize<_i45.Product>(e)).toList()
+          as T;
+    }
+    if (t == List<_i46.Ranks>) {
+      return (data as List).map((e) => deserialize<_i46.Ranks>(e)).toList()
+          as T;
+    }
+    if (t == List<_i47.ReaperCommission>) {
+      return (data as List)
+          .map((e) => deserialize<_i47.ReaperCommission>(e))
+          .toList() as T;
+    }
+    if (t == _i1.getType<List<_i48.Sale>?>()) {
+      return (data != null
+          ? (data as List).map((e) => deserialize<_i48.Sale>(e)).toList()
           : null) as T;
     }
     try {
@@ -3342,34 +3362,37 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data is _i24.PaymentEvent) {
       return 'PaymentEvent';
     }
-    if (data is _i25.Payment) {
+    if (data is _i25.PaymentResponse) {
+      return 'PaymentResponse';
+    }
+    if (data is _i26.Payment) {
       return 'Payment';
     }
-    if (data is _i26.PioneerAccounts) {
+    if (data is _i27.PioneerAccounts) {
       return 'PioneerAccounts';
     }
-    if (data is _i27.Product) {
+    if (data is _i28.Product) {
       return 'Product';
     }
-    if (data is _i28.ProfitSharing) {
+    if (data is _i29.ProfitSharing) {
       return 'ProfitSharing';
     }
-    if (data is _i29.RankCategory) {
+    if (data is _i30.RankCategory) {
       return 'RankCategory';
     }
-    if (data is _i30.Ranks) {
+    if (data is _i31.Ranks) {
       return 'Ranks';
     }
-    if (data is _i31.ReaperCommission) {
+    if (data is _i32.ReaperCommission) {
       return 'ReaperCommission';
     }
-    if (data is _i32.Sale) {
+    if (data is _i33.Sale) {
       return 'Sale';
     }
-    if (data is _i33.SaleItem) {
+    if (data is _i34.SaleItem) {
       return 'SaleItem';
     }
-    if (data is _i34.User) {
+    if (data is _i35.User) {
       return 'User';
     }
     className = _i2.Protocol().getClassNameForObject(data);
@@ -3452,35 +3475,38 @@ class Protocol extends _i1.SerializationManagerServer {
     if (dataClassName == 'PaymentEvent') {
       return deserialize<_i24.PaymentEvent>(data['data']);
     }
+    if (dataClassName == 'PaymentResponse') {
+      return deserialize<_i25.PaymentResponse>(data['data']);
+    }
     if (dataClassName == 'Payment') {
-      return deserialize<_i25.Payment>(data['data']);
+      return deserialize<_i26.Payment>(data['data']);
     }
     if (dataClassName == 'PioneerAccounts') {
-      return deserialize<_i26.PioneerAccounts>(data['data']);
+      return deserialize<_i27.PioneerAccounts>(data['data']);
     }
     if (dataClassName == 'Product') {
-      return deserialize<_i27.Product>(data['data']);
+      return deserialize<_i28.Product>(data['data']);
     }
     if (dataClassName == 'ProfitSharing') {
-      return deserialize<_i28.ProfitSharing>(data['data']);
+      return deserialize<_i29.ProfitSharing>(data['data']);
     }
     if (dataClassName == 'RankCategory') {
-      return deserialize<_i29.RankCategory>(data['data']);
+      return deserialize<_i30.RankCategory>(data['data']);
     }
     if (dataClassName == 'Ranks') {
-      return deserialize<_i30.Ranks>(data['data']);
+      return deserialize<_i31.Ranks>(data['data']);
     }
     if (dataClassName == 'ReaperCommission') {
-      return deserialize<_i31.ReaperCommission>(data['data']);
+      return deserialize<_i32.ReaperCommission>(data['data']);
     }
     if (dataClassName == 'Sale') {
-      return deserialize<_i32.Sale>(data['data']);
+      return deserialize<_i33.Sale>(data['data']);
     }
     if (dataClassName == 'SaleItem') {
-      return deserialize<_i33.SaleItem>(data['data']);
+      return deserialize<_i34.SaleItem>(data['data']);
     }
     if (dataClassName == 'User') {
-      return deserialize<_i34.User>(data['data']);
+      return deserialize<_i35.User>(data['data']);
     }
     if (dataClassName.startsWith('serverpod.')) {
       data['className'] = dataClassName.substring(10);
@@ -3546,26 +3572,26 @@ class Protocol extends _i1.SerializationManagerServer {
         return _i23.Package.t;
       case _i24.PaymentEvent:
         return _i24.PaymentEvent.t;
-      case _i25.Payment:
-        return _i25.Payment.t;
-      case _i26.PioneerAccounts:
-        return _i26.PioneerAccounts.t;
-      case _i27.Product:
-        return _i27.Product.t;
-      case _i28.ProfitSharing:
-        return _i28.ProfitSharing.t;
-      case _i29.RankCategory:
-        return _i29.RankCategory.t;
-      case _i30.Ranks:
-        return _i30.Ranks.t;
-      case _i31.ReaperCommission:
-        return _i31.ReaperCommission.t;
-      case _i32.Sale:
-        return _i32.Sale.t;
-      case _i33.SaleItem:
-        return _i33.SaleItem.t;
-      case _i34.User:
-        return _i34.User.t;
+      case _i26.Payment:
+        return _i26.Payment.t;
+      case _i27.PioneerAccounts:
+        return _i27.PioneerAccounts.t;
+      case _i28.Product:
+        return _i28.Product.t;
+      case _i29.ProfitSharing:
+        return _i29.ProfitSharing.t;
+      case _i30.RankCategory:
+        return _i30.RankCategory.t;
+      case _i31.Ranks:
+        return _i31.Ranks.t;
+      case _i32.ReaperCommission:
+        return _i32.ReaperCommission.t;
+      case _i33.Sale:
+        return _i33.Sale.t;
+      case _i34.SaleItem:
+        return _i34.SaleItem.t;
+      case _i35.User:
+        return _i35.User.t;
     }
     return null;
   }

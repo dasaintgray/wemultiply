@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:wm_client/wm_client.dart';
+import 'package:wm_flutter/bloc/cart/cart_bloc.dart';
 import 'package:wm_flutter/bloc/menu/menu_bloc.dart';
 import 'package:wm_flutter/bloc/product/product_bloc.dart';
 import 'package:wm_flutter/core/constant/core_constant.dart';
@@ -10,6 +11,7 @@ import 'package:wm_flutter/core/repositories/product_repository.dart';
 import 'package:wm_flutter/core/styles/color_styles.dart';
 import 'package:wm_flutter/core/utils/core_utils.dart';
 import 'package:wm_flutter/views/sm_package_details_view.dart';
+import 'package:wm_flutter/widgets/floating_cart_button.dart';
 
 class SubmenuView extends StatelessWidget {
   final String menuTitle;
@@ -44,6 +46,7 @@ class SubmenuView extends StatelessWidget {
             elevation: 0,
             iconTheme: IconThemeData(color: AppColors.primaryTextTitle),
           ),
+          floatingActionButton: const FloatingCartButtonSmall(),
           body: SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -151,8 +154,10 @@ class SubmenuView extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (_) =>
-                                        SmPackageDetailsView(submenuItem: item),
+                                    builder: (_) => BlocProvider.value(
+                                      value: context.read<CartBloc>(),
+                                      child: SmPackageDetailsView(submenuItem: item),
+                                    ),
                                   ),
                                 );
                               },
