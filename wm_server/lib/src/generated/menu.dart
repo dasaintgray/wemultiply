@@ -7,13 +7,14 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
-
+// ignore_for_file: invalid_use_of_internal_member
 // ignore_for_file: unnecessary_null_comparison
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 import 'menu_items.dart' as _i2;
 import 'eula.dart' as _i3;
+import 'package:wm_server/src/generated/protocol.dart' as _i4;
 
 abstract class Menu implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
   Menu._({
@@ -41,15 +42,20 @@ abstract class Menu implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
       id: jsonSerialization['id'] as int?,
       menuName: jsonSerialization['menuName'] as String,
       menuImagePath: jsonSerialization['menuImagePath'] as String,
-      createdAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
+      createdAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['createdAt'],
+      ),
       isActive: jsonSerialization['isActive'] as bool,
-      menuItems: (jsonSerialization['menuItems'] as List?)
-          ?.map((e) => _i2.MenuItems.fromJson((e as Map<String, dynamic>)))
-          .toList(),
-      eulaItems: (jsonSerialization['eulaItems'] as List?)
-          ?.map((e) => _i3.Eula.fromJson((e as Map<String, dynamic>)))
-          .toList(),
+      menuItems: jsonSerialization['menuItems'] == null
+          ? null
+          : _i4.Protocol().deserialize<List<_i2.MenuItems>>(
+              jsonSerialization['menuItems'],
+            ),
+      eulaItems: jsonSerialization['eulaItems'] == null
+          ? null
+          : _i4.Protocol().deserialize<List<_i3.Eula>>(
+              jsonSerialization['eulaItems'],
+            ),
     );
   }
 
@@ -90,6 +96,7 @@ abstract class Menu implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'Menu',
       if (id != null) 'id': id,
       'menuName': menuName,
       'menuImagePath': menuImagePath,
@@ -105,17 +112,20 @@ abstract class Menu implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
   @override
   Map<String, dynamic> toJsonForProtocol() {
     return {
+      '__className__': 'Menu',
       if (id != null) 'id': id,
       'menuName': menuName,
       'menuImagePath': menuImagePath,
       'createdAt': createdAt.toJson(),
       'isActive': isActive,
       if (menuItems != null)
-        'menuItems':
-            menuItems?.toJson(valueToJson: (v) => v.toJsonForProtocol()),
+        'menuItems': menuItems?.toJson(
+          valueToJson: (v) => v.toJsonForProtocol(),
+        ),
       if (eulaItems != null)
-        'eulaItems':
-            eulaItems?.toJson(valueToJson: (v) => v.toJsonForProtocol()),
+        'eulaItems': eulaItems?.toJson(
+          valueToJson: (v) => v.toJsonForProtocol(),
+        ),
     };
   }
 
@@ -167,14 +177,14 @@ class _MenuImpl extends Menu {
     List<_i2.MenuItems>? menuItems,
     List<_i3.Eula>? eulaItems,
   }) : super._(
-          id: id,
-          menuName: menuName,
-          menuImagePath: menuImagePath,
-          createdAt: createdAt,
-          isActive: isActive,
-          menuItems: menuItems,
-          eulaItems: eulaItems,
-        );
+         id: id,
+         menuName: menuName,
+         menuImagePath: menuImagePath,
+         createdAt: createdAt,
+         isActive: isActive,
+         menuItems: menuItems,
+         eulaItems: eulaItems,
+       );
 
   /// Returns a shallow copy of this [Menu]
   /// with some or all fields replaced by the given arguments.
@@ -205,8 +215,35 @@ class _MenuImpl extends Menu {
   }
 }
 
+class MenuUpdateTable extends _i1.UpdateTable<MenuTable> {
+  MenuUpdateTable(super.table);
+
+  _i1.ColumnValue<String, String> menuName(String value) => _i1.ColumnValue(
+    table.menuName,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> menuImagePath(String value) =>
+      _i1.ColumnValue(
+        table.menuImagePath,
+        value,
+      );
+
+  _i1.ColumnValue<DateTime, DateTime> createdAt(DateTime value) =>
+      _i1.ColumnValue(
+        table.createdAt,
+        value,
+      );
+
+  _i1.ColumnValue<bool, bool> isActive(bool value) => _i1.ColumnValue(
+    table.isActive,
+    value,
+  );
+}
+
 class MenuTable extends _i1.Table<int?> {
   MenuTable({super.tableRelation}) : super(tableName: 'menu') {
+    updateTable = MenuUpdateTable(this);
     menuName = _i1.ColumnString(
       'menuName',
       this,
@@ -224,6 +261,8 @@ class MenuTable extends _i1.Table<int?> {
       this,
     );
   }
+
+  late final MenuUpdateTable updateTable;
 
   late final _i1.ColumnString menuName;
 
@@ -280,7 +319,8 @@ class MenuTable extends _i1.Table<int?> {
     _menuItems = _i1.ManyRelation<_i2.MenuItemsTable>(
       tableWithRelations: relationTable,
       table: _i2.MenuItemsTable(
-          tableRelation: relationTable.tableRelation!.lastRelation),
+        tableRelation: relationTable.tableRelation!.lastRelation,
+      ),
     );
     return _menuItems!;
   }
@@ -298,19 +338,20 @@ class MenuTable extends _i1.Table<int?> {
     _eulaItems = _i1.ManyRelation<_i3.EulaTable>(
       tableWithRelations: relationTable,
       table: _i3.EulaTable(
-          tableRelation: relationTable.tableRelation!.lastRelation),
+        tableRelation: relationTable.tableRelation!.lastRelation,
+      ),
     );
     return _eulaItems!;
   }
 
   @override
   List<_i1.Column> get columns => [
-        id,
-        menuName,
-        menuImagePath,
-        createdAt,
-        isActive,
-      ];
+    id,
+    menuName,
+    menuImagePath,
+    createdAt,
+    isActive,
+  ];
 
   @override
   _i1.Table? getRelationTable(String relationField) {
@@ -339,9 +380,9 @@ class MenuInclude extends _i1.IncludeObject {
 
   @override
   Map<String, _i1.Include?> get includes => {
-        'menuItems': _menuItems,
-        'eulaItems': _eulaItems,
-      };
+    'menuItems': _menuItems,
+    'eulaItems': _eulaItems,
+  };
 
   @override
   _i1.Table<int?> get table => Menu.t;
@@ -540,6 +581,46 @@ class MenuRepository {
     );
   }
 
+  /// Updates a single [Menu] by its [id] with the specified [columnValues].
+  /// Returns the updated row or null if no row with the given id exists.
+  Future<Menu?> updateById(
+    _i1.Session session,
+    int id, {
+    required _i1.ColumnValueListBuilder<MenuUpdateTable> columnValues,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateById<Menu>(
+      id,
+      columnValues: columnValues(Menu.t.updateTable),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates all [Menu]s matching the [where] expression with the specified [columnValues].
+  /// Returns the list of updated rows.
+  Future<List<Menu>> updateWhere(
+    _i1.Session session, {
+    required _i1.ColumnValueListBuilder<MenuUpdateTable> columnValues,
+    required _i1.WhereExpressionBuilder<MenuTable> where,
+    int? limit,
+    int? offset,
+    _i1.OrderByBuilder<MenuTable>? orderBy,
+    _i1.OrderByListBuilder<MenuTable>? orderByList,
+    bool orderDescending = false,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateWhere<Menu>(
+      columnValues: columnValues(Menu.t.updateTable),
+      where: where(Menu.t),
+      limit: limit,
+      offset: offset,
+      orderBy: orderBy?.call(Menu.t),
+      orderByList: orderByList?.call(Menu.t),
+      orderDescending: orderDescending,
+      transaction: transaction,
+    );
+  }
+
   /// Deletes all [Menu]s in the list and returns the deleted rows.
   /// This is an atomic operation, meaning that if one of the rows fail to
   /// be deleted, none of the rows will be deleted.
@@ -613,10 +694,12 @@ class MenuAttachRepository {
     }
 
     var $menuItems = menuItems
-        .map((e) => _i2.MenuItemsImplicit(
-              e,
-              $_menuMenuitemsMenuId: menu.id,
-            ))
+        .map(
+          (e) => _i2.MenuItemsImplicit(
+            e,
+            $_menuMenuitemsMenuId: menu.id,
+          ),
+        )
         .toList();
     await session.db.update<_i2.MenuItems>(
       $menuItems,
@@ -641,10 +724,12 @@ class MenuAttachRepository {
     }
 
     var $eula = eula
-        .map((e) => _i3.EulaImplicit(
-              e,
-              $_menuEulaitemsMenuId: menu.id,
-            ))
+        .map(
+          (e) => _i3.EulaImplicit(
+            e,
+            $_menuEulaitemsMenuId: menu.id,
+          ),
+        )
         .toList();
     await session.db.update<_i3.Eula>(
       $eula,
@@ -728,10 +813,12 @@ class MenuDetachRepository {
     }
 
     var $menuItems = menuItems
-        .map((e) => _i2.MenuItemsImplicit(
-              e,
-              $_menuMenuitemsMenuId: null,
-            ))
+        .map(
+          (e) => _i2.MenuItemsImplicit(
+            e,
+            $_menuMenuitemsMenuId: null,
+          ),
+        )
         .toList();
     await session.db.update<_i2.MenuItems>(
       $menuItems,
@@ -755,10 +842,12 @@ class MenuDetachRepository {
     }
 
     var $eula = eula
-        .map((e) => _i3.EulaImplicit(
-              e,
-              $_menuEulaitemsMenuId: null,
-            ))
+        .map(
+          (e) => _i3.EulaImplicit(
+            e,
+            $_menuEulaitemsMenuId: null,
+          ),
+        )
         .toList();
     await session.db.update<_i3.Eula>(
       $eula,

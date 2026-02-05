@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
@@ -42,10 +43,12 @@ abstract class OrderItem implements _i1.SerializableModel {
       quantity: jsonSerialization['quantity'] as int,
       unitPrice: (jsonSerialization['unitPrice'] as num).toDouble(),
       totalPrice: (jsonSerialization['totalPrice'] as num).toDouble(),
-      createdAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
-      updatedAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['updatedAt']),
+      createdAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['createdAt'],
+      ),
+      updatedAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['updatedAt'],
+      ),
     );
   }
 
@@ -84,6 +87,7 @@ abstract class OrderItem implements _i1.SerializableModel {
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'OrderItem',
       if (id != null) 'id': id,
       'orderId': orderId,
       'productId': productId,
@@ -114,15 +118,15 @@ class _OrderItemImpl extends OrderItem {
     required DateTime createdAt,
     required DateTime updatedAt,
   }) : super._(
-          id: id,
-          orderId: orderId,
-          productId: productId,
-          quantity: quantity,
-          unitPrice: unitPrice,
-          totalPrice: totalPrice,
-          createdAt: createdAt,
-          updatedAt: updatedAt,
-        );
+         id: id,
+         orderId: orderId,
+         productId: productId,
+         quantity: quantity,
+         unitPrice: unitPrice,
+         totalPrice: totalPrice,
+         createdAt: createdAt,
+         updatedAt: updatedAt,
+       );
 
   /// Returns a shallow copy of this [OrderItem]
   /// with some or all fields replaced by the given arguments.

@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
@@ -36,9 +37,11 @@ abstract class ProfitSharing implements _i1.SerializableModel {
       profitType: jsonSerialization['profitType'] as String,
       percentage: (jsonSerialization['percentage'] as num).toDouble(),
       effectiveDate: _i1.DateTimeJsonExtension.fromJson(
-          jsonSerialization['effectiveDate']),
-      createdAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
+        jsonSerialization['effectiveDate'],
+      ),
+      createdAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['createdAt'],
+      ),
       isActive: jsonSerialization['isActive'] as bool,
     );
   }
@@ -72,6 +75,7 @@ abstract class ProfitSharing implements _i1.SerializableModel {
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'ProfitSharing',
       if (id != null) 'id': id,
       'profitType': profitType,
       'percentage': percentage,
@@ -98,13 +102,13 @@ class _ProfitSharingImpl extends ProfitSharing {
     required DateTime createdAt,
     required bool isActive,
   }) : super._(
-          id: id,
-          profitType: profitType,
-          percentage: percentage,
-          effectiveDate: effectiveDate,
-          createdAt: createdAt,
-          isActive: isActive,
-        );
+         id: id,
+         profitType: profitType,
+         percentage: percentage,
+         effectiveDate: effectiveDate,
+         createdAt: createdAt,
+         isActive: isActive,
+       );
 
   /// Returns a shallow copy of this [ProfitSharing]
   /// with some or all fields replaced by the given arguments.

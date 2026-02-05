@@ -7,12 +7,13 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
-
+// ignore_for_file: invalid_use_of_internal_member
 // ignore_for_file: unnecessary_null_comparison
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i2;
+import 'package:wm_server/src/generated/protocol.dart' as _i3;
 
 abstract class User implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
   User._({
@@ -78,8 +79,9 @@ abstract class User implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
       referrerId: jsonSerialization['referrerId'] as int?,
       level: jsonSerialization['level'] as int,
       addressId: jsonSerialization['addressId'] as int?,
-      joinDate:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['joinDate']),
+      joinDate: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['joinDate'],
+      ),
       isActive: jsonSerialization['isActive'] as bool,
       isPioneer: jsonSerialization['isPioneer'] as bool,
       membershipPackageId: jsonSerialization['membershipPackageId'] as int?,
@@ -92,12 +94,14 @@ abstract class User implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
       lastLoginAt: jsonSerialization['lastLoginAt'] == null
           ? null
           : _i1.DateTimeJsonExtension.fromJson(
-              jsonSerialization['lastLoginAt']),
+              jsonSerialization['lastLoginAt'],
+            ),
       userInfoId: jsonSerialization['userInfoId'] as int,
       userInfo: jsonSerialization['userInfo'] == null
           ? null
-          : _i2.UserInfo.fromJson(
-              (jsonSerialization['userInfo'] as Map<String, dynamic>)),
+          : _i3.Protocol().deserialize<_i2.UserInfo>(
+              jsonSerialization['userInfo'],
+            ),
     );
   }
 
@@ -183,6 +187,7 @@ abstract class User implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'User',
       if (id != null) 'id': id,
       'firstName': firstName,
       'middleName': middleName,
@@ -212,6 +217,7 @@ abstract class User implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
   @override
   Map<String, dynamic> toJsonForProtocol() {
     return {
+      '__className__': 'User',
       if (id != null) 'id': id,
       'firstName': firstName,
       'middleName': middleName,
@@ -295,29 +301,29 @@ class _UserImpl extends User {
     required int userInfoId,
     _i2.UserInfo? userInfo,
   }) : super._(
-          id: id,
-          firstName: firstName,
-          middleName: middleName,
-          lastName: lastName,
-          email: email,
-          phone: phone,
-          passwordHash: passwordHash,
-          role: role,
-          referrerId: referrerId,
-          level: level,
-          addressId: addressId,
-          joinDate: joinDate,
-          isActive: isActive,
-          isPioneer: isPioneer,
-          membershipPackageId: membershipPackageId,
-          longtitude: longtitude,
-          latitude: latitude,
-          isUpgraded: isUpgraded,
-          upgradedAt: upgradedAt,
-          lastLoginAt: lastLoginAt,
-          userInfoId: userInfoId,
-          userInfo: userInfo,
-        );
+         id: id,
+         firstName: firstName,
+         middleName: middleName,
+         lastName: lastName,
+         email: email,
+         phone: phone,
+         passwordHash: passwordHash,
+         role: role,
+         referrerId: referrerId,
+         level: level,
+         addressId: addressId,
+         joinDate: joinDate,
+         isActive: isActive,
+         isPioneer: isPioneer,
+         membershipPackageId: membershipPackageId,
+         longtitude: longtitude,
+         latitude: latitude,
+         isUpgraded: isUpgraded,
+         upgradedAt: upgradedAt,
+         lastLoginAt: lastLoginAt,
+         userInfoId: userInfoId,
+         userInfo: userInfo,
+       );
 
   /// Returns a shallow copy of this [User]
   /// with some or all fields replaced by the given arguments.
@@ -371,14 +377,123 @@ class _UserImpl extends User {
       upgradedAt: upgradedAt is DateTime? ? upgradedAt : this.upgradedAt,
       lastLoginAt: lastLoginAt is DateTime? ? lastLoginAt : this.lastLoginAt,
       userInfoId: userInfoId ?? this.userInfoId,
-      userInfo:
-          userInfo is _i2.UserInfo? ? userInfo : this.userInfo?.copyWith(),
+      userInfo: userInfo is _i2.UserInfo?
+          ? userInfo
+          : this.userInfo?.copyWith(),
     );
   }
 }
 
+class UserUpdateTable extends _i1.UpdateTable<UserTable> {
+  UserUpdateTable(super.table);
+
+  _i1.ColumnValue<String, String> firstName(String value) => _i1.ColumnValue(
+    table.firstName,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> middleName(String value) => _i1.ColumnValue(
+    table.middleName,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> lastName(String value) => _i1.ColumnValue(
+    table.lastName,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> email(String value) => _i1.ColumnValue(
+    table.email,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> phone(String? value) => _i1.ColumnValue(
+    table.phone,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> passwordHash(String value) => _i1.ColumnValue(
+    table.passwordHash,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> role(String value) => _i1.ColumnValue(
+    table.role,
+    value,
+  );
+
+  _i1.ColumnValue<int, int> referrerId(int? value) => _i1.ColumnValue(
+    table.referrerId,
+    value,
+  );
+
+  _i1.ColumnValue<int, int> level(int value) => _i1.ColumnValue(
+    table.level,
+    value,
+  );
+
+  _i1.ColumnValue<int, int> addressId(int? value) => _i1.ColumnValue(
+    table.addressId,
+    value,
+  );
+
+  _i1.ColumnValue<DateTime, DateTime> joinDate(DateTime value) =>
+      _i1.ColumnValue(
+        table.joinDate,
+        value,
+      );
+
+  _i1.ColumnValue<bool, bool> isActive(bool value) => _i1.ColumnValue(
+    table.isActive,
+    value,
+  );
+
+  _i1.ColumnValue<bool, bool> isPioneer(bool value) => _i1.ColumnValue(
+    table.isPioneer,
+    value,
+  );
+
+  _i1.ColumnValue<int, int> membershipPackageId(int? value) => _i1.ColumnValue(
+    table.membershipPackageId,
+    value,
+  );
+
+  _i1.ColumnValue<double, double> longtitude(double? value) => _i1.ColumnValue(
+    table.longtitude,
+    value,
+  );
+
+  _i1.ColumnValue<double, double> latitude(double? value) => _i1.ColumnValue(
+    table.latitude,
+    value,
+  );
+
+  _i1.ColumnValue<bool, bool> isUpgraded(bool value) => _i1.ColumnValue(
+    table.isUpgraded,
+    value,
+  );
+
+  _i1.ColumnValue<DateTime, DateTime> upgradedAt(DateTime? value) =>
+      _i1.ColumnValue(
+        table.upgradedAt,
+        value,
+      );
+
+  _i1.ColumnValue<DateTime, DateTime> lastLoginAt(DateTime? value) =>
+      _i1.ColumnValue(
+        table.lastLoginAt,
+        value,
+      );
+
+  _i1.ColumnValue<int, int> userInfoId(int value) => _i1.ColumnValue(
+    table.userInfoId,
+    value,
+  );
+}
+
 class UserTable extends _i1.Table<int?> {
   UserTable({super.tableRelation}) : super(tableName: 'users') {
+    updateTable = UserUpdateTable(this);
     firstName = _i1.ColumnString(
       'firstName',
       this,
@@ -461,6 +576,8 @@ class UserTable extends _i1.Table<int?> {
     );
   }
 
+  late final UserUpdateTable updateTable;
+
   late final _i1.ColumnString firstName;
 
   late final _i1.ColumnString middleName;
@@ -518,28 +635,28 @@ class UserTable extends _i1.Table<int?> {
 
   @override
   List<_i1.Column> get columns => [
-        id,
-        firstName,
-        middleName,
-        lastName,
-        email,
-        phone,
-        passwordHash,
-        role,
-        referrerId,
-        level,
-        addressId,
-        joinDate,
-        isActive,
-        isPioneer,
-        membershipPackageId,
-        longtitude,
-        latitude,
-        isUpgraded,
-        upgradedAt,
-        lastLoginAt,
-        userInfoId,
-      ];
+    id,
+    firstName,
+    middleName,
+    lastName,
+    email,
+    phone,
+    passwordHash,
+    role,
+    referrerId,
+    level,
+    addressId,
+    joinDate,
+    isActive,
+    isPioneer,
+    membershipPackageId,
+    longtitude,
+    latitude,
+    isUpgraded,
+    upgradedAt,
+    lastLoginAt,
+    userInfoId,
+  ];
 
   @override
   _i1.Table? getRelationTable(String relationField) {
@@ -747,6 +864,46 @@ class UserRepository {
     return session.db.updateRow<User>(
       row,
       columns: columns?.call(User.t),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates a single [User] by its [id] with the specified [columnValues].
+  /// Returns the updated row or null if no row with the given id exists.
+  Future<User?> updateById(
+    _i1.Session session,
+    int id, {
+    required _i1.ColumnValueListBuilder<UserUpdateTable> columnValues,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateById<User>(
+      id,
+      columnValues: columnValues(User.t.updateTable),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates all [User]s matching the [where] expression with the specified [columnValues].
+  /// Returns the list of updated rows.
+  Future<List<User>> updateWhere(
+    _i1.Session session, {
+    required _i1.ColumnValueListBuilder<UserUpdateTable> columnValues,
+    required _i1.WhereExpressionBuilder<UserTable> where,
+    int? limit,
+    int? offset,
+    _i1.OrderByBuilder<UserTable>? orderBy,
+    _i1.OrderByListBuilder<UserTable>? orderByList,
+    bool orderDescending = false,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateWhere<User>(
+      columnValues: columnValues(User.t.updateTable),
+      where: where(User.t),
+      limit: limit,
+      offset: offset,
+      orderBy: orderBy?.call(User.t),
+      orderByList: orderByList?.call(User.t),
+      orderDescending: orderDescending,
       transaction: transaction,
     );
   }

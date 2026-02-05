@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
@@ -64,6 +65,7 @@ abstract class Cdnconfig
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'Cdnconfig',
       if (id != null) 'id': id,
       'type': type,
       'domain': domain,
@@ -74,6 +76,7 @@ abstract class Cdnconfig
   @override
   Map<String, dynamic> toJsonForProtocol() {
     return {
+      '__className__': 'Cdnconfig',
       if (id != null) 'id': id,
       'type': type,
       'domain': domain,
@@ -120,11 +123,11 @@ class _CdnconfigImpl extends Cdnconfig {
     required String domain,
     required String urlpath,
   }) : super._(
-          id: id,
-          type: type,
-          domain: domain,
-          urlpath: urlpath,
-        );
+         id: id,
+         type: type,
+         domain: domain,
+         urlpath: urlpath,
+       );
 
   /// Returns a shallow copy of this [Cdnconfig]
   /// with some or all fields replaced by the given arguments.
@@ -145,8 +148,28 @@ class _CdnconfigImpl extends Cdnconfig {
   }
 }
 
+class CdnconfigUpdateTable extends _i1.UpdateTable<CdnconfigTable> {
+  CdnconfigUpdateTable(super.table);
+
+  _i1.ColumnValue<String, String> type(String value) => _i1.ColumnValue(
+    table.type,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> domain(String value) => _i1.ColumnValue(
+    table.domain,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> urlpath(String value) => _i1.ColumnValue(
+    table.urlpath,
+    value,
+  );
+}
+
 class CdnconfigTable extends _i1.Table<int?> {
   CdnconfigTable({super.tableRelation}) : super(tableName: 'cdnconfig') {
+    updateTable = CdnconfigUpdateTable(this);
     type = _i1.ColumnString(
       'type',
       this,
@@ -161,6 +184,8 @@ class CdnconfigTable extends _i1.Table<int?> {
     );
   }
 
+  late final CdnconfigUpdateTable updateTable;
+
   late final _i1.ColumnString type;
 
   late final _i1.ColumnString domain;
@@ -169,11 +194,11 @@ class CdnconfigTable extends _i1.Table<int?> {
 
   @override
   List<_i1.Column> get columns => [
-        id,
-        type,
-        domain,
-        urlpath,
-      ];
+    id,
+    type,
+    domain,
+    urlpath,
+  ];
 }
 
 class CdnconfigInclude extends _i1.IncludeObject {
@@ -361,6 +386,46 @@ class CdnconfigRepository {
     return session.db.updateRow<Cdnconfig>(
       row,
       columns: columns?.call(Cdnconfig.t),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates a single [Cdnconfig] by its [id] with the specified [columnValues].
+  /// Returns the updated row or null if no row with the given id exists.
+  Future<Cdnconfig?> updateById(
+    _i1.Session session,
+    int id, {
+    required _i1.ColumnValueListBuilder<CdnconfigUpdateTable> columnValues,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateById<Cdnconfig>(
+      id,
+      columnValues: columnValues(Cdnconfig.t.updateTable),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates all [Cdnconfig]s matching the [where] expression with the specified [columnValues].
+  /// Returns the list of updated rows.
+  Future<List<Cdnconfig>> updateWhere(
+    _i1.Session session, {
+    required _i1.ColumnValueListBuilder<CdnconfigUpdateTable> columnValues,
+    required _i1.WhereExpressionBuilder<CdnconfigTable> where,
+    int? limit,
+    int? offset,
+    _i1.OrderByBuilder<CdnconfigTable>? orderBy,
+    _i1.OrderByListBuilder<CdnconfigTable>? orderByList,
+    bool orderDescending = false,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateWhere<Cdnconfig>(
+      columnValues: columnValues(Cdnconfig.t.updateTable),
+      where: where(Cdnconfig.t),
+      limit: limit,
+      offset: offset,
+      orderBy: orderBy?.call(Cdnconfig.t),
+      orderByList: orderByList?.call(Cdnconfig.t),
+      orderDescending: orderDescending,
       transaction: transaction,
     );
   }

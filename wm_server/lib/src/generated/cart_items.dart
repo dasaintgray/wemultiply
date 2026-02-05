@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
@@ -43,10 +44,12 @@ abstract class CartItem
       quantity: jsonSerialization['quantity'] as int,
       unitPrice: (jsonSerialization['unitPrice'] as num).toDouble(),
       totalPrice: (jsonSerialization['totalPrice'] as num).toDouble(),
-      createdAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
-      updatedAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['updatedAt']),
+      createdAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['createdAt'],
+      ),
+      updatedAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['updatedAt'],
+      ),
       $_cartCartitemsCartId: jsonSerialization['_cartCartitemsCartId'] as int?,
     );
   }
@@ -93,6 +96,7 @@ abstract class CartItem
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'CartItem',
       if (id != null) 'id': id,
       'cartId': cartId,
       'productId': productId,
@@ -109,6 +113,7 @@ abstract class CartItem
   @override
   Map<String, dynamic> toJsonForProtocol() {
     return {
+      '__className__': 'CartItem',
       if (id != null) 'id': id,
       'cartId': cartId,
       'productId': productId,
@@ -163,15 +168,15 @@ class _CartItemImpl extends CartItem {
     required DateTime createdAt,
     required DateTime updatedAt,
   }) : super._(
-          id: id,
-          cartId: cartId,
-          productId: productId,
-          quantity: quantity,
-          unitPrice: unitPrice,
-          totalPrice: totalPrice,
-          createdAt: createdAt,
-          updatedAt: updatedAt,
-        );
+         id: id,
+         cartId: cartId,
+         productId: productId,
+         quantity: quantity,
+         unitPrice: unitPrice,
+         totalPrice: totalPrice,
+         createdAt: createdAt,
+         updatedAt: updatedAt,
+       );
 
   /// Returns a shallow copy of this [CartItem]
   /// with some or all fields replaced by the given arguments.
@@ -212,17 +217,17 @@ class CartItemImplicit extends _CartItemImpl {
     required DateTime createdAt,
     required DateTime updatedAt,
     int? $_cartCartitemsCartId,
-  })  : _cartCartitemsCartId = $_cartCartitemsCartId,
-        super(
-          id: id,
-          cartId: cartId,
-          productId: productId,
-          quantity: quantity,
-          unitPrice: unitPrice,
-          totalPrice: totalPrice,
-          createdAt: createdAt,
-          updatedAt: updatedAt,
-        );
+  }) : _cartCartitemsCartId = $_cartCartitemsCartId,
+       super(
+         id: id,
+         cartId: cartId,
+         productId: productId,
+         quantity: quantity,
+         unitPrice: unitPrice,
+         totalPrice: totalPrice,
+         createdAt: createdAt,
+         updatedAt: updatedAt,
+       );
 
   factory CartItemImplicit(
     CartItem cartItem, {
@@ -245,8 +250,56 @@ class CartItemImplicit extends _CartItemImpl {
   final int? _cartCartitemsCartId;
 }
 
+class CartItemUpdateTable extends _i1.UpdateTable<CartItemTable> {
+  CartItemUpdateTable(super.table);
+
+  _i1.ColumnValue<int, int> cartId(int value) => _i1.ColumnValue(
+    table.cartId,
+    value,
+  );
+
+  _i1.ColumnValue<int, int> productId(int value) => _i1.ColumnValue(
+    table.productId,
+    value,
+  );
+
+  _i1.ColumnValue<int, int> quantity(int value) => _i1.ColumnValue(
+    table.quantity,
+    value,
+  );
+
+  _i1.ColumnValue<double, double> unitPrice(double value) => _i1.ColumnValue(
+    table.unitPrice,
+    value,
+  );
+
+  _i1.ColumnValue<double, double> totalPrice(double value) => _i1.ColumnValue(
+    table.totalPrice,
+    value,
+  );
+
+  _i1.ColumnValue<DateTime, DateTime> createdAt(DateTime value) =>
+      _i1.ColumnValue(
+        table.createdAt,
+        value,
+      );
+
+  _i1.ColumnValue<DateTime, DateTime> updatedAt(DateTime value) =>
+      _i1.ColumnValue(
+        table.updatedAt,
+        value,
+      );
+
+  _i1.ColumnValue<int, int> $_cartCartitemsCartId(int? value) =>
+      _i1.ColumnValue(
+        table.$_cartCartitemsCartId,
+        value,
+      );
+}
+
 class CartItemTable extends _i1.Table<int?> {
   CartItemTable({super.tableRelation}) : super(tableName: 'cart_items') {
+    updateTable = CartItemUpdateTable(this);
     cartId = _i1.ColumnInt(
       'cartId',
       this,
@@ -281,6 +334,8 @@ class CartItemTable extends _i1.Table<int?> {
     );
   }
 
+  late final CartItemUpdateTable updateTable;
+
   late final _i1.ColumnInt cartId;
 
   late final _i1.ColumnInt productId;
@@ -299,28 +354,28 @@ class CartItemTable extends _i1.Table<int?> {
 
   @override
   List<_i1.Column> get columns => [
-        id,
-        cartId,
-        productId,
-        quantity,
-        unitPrice,
-        totalPrice,
-        createdAt,
-        updatedAt,
-        $_cartCartitemsCartId,
-      ];
+    id,
+    cartId,
+    productId,
+    quantity,
+    unitPrice,
+    totalPrice,
+    createdAt,
+    updatedAt,
+    $_cartCartitemsCartId,
+  ];
 
   @override
   List<_i1.Column> get managedColumns => [
-        id,
-        cartId,
-        productId,
-        quantity,
-        unitPrice,
-        totalPrice,
-        createdAt,
-        updatedAt,
-      ];
+    id,
+    cartId,
+    productId,
+    quantity,
+    unitPrice,
+    totalPrice,
+    createdAt,
+    updatedAt,
+  ];
 }
 
 class CartItemInclude extends _i1.IncludeObject {
@@ -508,6 +563,46 @@ class CartItemRepository {
     return session.db.updateRow<CartItem>(
       row,
       columns: columns?.call(CartItem.t),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates a single [CartItem] by its [id] with the specified [columnValues].
+  /// Returns the updated row or null if no row with the given id exists.
+  Future<CartItem?> updateById(
+    _i1.Session session,
+    int id, {
+    required _i1.ColumnValueListBuilder<CartItemUpdateTable> columnValues,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateById<CartItem>(
+      id,
+      columnValues: columnValues(CartItem.t.updateTable),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates all [CartItem]s matching the [where] expression with the specified [columnValues].
+  /// Returns the list of updated rows.
+  Future<List<CartItem>> updateWhere(
+    _i1.Session session, {
+    required _i1.ColumnValueListBuilder<CartItemUpdateTable> columnValues,
+    required _i1.WhereExpressionBuilder<CartItemTable> where,
+    int? limit,
+    int? offset,
+    _i1.OrderByBuilder<CartItemTable>? orderBy,
+    _i1.OrderByListBuilder<CartItemTable>? orderByList,
+    bool orderDescending = false,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateWhere<CartItem>(
+      columnValues: columnValues(CartItem.t.updateTable),
+      where: where(CartItem.t),
+      limit: limit,
+      offset: offset,
+      orderBy: orderBy?.call(CartItem.t),
+      orderByList: orderByList?.call(CartItem.t),
+      orderDescending: orderDescending,
       transaction: transaction,
     );
   }

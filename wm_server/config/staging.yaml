@@ -12,7 +12,7 @@
 apiServer:
   port: 8080
   # publicHost: api-staging.examplepod.com
-  publicHost: wmapi.crabdance.com
+  publicHost: api.wemultiply.store
   publicPort: 443
   publicScheme: https
 
@@ -20,7 +20,7 @@ apiServer:
 insightsServer:
   port: 8081
   # publicHost: insights-staging.examplepod.com
-  publicHost: wminsights.crabdance.com
+  publicHost: wminsights.wemultiply.store
   publicPort: 443
   publicScheme: https
 

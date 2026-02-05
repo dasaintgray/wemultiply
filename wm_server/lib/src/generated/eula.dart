@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
@@ -42,7 +43,8 @@ abstract class Eula implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
       content: jsonSerialization['content'] as String,
       version: jsonSerialization['version'] as String,
       effectiveDate: _i1.DateTimeJsonExtension.fromJson(
-          jsonSerialization['effectiveDate']),
+        jsonSerialization['effectiveDate'],
+      ),
       isActive: jsonSerialization['isActive'] as bool,
       language: jsonSerialization['language'] as String,
       $_menuEulaitemsMenuId: jsonSerialization['_menuEulaitemsMenuId'] as int?,
@@ -91,6 +93,7 @@ abstract class Eula implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'Eula',
       if (id != null) 'id': id,
       'menuId': menuId,
       'documentType': documentType,
@@ -107,6 +110,7 @@ abstract class Eula implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
   @override
   Map<String, dynamic> toJsonForProtocol() {
     return {
+      '__className__': 'Eula',
       if (id != null) 'id': id,
       'menuId': menuId,
       'documentType': documentType,
@@ -161,15 +165,15 @@ class _EulaImpl extends Eula {
     required bool isActive,
     required String language,
   }) : super._(
-          id: id,
-          menuId: menuId,
-          documentType: documentType,
-          content: content,
-          version: version,
-          effectiveDate: effectiveDate,
-          isActive: isActive,
-          language: language,
-        );
+         id: id,
+         menuId: menuId,
+         documentType: documentType,
+         content: content,
+         version: version,
+         effectiveDate: effectiveDate,
+         isActive: isActive,
+         language: language,
+       );
 
   /// Returns a shallow copy of this [Eula]
   /// with some or all fields replaced by the given arguments.
@@ -210,17 +214,17 @@ class EulaImplicit extends _EulaImpl {
     required bool isActive,
     required String language,
     int? $_menuEulaitemsMenuId,
-  })  : _menuEulaitemsMenuId = $_menuEulaitemsMenuId,
-        super(
-          id: id,
-          menuId: menuId,
-          documentType: documentType,
-          content: content,
-          version: version,
-          effectiveDate: effectiveDate,
-          isActive: isActive,
-          language: language,
-        );
+  }) : _menuEulaitemsMenuId = $_menuEulaitemsMenuId,
+       super(
+         id: id,
+         menuId: menuId,
+         documentType: documentType,
+         content: content,
+         version: version,
+         effectiveDate: effectiveDate,
+         isActive: isActive,
+         language: language,
+       );
 
   factory EulaImplicit(
     Eula eula, {
@@ -243,8 +247,55 @@ class EulaImplicit extends _EulaImpl {
   final int? _menuEulaitemsMenuId;
 }
 
+class EulaUpdateTable extends _i1.UpdateTable<EulaTable> {
+  EulaUpdateTable(super.table);
+
+  _i1.ColumnValue<int, int> menuId(int value) => _i1.ColumnValue(
+    table.menuId,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> documentType(String value) => _i1.ColumnValue(
+    table.documentType,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> content(String value) => _i1.ColumnValue(
+    table.content,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> version(String value) => _i1.ColumnValue(
+    table.version,
+    value,
+  );
+
+  _i1.ColumnValue<DateTime, DateTime> effectiveDate(DateTime value) =>
+      _i1.ColumnValue(
+        table.effectiveDate,
+        value,
+      );
+
+  _i1.ColumnValue<bool, bool> isActive(bool value) => _i1.ColumnValue(
+    table.isActive,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> language(String value) => _i1.ColumnValue(
+    table.language,
+    value,
+  );
+
+  _i1.ColumnValue<int, int> $_menuEulaitemsMenuId(int? value) =>
+      _i1.ColumnValue(
+        table.$_menuEulaitemsMenuId,
+        value,
+      );
+}
+
 class EulaTable extends _i1.Table<int?> {
   EulaTable({super.tableRelation}) : super(tableName: 'eula') {
+    updateTable = EulaUpdateTable(this);
     menuId = _i1.ColumnInt(
       'menuId',
       this,
@@ -279,6 +330,8 @@ class EulaTable extends _i1.Table<int?> {
     );
   }
 
+  late final EulaUpdateTable updateTable;
+
   late final _i1.ColumnInt menuId;
 
   late final _i1.ColumnString documentType;
@@ -297,28 +350,28 @@ class EulaTable extends _i1.Table<int?> {
 
   @override
   List<_i1.Column> get columns => [
-        id,
-        menuId,
-        documentType,
-        content,
-        version,
-        effectiveDate,
-        isActive,
-        language,
-        $_menuEulaitemsMenuId,
-      ];
+    id,
+    menuId,
+    documentType,
+    content,
+    version,
+    effectiveDate,
+    isActive,
+    language,
+    $_menuEulaitemsMenuId,
+  ];
 
   @override
   List<_i1.Column> get managedColumns => [
-        id,
-        menuId,
-        documentType,
-        content,
-        version,
-        effectiveDate,
-        isActive,
-        language,
-      ];
+    id,
+    menuId,
+    documentType,
+    content,
+    version,
+    effectiveDate,
+    isActive,
+    language,
+  ];
 }
 
 class EulaInclude extends _i1.IncludeObject {
@@ -506,6 +559,46 @@ class EulaRepository {
     return session.db.updateRow<Eula>(
       row,
       columns: columns?.call(Eula.t),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates a single [Eula] by its [id] with the specified [columnValues].
+  /// Returns the updated row or null if no row with the given id exists.
+  Future<Eula?> updateById(
+    _i1.Session session,
+    int id, {
+    required _i1.ColumnValueListBuilder<EulaUpdateTable> columnValues,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateById<Eula>(
+      id,
+      columnValues: columnValues(Eula.t.updateTable),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates all [Eula]s matching the [where] expression with the specified [columnValues].
+  /// Returns the list of updated rows.
+  Future<List<Eula>> updateWhere(
+    _i1.Session session, {
+    required _i1.ColumnValueListBuilder<EulaUpdateTable> columnValues,
+    required _i1.WhereExpressionBuilder<EulaTable> where,
+    int? limit,
+    int? offset,
+    _i1.OrderByBuilder<EulaTable>? orderBy,
+    _i1.OrderByListBuilder<EulaTable>? orderByList,
+    bool orderDescending = false,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateWhere<Eula>(
+      columnValues: columnValues(Eula.t.updateTable),
+      where: where(Eula.t),
+      limit: limit,
+      offset: offset,
+      orderBy: orderBy?.call(Eula.t),
+      orderByList: orderByList?.call(Eula.t),
+      orderDescending: orderDescending,
       transaction: transaction,
     );
   }

@@ -7,15 +7,16 @@ environment:
   sdk: '>=3.5.0 <4.0.0'
 
 dependencies:
-  serverpod: 2.9.2
-  serverpod_auth_server: 2.9.2
-  mailer: ^6.5.0
+  serverpod: 3.2.3
+  serverpod_auth_server: 3.2.3
+  mailer: ^6.6.0
   dotenv: ^4.2.0
   http: ^1.6.0
+  serverpod_openapi: ^0.0.3
 
 dev_dependencies:
   lints: '>=3.0.0 <7.0.0'
   test: '^1.24.2'
-  serverpod_test: 2.9.2
+  serverpod_test: 3.2.3
   
 

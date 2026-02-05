@@ -7,10 +7,12 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import 'order_items.dart' as _i2;
+import 'package:wm_client/src/protocol/protocol.dart' as _i3;
 
 abstract class Order implements _i1.SerializableModel {
   Order._({
@@ -60,13 +62,17 @@ abstract class Order implements _i1.SerializableModel {
       discountTotal: (jsonSerialization['discountTotal'] as num).toDouble(),
       grandTotal: (jsonSerialization['grandTotal'] as num).toDouble(),
       paymentMethod: jsonSerialization['paymentMethod'] as String,
-      createdAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
-      updatedAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['updatedAt']),
-      orderItems: (jsonSerialization['orderItems'] as List?)
-          ?.map((e) => _i2.OrderItem.fromJson((e as Map<String, dynamic>)))
-          .toList(),
+      createdAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['createdAt'],
+      ),
+      updatedAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['updatedAt'],
+      ),
+      orderItems: jsonSerialization['orderItems'] == null
+          ? null
+          : _i3.Protocol().deserialize<List<_i2.OrderItem>>(
+              jsonSerialization['orderItems'],
+            ),
     );
   }
 
@@ -123,6 +129,7 @@ abstract class Order implements _i1.SerializableModel {
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'Order',
       if (id != null) 'id': id,
       'userID': userID,
       'cartId': cartId,
@@ -166,21 +173,21 @@ class _OrderImpl extends Order {
     required DateTime updatedAt,
     List<_i2.OrderItem>? orderItems,
   }) : super._(
-          id: id,
-          userID: userID,
-          cartId: cartId,
-          status: status,
-          currency: currency,
-          subtotal: subtotal,
-          taxTotal: taxTotal,
-          shippingTotal: shippingTotal,
-          discountTotal: discountTotal,
-          grandTotal: grandTotal,
-          paymentMethod: paymentMethod,
-          createdAt: createdAt,
-          updatedAt: updatedAt,
-          orderItems: orderItems,
-        );
+         id: id,
+         userID: userID,
+         cartId: cartId,
+         status: status,
+         currency: currency,
+         subtotal: subtotal,
+         taxTotal: taxTotal,
+         shippingTotal: shippingTotal,
+         discountTotal: discountTotal,
+         grandTotal: grandTotal,
+         paymentMethod: paymentMethod,
+         createdAt: createdAt,
+         updatedAt: updatedAt,
+         orderItems: orderItems,
+       );
 
   /// Returns a shallow copy of this [Order]
   /// with some or all fields replaced by the given arguments.

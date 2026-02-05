@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
@@ -34,8 +35,9 @@ abstract class Level implements _i1.SerializableModel {
       levelName: jsonSerialization['levelName'] as String,
       description: jsonSerialization['description'] as String?,
       isActive: jsonSerialization['isActive'] as bool,
-      createdAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
+      createdAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['createdAt'],
+      ),
     );
   }
 
@@ -65,6 +67,7 @@ abstract class Level implements _i1.SerializableModel {
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'Level',
       if (id != null) 'id': id,
       'levelName': levelName,
       if (description != null) 'description': description,
@@ -89,12 +92,12 @@ class _LevelImpl extends Level {
     required bool isActive,
     required DateTime createdAt,
   }) : super._(
-          id: id,
-          levelName: levelName,
-          description: description,
-          isActive: isActive,
-          createdAt: createdAt,
-        );
+         id: id,
+         levelName: levelName,
+         description: description,
+         isActive: isActive,
+         createdAt: createdAt,
+       );
 
   /// Returns a shallow copy of this [Level]
   /// with some or all fields replaced by the given arguments.

@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
@@ -42,11 +43,11 @@ abstract class CrownPackage implements _i1.SerializableModel {
       packageId: jsonSerialization['packageId'] as int,
       cashBack: (jsonSerialization['cashBack'] as num).toDouble(),
       netProfit: (jsonSerialization['netProfit'] as num).toDouble(),
-      profitToWeMultiply:
-          (jsonSerialization['profitToWeMultiply'] as num).toDouble(),
+      profitToWeMultiply: (jsonSerialization['profitToWeMultiply'] as num)
+          .toDouble(),
       profitToCEO: (jsonSerialization['profitToCEO'] as num).toDouble(),
-      profitToFounders:
-          (jsonSerialization['profitToFounders'] as num).toDouble(),
+      profitToFounders: (jsonSerialization['profitToFounders'] as num)
+          .toDouble(),
       profitToMembers: (jsonSerialization['profitToMembers'] as num).toDouble(),
       profitToTithes: (jsonSerialization['profitToTithes'] as num).toDouble(),
     );
@@ -90,6 +91,7 @@ abstract class CrownPackage implements _i1.SerializableModel {
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'CrownPackage',
       if (id != null) 'id': id,
       'packageId': packageId,
       'cashBack': cashBack,
@@ -122,16 +124,16 @@ class _CrownPackageImpl extends CrownPackage {
     required double profitToMembers,
     required double profitToTithes,
   }) : super._(
-          id: id,
-          packageId: packageId,
-          cashBack: cashBack,
-          netProfit: netProfit,
-          profitToWeMultiply: profitToWeMultiply,
-          profitToCEO: profitToCEO,
-          profitToFounders: profitToFounders,
-          profitToMembers: profitToMembers,
-          profitToTithes: profitToTithes,
-        );
+         id: id,
+         packageId: packageId,
+         cashBack: cashBack,
+         netProfit: netProfit,
+         profitToWeMultiply: profitToWeMultiply,
+         profitToCEO: profitToCEO,
+         profitToFounders: profitToFounders,
+         profitToMembers: profitToMembers,
+         profitToTithes: profitToTithes,
+       );
 
   /// Returns a shallow copy of this [CrownPackage]
   /// with some or all fields replaced by the given arguments.

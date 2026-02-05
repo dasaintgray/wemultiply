@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
@@ -76,6 +77,7 @@ abstract class Ranks implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'Ranks',
       if (id != null) 'id': id,
       'rankName': rankName,
       'rankCategoryID': rankCategoryID,
@@ -88,6 +90,7 @@ abstract class Ranks implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
   @override
   Map<String, dynamic> toJsonForProtocol() {
     return {
+      '__className__': 'Ranks',
       if (id != null) 'id': id,
       'rankName': rankName,
       'rankCategoryID': rankCategoryID,
@@ -138,13 +141,13 @@ class _RanksImpl extends Ranks {
     required int minGroupSalesTarget,
     required int minDirectRecruits,
   }) : super._(
-          id: id,
-          rankName: rankName,
-          rankCategoryID: rankCategoryID,
-          minPersonalSalesTarget: minPersonalSalesTarget,
-          minGroupSalesTarget: minGroupSalesTarget,
-          minDirectRecruits: minDirectRecruits,
-        );
+         id: id,
+         rankName: rankName,
+         rankCategoryID: rankCategoryID,
+         minPersonalSalesTarget: minPersonalSalesTarget,
+         minGroupSalesTarget: minGroupSalesTarget,
+         minDirectRecruits: minDirectRecruits,
+       );
 
   /// Returns a shallow copy of this [Ranks]
   /// with some or all fields replaced by the given arguments.
@@ -170,8 +173,39 @@ class _RanksImpl extends Ranks {
   }
 }
 
+class RanksUpdateTable extends _i1.UpdateTable<RanksTable> {
+  RanksUpdateTable(super.table);
+
+  _i1.ColumnValue<String, String> rankName(String value) => _i1.ColumnValue(
+    table.rankName,
+    value,
+  );
+
+  _i1.ColumnValue<int, int> rankCategoryID(int value) => _i1.ColumnValue(
+    table.rankCategoryID,
+    value,
+  );
+
+  _i1.ColumnValue<int, int> minPersonalSalesTarget(int value) =>
+      _i1.ColumnValue(
+        table.minPersonalSalesTarget,
+        value,
+      );
+
+  _i1.ColumnValue<int, int> minGroupSalesTarget(int value) => _i1.ColumnValue(
+    table.minGroupSalesTarget,
+    value,
+  );
+
+  _i1.ColumnValue<int, int> minDirectRecruits(int value) => _i1.ColumnValue(
+    table.minDirectRecruits,
+    value,
+  );
+}
+
 class RanksTable extends _i1.Table<int?> {
   RanksTable({super.tableRelation}) : super(tableName: 'ranks') {
+    updateTable = RanksUpdateTable(this);
     rankName = _i1.ColumnString(
       'rankName',
       this,
@@ -194,6 +228,8 @@ class RanksTable extends _i1.Table<int?> {
     );
   }
 
+  late final RanksUpdateTable updateTable;
+
   late final _i1.ColumnString rankName;
 
   late final _i1.ColumnInt rankCategoryID;
@@ -206,13 +242,13 @@ class RanksTable extends _i1.Table<int?> {
 
   @override
   List<_i1.Column> get columns => [
-        id,
-        rankName,
-        rankCategoryID,
-        minPersonalSalesTarget,
-        minGroupSalesTarget,
-        minDirectRecruits,
-      ];
+    id,
+    rankName,
+    rankCategoryID,
+    minPersonalSalesTarget,
+    minGroupSalesTarget,
+    minDirectRecruits,
+  ];
 }
 
 class RanksInclude extends _i1.IncludeObject {
@@ -400,6 +436,46 @@ class RanksRepository {
     return session.db.updateRow<Ranks>(
       row,
       columns: columns?.call(Ranks.t),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates a single [Ranks] by its [id] with the specified [columnValues].
+  /// Returns the updated row or null if no row with the given id exists.
+  Future<Ranks?> updateById(
+    _i1.Session session,
+    int id, {
+    required _i1.ColumnValueListBuilder<RanksUpdateTable> columnValues,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateById<Ranks>(
+      id,
+      columnValues: columnValues(Ranks.t.updateTable),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates all [Ranks]s matching the [where] expression with the specified [columnValues].
+  /// Returns the list of updated rows.
+  Future<List<Ranks>> updateWhere(
+    _i1.Session session, {
+    required _i1.ColumnValueListBuilder<RanksUpdateTable> columnValues,
+    required _i1.WhereExpressionBuilder<RanksTable> where,
+    int? limit,
+    int? offset,
+    _i1.OrderByBuilder<RanksTable>? orderBy,
+    _i1.OrderByListBuilder<RanksTable>? orderByList,
+    bool orderDescending = false,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateWhere<Ranks>(
+      columnValues: columnValues(Ranks.t.updateTable),
+      where: where(Ranks.t),
+      limit: limit,
+      offset: offset,
+      orderBy: orderBy?.call(Ranks.t),
+      orderByList: orderByList?.call(Ranks.t),
+      orderDescending: orderDescending,
       transaction: transaction,
     );
   }

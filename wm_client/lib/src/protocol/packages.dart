@@ -7,10 +7,12 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import 'reaper_commissions.dart' as _i2;
+import 'package:wm_client/src/protocol/protocol.dart' as _i3;
 
 abstract class Package implements _i1.SerializableModel {
   Package._({
@@ -57,10 +59,11 @@ abstract class Package implements _i1.SerializableModel {
           : _i1.DateTimeJsonExtension.fromJson(jsonSerialization['updatedAt']),
       updatedBy: jsonSerialization['updatedBy'] as String?,
       isActive: jsonSerialization['isActive'] as bool,
-      packageId: (jsonSerialization['packageId'] as List?)
-          ?.map(
-              (e) => _i2.ReaperCommission.fromJson((e as Map<String, dynamic>)))
-          .toList(),
+      packageId: jsonSerialization['packageId'] == null
+          ? null
+          : _i3.Protocol().deserialize<List<_i2.ReaperCommission>>(
+              jsonSerialization['packageId'],
+            ),
     );
   }
 
@@ -108,6 +111,7 @@ abstract class Package implements _i1.SerializableModel {
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'Package',
       if (id != null) 'id': id,
       'packageName': packageName,
       'packageDescription': packageDescription,
@@ -145,18 +149,18 @@ class _PackageImpl extends Package {
     required bool isActive,
     List<_i2.ReaperCommission>? packageId,
   }) : super._(
-          id: id,
-          packageName: packageName,
-          packageDescription: packageDescription,
-          membershipFee: membershipFee,
-          productId: productId,
-          createdAt: createdAt,
-          createdBy: createdBy,
-          updatedAt: updatedAt,
-          updatedBy: updatedBy,
-          isActive: isActive,
-          packageId: packageId,
-        );
+         id: id,
+         packageName: packageName,
+         packageDescription: packageDescription,
+         membershipFee: membershipFee,
+         productId: productId,
+         createdAt: createdAt,
+         createdBy: createdBy,
+         updatedAt: updatedAt,
+         updatedBy: updatedBy,
+         isActive: isActive,
+         packageId: packageId,
+       );
 
   /// Returns a shallow copy of this [Package]
   /// with some or all fields replaced by the given arguments.

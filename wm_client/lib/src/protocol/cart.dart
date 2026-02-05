@@ -7,10 +7,12 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import 'cart_items.dart' as _i2;
+import 'package:wm_client/src/protocol/protocol.dart' as _i3;
 
 abstract class Cart implements _i1.SerializableModel {
   Cart._({
@@ -66,17 +68,22 @@ abstract class Cart implements _i1.SerializableModel {
       shippingTotal: (jsonSerialization['shippingTotal'] as num).toDouble(),
       grandTotal: (jsonSerialization['grandTotal'] as num).toDouble(),
       couponCode: jsonSerialization['couponCode'] as String,
-      createdAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
-      updatedAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['updatedAt']),
-      expiresAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['expiresAt']),
+      createdAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['createdAt'],
+      ),
+      updatedAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['updatedAt'],
+      ),
+      expiresAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['expiresAt'],
+      ),
       notes: jsonSerialization['notes'] as String,
       isActive: jsonSerialization['isActive'] as bool,
-      cartItems: (jsonSerialization['cartItems'] as List?)
-          ?.map((e) => _i2.CartItem.fromJson((e as Map<String, dynamic>)))
-          .toList(),
+      cartItems: jsonSerialization['cartItems'] == null
+          ? null
+          : _i3.Protocol().deserialize<List<_i2.CartItem>>(
+              jsonSerialization['cartItems'],
+            ),
     );
   }
 
@@ -142,6 +149,7 @@ abstract class Cart implements _i1.SerializableModel {
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'Cart',
       if (id != null) 'id': id,
       'userID': userID,
       'status': status,
@@ -191,24 +199,24 @@ class _CartImpl extends Cart {
     required bool isActive,
     List<_i2.CartItem>? cartItems,
   }) : super._(
-          id: id,
-          userID: userID,
-          status: status,
-          currency: currency,
-          totalItems: totalItems,
-          subtotal: subtotal,
-          discountTotal: discountTotal,
-          taxTotal: taxTotal,
-          shippingTotal: shippingTotal,
-          grandTotal: grandTotal,
-          couponCode: couponCode,
-          createdAt: createdAt,
-          updatedAt: updatedAt,
-          expiresAt: expiresAt,
-          notes: notes,
-          isActive: isActive,
-          cartItems: cartItems,
-        );
+         id: id,
+         userID: userID,
+         status: status,
+         currency: currency,
+         totalItems: totalItems,
+         subtotal: subtotal,
+         discountTotal: discountTotal,
+         taxTotal: taxTotal,
+         shippingTotal: shippingTotal,
+         grandTotal: grandTotal,
+         couponCode: couponCode,
+         createdAt: createdAt,
+         updatedAt: updatedAt,
+         expiresAt: expiresAt,
+         notes: notes,
+         isActive: isActive,
+         cartItems: cartItems,
+       );
 
   /// Returns a shallow copy of this [Cart]
   /// with some or all fields replaced by the given arguments.

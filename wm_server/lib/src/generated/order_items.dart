@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
@@ -43,10 +44,12 @@ abstract class OrderItem
       quantity: jsonSerialization['quantity'] as int,
       unitPrice: (jsonSerialization['unitPrice'] as num).toDouble(),
       totalPrice: (jsonSerialization['totalPrice'] as num).toDouble(),
-      createdAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
-      updatedAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['updatedAt']),
+      createdAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['createdAt'],
+      ),
+      updatedAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['updatedAt'],
+      ),
       $_ordersOrderitemsOrdersId:
           jsonSerialization['_ordersOrderitemsOrdersId'] as int?,
     );
@@ -94,6 +97,7 @@ abstract class OrderItem
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'OrderItem',
       if (id != null) 'id': id,
       'orderId': orderId,
       'productId': productId,
@@ -110,6 +114,7 @@ abstract class OrderItem
   @override
   Map<String, dynamic> toJsonForProtocol() {
     return {
+      '__className__': 'OrderItem',
       if (id != null) 'id': id,
       'orderId': orderId,
       'productId': productId,
@@ -164,15 +169,15 @@ class _OrderItemImpl extends OrderItem {
     required DateTime createdAt,
     required DateTime updatedAt,
   }) : super._(
-          id: id,
-          orderId: orderId,
-          productId: productId,
-          quantity: quantity,
-          unitPrice: unitPrice,
-          totalPrice: totalPrice,
-          createdAt: createdAt,
-          updatedAt: updatedAt,
-        );
+         id: id,
+         orderId: orderId,
+         productId: productId,
+         quantity: quantity,
+         unitPrice: unitPrice,
+         totalPrice: totalPrice,
+         createdAt: createdAt,
+         updatedAt: updatedAt,
+       );
 
   /// Returns a shallow copy of this [OrderItem]
   /// with some or all fields replaced by the given arguments.
@@ -213,17 +218,17 @@ class OrderItemImplicit extends _OrderItemImpl {
     required DateTime createdAt,
     required DateTime updatedAt,
     int? $_ordersOrderitemsOrdersId,
-  })  : _ordersOrderitemsOrdersId = $_ordersOrderitemsOrdersId,
-        super(
-          id: id,
-          orderId: orderId,
-          productId: productId,
-          quantity: quantity,
-          unitPrice: unitPrice,
-          totalPrice: totalPrice,
-          createdAt: createdAt,
-          updatedAt: updatedAt,
-        );
+  }) : _ordersOrderitemsOrdersId = $_ordersOrderitemsOrdersId,
+       super(
+         id: id,
+         orderId: orderId,
+         productId: productId,
+         quantity: quantity,
+         unitPrice: unitPrice,
+         totalPrice: totalPrice,
+         createdAt: createdAt,
+         updatedAt: updatedAt,
+       );
 
   factory OrderItemImplicit(
     OrderItem orderItem, {
@@ -246,8 +251,56 @@ class OrderItemImplicit extends _OrderItemImpl {
   final int? _ordersOrderitemsOrdersId;
 }
 
+class OrderItemUpdateTable extends _i1.UpdateTable<OrderItemTable> {
+  OrderItemUpdateTable(super.table);
+
+  _i1.ColumnValue<int, int> orderId(int value) => _i1.ColumnValue(
+    table.orderId,
+    value,
+  );
+
+  _i1.ColumnValue<int, int> productId(int value) => _i1.ColumnValue(
+    table.productId,
+    value,
+  );
+
+  _i1.ColumnValue<int, int> quantity(int value) => _i1.ColumnValue(
+    table.quantity,
+    value,
+  );
+
+  _i1.ColumnValue<double, double> unitPrice(double value) => _i1.ColumnValue(
+    table.unitPrice,
+    value,
+  );
+
+  _i1.ColumnValue<double, double> totalPrice(double value) => _i1.ColumnValue(
+    table.totalPrice,
+    value,
+  );
+
+  _i1.ColumnValue<DateTime, DateTime> createdAt(DateTime value) =>
+      _i1.ColumnValue(
+        table.createdAt,
+        value,
+      );
+
+  _i1.ColumnValue<DateTime, DateTime> updatedAt(DateTime value) =>
+      _i1.ColumnValue(
+        table.updatedAt,
+        value,
+      );
+
+  _i1.ColumnValue<int, int> $_ordersOrderitemsOrdersId(int? value) =>
+      _i1.ColumnValue(
+        table.$_ordersOrderitemsOrdersId,
+        value,
+      );
+}
+
 class OrderItemTable extends _i1.Table<int?> {
   OrderItemTable({super.tableRelation}) : super(tableName: 'order_items') {
+    updateTable = OrderItemUpdateTable(this);
     orderId = _i1.ColumnInt(
       'orderId',
       this,
@@ -282,6 +335,8 @@ class OrderItemTable extends _i1.Table<int?> {
     );
   }
 
+  late final OrderItemUpdateTable updateTable;
+
   late final _i1.ColumnInt orderId;
 
   late final _i1.ColumnInt productId;
@@ -300,28 +355,28 @@ class OrderItemTable extends _i1.Table<int?> {
 
   @override
   List<_i1.Column> get columns => [
-        id,
-        orderId,
-        productId,
-        quantity,
-        unitPrice,
-        totalPrice,
-        createdAt,
-        updatedAt,
-        $_ordersOrderitemsOrdersId,
-      ];
+    id,
+    orderId,
+    productId,
+    quantity,
+    unitPrice,
+    totalPrice,
+    createdAt,
+    updatedAt,
+    $_ordersOrderitemsOrdersId,
+  ];
 
   @override
   List<_i1.Column> get managedColumns => [
-        id,
-        orderId,
-        productId,
-        quantity,
-        unitPrice,
-        totalPrice,
-        createdAt,
-        updatedAt,
-      ];
+    id,
+    orderId,
+    productId,
+    quantity,
+    unitPrice,
+    totalPrice,
+    createdAt,
+    updatedAt,
+  ];
 }
 
 class OrderItemInclude extends _i1.IncludeObject {
@@ -509,6 +564,46 @@ class OrderItemRepository {
     return session.db.updateRow<OrderItem>(
       row,
       columns: columns?.call(OrderItem.t),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates a single [OrderItem] by its [id] with the specified [columnValues].
+  /// Returns the updated row or null if no row with the given id exists.
+  Future<OrderItem?> updateById(
+    _i1.Session session,
+    int id, {
+    required _i1.ColumnValueListBuilder<OrderItemUpdateTable> columnValues,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateById<OrderItem>(
+      id,
+      columnValues: columnValues(OrderItem.t.updateTable),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates all [OrderItem]s matching the [where] expression with the specified [columnValues].
+  /// Returns the list of updated rows.
+  Future<List<OrderItem>> updateWhere(
+    _i1.Session session, {
+    required _i1.ColumnValueListBuilder<OrderItemUpdateTable> columnValues,
+    required _i1.WhereExpressionBuilder<OrderItemTable> where,
+    int? limit,
+    int? offset,
+    _i1.OrderByBuilder<OrderItemTable>? orderBy,
+    _i1.OrderByListBuilder<OrderItemTable>? orderByList,
+    bool orderDescending = false,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateWhere<OrderItem>(
+      columnValues: columnValues(OrderItem.t.updateTable),
+      where: where(OrderItem.t),
+      limit: limit,
+      offset: offset,
+      orderBy: orderBy?.call(OrderItem.t),
+      orderByList: orderByList?.call(OrderItem.t),
+      orderDescending: orderDescending,
       transaction: transaction,
     );
   }

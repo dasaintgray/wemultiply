@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
@@ -86,6 +87,7 @@ abstract class SaleItem
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'SaleItem',
       if (id != null) 'id': id,
       'saleId': saleId,
       'productId': productId,
@@ -101,6 +103,7 @@ abstract class SaleItem
   @override
   Map<String, dynamic> toJsonForProtocol() {
     return {
+      '__className__': 'SaleItem',
       if (id != null) 'id': id,
       'saleId': saleId,
       'productId': productId,
@@ -153,14 +156,14 @@ class _SaleItemImpl extends SaleItem {
     required double price,
     required double lineTotal,
   }) : super._(
-          id: id,
-          saleId: saleId,
-          productId: productId,
-          productName: productName,
-          quantity: quantity,
-          price: price,
-          lineTotal: lineTotal,
-        );
+         id: id,
+         saleId: saleId,
+         productId: productId,
+         productName: productName,
+         quantity: quantity,
+         price: price,
+         lineTotal: lineTotal,
+       );
 
   /// Returns a shallow copy of this [SaleItem]
   /// with some or all fields replaced by the given arguments.
@@ -198,16 +201,16 @@ class SaleItemImplicit extends _SaleItemImpl {
     required double price,
     required double lineTotal,
     int? $_saleSalesitemsSaleId,
-  })  : _saleSalesitemsSaleId = $_saleSalesitemsSaleId,
-        super(
-          id: id,
-          saleId: saleId,
-          productId: productId,
-          productName: productName,
-          quantity: quantity,
-          price: price,
-          lineTotal: lineTotal,
-        );
+  }) : _saleSalesitemsSaleId = $_saleSalesitemsSaleId,
+       super(
+         id: id,
+         saleId: saleId,
+         productId: productId,
+         productName: productName,
+         quantity: quantity,
+         price: price,
+         lineTotal: lineTotal,
+       );
 
   factory SaleItemImplicit(
     SaleItem saleItem, {
@@ -229,8 +232,49 @@ class SaleItemImplicit extends _SaleItemImpl {
   final int? _saleSalesitemsSaleId;
 }
 
+class SaleItemUpdateTable extends _i1.UpdateTable<SaleItemTable> {
+  SaleItemUpdateTable(super.table);
+
+  _i1.ColumnValue<int, int> saleId(int value) => _i1.ColumnValue(
+    table.saleId,
+    value,
+  );
+
+  _i1.ColumnValue<int, int> productId(int value) => _i1.ColumnValue(
+    table.productId,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> productName(String value) => _i1.ColumnValue(
+    table.productName,
+    value,
+  );
+
+  _i1.ColumnValue<int, int> quantity(int value) => _i1.ColumnValue(
+    table.quantity,
+    value,
+  );
+
+  _i1.ColumnValue<double, double> price(double value) => _i1.ColumnValue(
+    table.price,
+    value,
+  );
+
+  _i1.ColumnValue<double, double> lineTotal(double value) => _i1.ColumnValue(
+    table.lineTotal,
+    value,
+  );
+
+  _i1.ColumnValue<int, int> $_saleSalesitemsSaleId(int? value) =>
+      _i1.ColumnValue(
+        table.$_saleSalesitemsSaleId,
+        value,
+      );
+}
+
 class SaleItemTable extends _i1.Table<int?> {
   SaleItemTable({super.tableRelation}) : super(tableName: 'sale_items') {
+    updateTable = SaleItemUpdateTable(this);
     saleId = _i1.ColumnInt(
       'saleId',
       this,
@@ -261,6 +305,8 @@ class SaleItemTable extends _i1.Table<int?> {
     );
   }
 
+  late final SaleItemUpdateTable updateTable;
+
   late final _i1.ColumnInt saleId;
 
   late final _i1.ColumnInt productId;
@@ -277,26 +323,26 @@ class SaleItemTable extends _i1.Table<int?> {
 
   @override
   List<_i1.Column> get columns => [
-        id,
-        saleId,
-        productId,
-        productName,
-        quantity,
-        price,
-        lineTotal,
-        $_saleSalesitemsSaleId,
-      ];
+    id,
+    saleId,
+    productId,
+    productName,
+    quantity,
+    price,
+    lineTotal,
+    $_saleSalesitemsSaleId,
+  ];
 
   @override
   List<_i1.Column> get managedColumns => [
-        id,
-        saleId,
-        productId,
-        productName,
-        quantity,
-        price,
-        lineTotal,
-      ];
+    id,
+    saleId,
+    productId,
+    productName,
+    quantity,
+    price,
+    lineTotal,
+  ];
 }
 
 class SaleItemInclude extends _i1.IncludeObject {
@@ -484,6 +530,46 @@ class SaleItemRepository {
     return session.db.updateRow<SaleItem>(
       row,
       columns: columns?.call(SaleItem.t),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates a single [SaleItem] by its [id] with the specified [columnValues].
+  /// Returns the updated row or null if no row with the given id exists.
+  Future<SaleItem?> updateById(
+    _i1.Session session,
+    int id, {
+    required _i1.ColumnValueListBuilder<SaleItemUpdateTable> columnValues,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateById<SaleItem>(
+      id,
+      columnValues: columnValues(SaleItem.t.updateTable),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates all [SaleItem]s matching the [where] expression with the specified [columnValues].
+  /// Returns the list of updated rows.
+  Future<List<SaleItem>> updateWhere(
+    _i1.Session session, {
+    required _i1.ColumnValueListBuilder<SaleItemUpdateTable> columnValues,
+    required _i1.WhereExpressionBuilder<SaleItemTable> where,
+    int? limit,
+    int? offset,
+    _i1.OrderByBuilder<SaleItemTable>? orderBy,
+    _i1.OrderByListBuilder<SaleItemTable>? orderByList,
+    bool orderDescending = false,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateWhere<SaleItem>(
+      columnValues: columnValues(SaleItem.t.updateTable),
+      where: where(SaleItem.t),
+      limit: limit,
+      offset: offset,
+      orderBy: orderBy?.call(SaleItem.t),
+      orderByList: orderByList?.call(SaleItem.t),
+      orderDescending: orderDescending,
       transaction: transaction,
     );
   }

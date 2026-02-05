@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
@@ -35,8 +36,9 @@ abstract class PaymentEvent
       paymentId: jsonSerialization['paymentId'] as int,
       eventType: jsonSerialization['eventType'] as String,
       payload: jsonSerialization['payload'] as String,
-      createdAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
+      createdAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['createdAt'],
+      ),
     );
   }
 
@@ -71,6 +73,7 @@ abstract class PaymentEvent
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'PaymentEvent',
       if (id != null) 'id': id,
       'paymentId': paymentId,
       'eventType': eventType,
@@ -82,6 +85,7 @@ abstract class PaymentEvent
   @override
   Map<String, dynamic> toJsonForProtocol() {
     return {
+      '__className__': 'PaymentEvent',
       if (id != null) 'id': id,
       'paymentId': paymentId,
       'eventType': eventType,
@@ -130,12 +134,12 @@ class _PaymentEventImpl extends PaymentEvent {
     required String payload,
     required DateTime createdAt,
   }) : super._(
-          id: id,
-          paymentId: paymentId,
-          eventType: eventType,
-          payload: payload,
-          createdAt: createdAt,
-        );
+         id: id,
+         paymentId: paymentId,
+         eventType: eventType,
+         payload: payload,
+         createdAt: createdAt,
+       );
 
   /// Returns a shallow copy of this [PaymentEvent]
   /// with some or all fields replaced by the given arguments.
@@ -158,9 +162,35 @@ class _PaymentEventImpl extends PaymentEvent {
   }
 }
 
+class PaymentEventUpdateTable extends _i1.UpdateTable<PaymentEventTable> {
+  PaymentEventUpdateTable(super.table);
+
+  _i1.ColumnValue<int, int> paymentId(int value) => _i1.ColumnValue(
+    table.paymentId,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> eventType(String value) => _i1.ColumnValue(
+    table.eventType,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> payload(String value) => _i1.ColumnValue(
+    table.payload,
+    value,
+  );
+
+  _i1.ColumnValue<DateTime, DateTime> createdAt(DateTime value) =>
+      _i1.ColumnValue(
+        table.createdAt,
+        value,
+      );
+}
+
 class PaymentEventTable extends _i1.Table<int?> {
   PaymentEventTable({super.tableRelation})
-      : super(tableName: 'payment_events') {
+    : super(tableName: 'payment_events') {
+    updateTable = PaymentEventUpdateTable(this);
     paymentId = _i1.ColumnInt(
       'paymentId',
       this,
@@ -179,6 +209,8 @@ class PaymentEventTable extends _i1.Table<int?> {
     );
   }
 
+  late final PaymentEventUpdateTable updateTable;
+
   late final _i1.ColumnInt paymentId;
 
   late final _i1.ColumnString eventType;
@@ -189,12 +221,12 @@ class PaymentEventTable extends _i1.Table<int?> {
 
   @override
   List<_i1.Column> get columns => [
-        id,
-        paymentId,
-        eventType,
-        payload,
-        createdAt,
-      ];
+    id,
+    paymentId,
+    eventType,
+    payload,
+    createdAt,
+  ];
 }
 
 class PaymentEventInclude extends _i1.IncludeObject {
@@ -382,6 +414,46 @@ class PaymentEventRepository {
     return session.db.updateRow<PaymentEvent>(
       row,
       columns: columns?.call(PaymentEvent.t),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates a single [PaymentEvent] by its [id] with the specified [columnValues].
+  /// Returns the updated row or null if no row with the given id exists.
+  Future<PaymentEvent?> updateById(
+    _i1.Session session,
+    int id, {
+    required _i1.ColumnValueListBuilder<PaymentEventUpdateTable> columnValues,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateById<PaymentEvent>(
+      id,
+      columnValues: columnValues(PaymentEvent.t.updateTable),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates all [PaymentEvent]s matching the [where] expression with the specified [columnValues].
+  /// Returns the list of updated rows.
+  Future<List<PaymentEvent>> updateWhere(
+    _i1.Session session, {
+    required _i1.ColumnValueListBuilder<PaymentEventUpdateTable> columnValues,
+    required _i1.WhereExpressionBuilder<PaymentEventTable> where,
+    int? limit,
+    int? offset,
+    _i1.OrderByBuilder<PaymentEventTable>? orderBy,
+    _i1.OrderByListBuilder<PaymentEventTable>? orderByList,
+    bool orderDescending = false,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateWhere<PaymentEvent>(
+      columnValues: columnValues(PaymentEvent.t.updateTable),
+      where: where(PaymentEvent.t),
+      limit: limit,
+      offset: offset,
+      orderBy: orderBy?.call(PaymentEvent.t),
+      orderByList: orderByList?.call(PaymentEvent.t),
+      orderDescending: orderDescending,
       transaction: transaction,
     );
   }

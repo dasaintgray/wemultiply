@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
@@ -38,8 +39,9 @@ abstract class PioneerAccounts implements _i1.SerializableModel {
       gsID: jsonSerialization['gsID'] as int,
       userId: jsonSerialization['userId'] as int,
       pioneerCode: jsonSerialization['pioneerCode'] as String,
-      createdAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
+      createdAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['createdAt'],
+      ),
       isRedeemed: jsonSerialization['isRedeemed'] as bool,
       redeemedAt: jsonSerialization['redeemedAt'] == null
           ? null
@@ -79,6 +81,7 @@ abstract class PioneerAccounts implements _i1.SerializableModel {
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'PioneerAccounts',
       if (id != null) 'id': id,
       'gsID': gsID,
       'userId': userId,
@@ -107,14 +110,14 @@ class _PioneerAccountsImpl extends PioneerAccounts {
     required bool isRedeemed,
     DateTime? redeemedAt,
   }) : super._(
-          id: id,
-          gsID: gsID,
-          userId: userId,
-          pioneerCode: pioneerCode,
-          createdAt: createdAt,
-          isRedeemed: isRedeemed,
-          redeemedAt: redeemedAt,
-        );
+         id: id,
+         gsID: gsID,
+         userId: userId,
+         pioneerCode: pioneerCode,
+         createdAt: createdAt,
+         isRedeemed: isRedeemed,
+         redeemedAt: redeemedAt,
+       );
 
   /// Returns a shallow copy of this [PioneerAccounts]
   /// with some or all fields replaced by the given arguments.

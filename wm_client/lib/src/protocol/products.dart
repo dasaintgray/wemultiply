@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
@@ -52,11 +53,13 @@ abstract class Product implements _i1.SerializableModel {
       imageName: jsonSerialization['imageName'] as String,
       imageURL: jsonSerialization['imageURL'] as String,
       isActive: jsonSerialization['isActive'] as bool,
-      createdAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
+      createdAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['createdAt'],
+      ),
       createdBy: jsonSerialization['createdBy'] as String,
-      updatedat:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['updatedat']),
+      updatedat: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['updatedat'],
+      ),
       updatedBy: jsonSerialization['updatedBy'] as String,
     );
   }
@@ -108,6 +111,7 @@ abstract class Product implements _i1.SerializableModel {
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'Product',
       if (id != null) 'id': id,
       'productName': productName,
       'description': description,
@@ -146,19 +150,19 @@ class _ProductImpl extends Product {
     required DateTime updatedat,
     required String updatedBy,
   }) : super._(
-          id: id,
-          productName: productName,
-          description: description,
-          price: price,
-          stock: stock,
-          imageName: imageName,
-          imageURL: imageURL,
-          isActive: isActive,
-          createdAt: createdAt,
-          createdBy: createdBy,
-          updatedat: updatedat,
-          updatedBy: updatedBy,
-        );
+         id: id,
+         productName: productName,
+         description: description,
+         price: price,
+         stock: stock,
+         imageName: imageName,
+         imageURL: imageURL,
+         isActive: isActive,
+         createdAt: createdAt,
+         createdBy: createdBy,
+         updatedat: updatedat,
+         updatedBy: updatedBy,
+       );
 
   /// Returns a shallow copy of this [Product]
   /// with some or all fields replaced by the given arguments.

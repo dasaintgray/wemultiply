@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:wm_client/wm_client.dart';
 import 'package:wm_flutter/core/repositories/menu_repository.dart';
 import 'package:wm_flutter/core/spc_core.dart';

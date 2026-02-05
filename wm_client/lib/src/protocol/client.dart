@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
@@ -75,36 +76,34 @@ class EndpointAddress extends _i1.EndpointRef {
   _i2.Future<bool> deleteAddress(
     int addressId,
     int userId,
-  ) =>
-      caller.callServerEndpoint<bool>(
-        'address',
-        'deleteAddress',
-        {
-          'addressId': addressId,
-          'userId': userId,
-        },
-      );
+  ) => caller.callServerEndpoint<bool>(
+    'address',
+    'deleteAddress',
+    {
+      'addressId': addressId,
+      'userId': userId,
+    },
+  );
 
   /// Set an address as primary
   _i2.Future<_i3.Addresses?> setPrimaryAddress(
     int addressId,
     int userId,
-  ) =>
-      caller.callServerEndpoint<_i3.Addresses?>(
-        'address',
-        'setPrimaryAddress',
-        {
-          'addressId': addressId,
-          'userId': userId,
-        },
-      );
+  ) => caller.callServerEndpoint<_i3.Addresses?>(
+    'address',
+    'setPrimaryAddress',
+    {
+      'addressId': addressId,
+      'userId': userId,
+    },
+  );
 
   /// Get address count for a user
   _i2.Future<int> getAddressCount(int userId) => caller.callServerEndpoint<int>(
-        'address',
-        'getAddressCount',
-        {'userId': userId},
-      );
+    'address',
+    'getAddressCount',
+    {'userId': userId},
+  );
 }
 
 /// {@category Endpoint}
@@ -122,16 +121,16 @@ class EndpointAdmin extends _i1.EndpointRef {
       );
 
   _i2.Future<void> blockUser(int userID) => caller.callServerEndpoint<void>(
-        'admin',
-        'blockUser',
-        {'userID': userID},
-      );
+    'admin',
+    'blockUser',
+    {'userID': userID},
+  );
 
   _i2.Future<void> unblockUser(int userID) => caller.callServerEndpoint<void>(
-        'admin',
-        'unblockUser',
-        {'userID': userID},
-      );
+    'admin',
+    'unblockUser',
+    {'userID': userID},
+  );
 }
 
 /// {@category Endpoint}
@@ -173,50 +172,47 @@ class EndpointCart extends _i1.EndpointRef {
     required int userID,
     required int productID,
     required int quantity,
-  }) =>
-      caller.callServerEndpoint<_i5.Cart?>(
-        'cart',
-        'addItemToCart',
-        {
-          'userID': userID,
-          'productID': productID,
-          'quantity': quantity,
-        },
-      );
+  }) => caller.callServerEndpoint<_i5.Cart?>(
+    'cart',
+    'addItemToCart',
+    {
+      'userID': userID,
+      'productID': productID,
+      'quantity': quantity,
+    },
+  );
 
   _i2.Future<_i6.Order?> checkOutCart({
     required int userID,
     required String paymentMethod,
-  }) =>
-      caller.callServerEndpoint<_i6.Order?>(
-        'cart',
-        'checkOutCart',
-        {
-          'userID': userID,
-          'paymentMethod': paymentMethod,
-        },
-      );
+  }) => caller.callServerEndpoint<_i6.Order?>(
+    'cart',
+    'checkOutCart',
+    {
+      'userID': userID,
+      'paymentMethod': paymentMethod,
+    },
+  );
 
   /// Mark order as paid and clear the cart after successful payment
   _i2.Future<bool> markOrderPaidAndClearCart({
     required int userId,
     required String orderId,
-  }) =>
-      caller.callServerEndpoint<bool>(
-        'cart',
-        'markOrderPaidAndClearCart',
-        {
-          'userId': userId,
-          'orderId': orderId,
-        },
-      );
+  }) => caller.callServerEndpoint<bool>(
+    'cart',
+    'markOrderPaidAndClearCart',
+    {
+      'userId': userId,
+      'orderId': orderId,
+    },
+  );
 
   /// Clear all active carts for a user (used after successful payment)
   _i2.Future<bool> clearUserCart(int userId) => caller.callServerEndpoint<bool>(
-        'cart',
-        'clearUserCart',
-        {'userId': userId},
-      );
+    'cart',
+    'clearUserCart',
+    {'userId': userId},
+  );
 
   /// Debug method to check cart status for a user
   _i2.Future<Map<String, dynamic>> debugCartStatus(int userId) =>
@@ -270,12 +266,12 @@ class EndpointCommissions extends _i1.EndpointRef {
       );
 
   _i2.Future<List<_i7.Commissions>> createMultipleCommissions(
-          List<_i7.Commissions> commissions) =>
-      caller.callServerEndpoint<List<_i7.Commissions>>(
-        'commissions',
-        'createMultipleCommissions',
-        {'commissions': commissions},
-      );
+    List<_i7.Commissions> commissions,
+  ) => caller.callServerEndpoint<List<_i7.Commissions>>(
+    'commissions',
+    'createMultipleCommissions',
+    {'commissions': commissions},
+  );
 }
 
 /// {@category Endpoint}
@@ -293,20 +289,20 @@ class EndpointCommissionsRule extends _i1.EndpointRef {
       );
 
   _i2.Future<_i8.CommissionRule?> createCommissionRule(
-          _i8.CommissionRule rule) =>
-      caller.callServerEndpoint<_i8.CommissionRule?>(
-        'commissionsRule',
-        'createCommissionRule',
-        {'rule': rule},
-      );
+    _i8.CommissionRule rule,
+  ) => caller.callServerEndpoint<_i8.CommissionRule?>(
+    'commissionsRule',
+    'createCommissionRule',
+    {'rule': rule},
+  );
 
   _i2.Future<List<_i8.CommissionRule>> createMultipleCommissionRules(
-          List<_i8.CommissionRule> rules) =>
-      caller.callServerEndpoint<List<_i8.CommissionRule>>(
-        'commissionsRule',
-        'createMultipleCommissionRules',
-        {'rules': rules},
-      );
+    List<_i8.CommissionRule> rules,
+  ) => caller.callServerEndpoint<List<_i8.CommissionRule>>(
+    'commissionsRule',
+    'createMultipleCommissionRules',
+    {'rules': rules},
+  );
 
   _i2.Future<_i8.CommissionRule?> getCommissionRuleById(int id) =>
       caller.callServerEndpoint<_i8.CommissionRule?>(
@@ -316,12 +312,12 @@ class EndpointCommissionsRule extends _i1.EndpointRef {
       );
 
   _i2.Future<_i8.CommissionRule?> updateCommissionRule(
-          _i8.CommissionRule rule) =>
-      caller.callServerEndpoint<_i8.CommissionRule?>(
-        'commissionsRule',
-        'updateCommissionRule',
-        {'rule': rule},
-      );
+    _i8.CommissionRule rule,
+  ) => caller.callServerEndpoint<_i8.CommissionRule?>(
+    'commissionsRule',
+    'updateCommissionRule',
+    {'rule': rule},
+  );
 
   _i2.Future<void> deleteCommissionRule(_i8.CommissionRule rule) =>
       caller.callServerEndpoint<void>(
@@ -346,20 +342,20 @@ class EndpointDistributors extends _i1.EndpointRef {
       );
 
   _i2.Future<_i9.Distributors?> createDistributor(
-          _i9.Distributors distributor) =>
-      caller.callServerEndpoint<_i9.Distributors?>(
-        'distributors',
-        'createDistributor',
-        {'distributor': distributor},
-      );
+    _i9.Distributors distributor,
+  ) => caller.callServerEndpoint<_i9.Distributors?>(
+    'distributors',
+    'createDistributor',
+    {'distributor': distributor},
+  );
 
   _i2.Future<List<_i9.Distributors>> createMultipleDistributors(
-          List<_i9.Distributors> distributors) =>
-      caller.callServerEndpoint<List<_i9.Distributors>>(
-        'distributors',
-        'createMultipleDistributors',
-        {'distributors': distributors},
-      );
+    List<_i9.Distributors> distributors,
+  ) => caller.callServerEndpoint<List<_i9.Distributors>>(
+    'distributors',
+    'createMultipleDistributors',
+    {'distributors': distributors},
+  );
 
   _i2.Future<_i9.Distributors?> getDistributorById(int id) =>
       caller.callServerEndpoint<_i9.Distributors?>(
@@ -369,12 +365,12 @@ class EndpointDistributors extends _i1.EndpointRef {
       );
 
   _i2.Future<_i9.Distributors?> updateDistributor(
-          _i9.Distributors distributor) =>
-      caller.callServerEndpoint<_i9.Distributors?>(
-        'distributors',
-        'updateDistributor',
-        {'distributor': distributor},
-      );
+    _i9.Distributors distributor,
+  ) => caller.callServerEndpoint<_i9.Distributors?>(
+    'distributors',
+    'updateDistributor',
+    {'distributor': distributor},
+  );
 }
 
 /// {@category Endpoint}
@@ -413,10 +409,10 @@ class EndpointGoldenSeat extends _i1.EndpointRef {
       );
 
   _i2.Future<void> deleteGoldenSeat(int id) => caller.callServerEndpoint<void>(
-        'goldenSeat',
-        'deleteGoldenSeat',
-        {'id': id},
-      );
+    'goldenSeat',
+    'deleteGoldenSeat',
+    {'id': id},
+  );
 }
 
 /// {@category Endpoint}
@@ -441,20 +437,20 @@ class EndpointMembership extends _i1.EndpointRef {
       );
 
   _i2.Future<_i11.MembershipPackage> createMembershipPackage(
-          _i11.MembershipPackage package) =>
-      caller.callServerEndpoint<_i11.MembershipPackage>(
-        'membership',
-        'createMembershipPackage',
-        {'package': package},
-      );
+    _i11.MembershipPackage package,
+  ) => caller.callServerEndpoint<_i11.MembershipPackage>(
+    'membership',
+    'createMembershipPackage',
+    {'package': package},
+  );
 
   _i2.Future<_i11.MembershipPackage> updateMembershipPackage(
-          _i11.MembershipPackage package) =>
-      caller.callServerEndpoint<_i11.MembershipPackage>(
-        'membership',
-        'updateMembershipPackage',
-        {'package': package},
-      );
+    _i11.MembershipPackage package,
+  ) => caller.callServerEndpoint<_i11.MembershipPackage>(
+    'membership',
+    'updateMembershipPackage',
+    {'package': package},
+  );
 
   _i2.Future<void> deleteMembershipPackage(int id) =>
       caller.callServerEndpoint<void>(
@@ -540,31 +536,29 @@ class EndpointPayment extends _i1.EndpointRef {
     String orderId,
     double amount,
     String? email,
-  ) =>
-      caller.callServerEndpoint<_i14.PaymentResponse>(
-        'payment',
-        'createInvoice',
-        {
-          'orderId': orderId,
-          'amount': amount,
-          'email': email,
-        },
-      );
+  ) => caller.callServerEndpoint<_i14.PaymentResponse>(
+    'payment',
+    'createInvoice',
+    {
+      'orderId': orderId,
+      'amount': amount,
+      'email': email,
+    },
+  );
 
   _i2.Future<_i14.PaymentResponse> createEwallet(
     String orderId,
     double amount,
     String channelCode,
-  ) =>
-      caller.callServerEndpoint<_i14.PaymentResponse>(
-        'payment',
-        'createEwallet',
-        {
-          'orderId': orderId,
-          'amount': amount,
-          'channelCode': channelCode,
-        },
-      );
+  ) => caller.callServerEndpoint<_i14.PaymentResponse>(
+    'payment',
+    'createEwallet',
+    {
+      'orderId': orderId,
+      'amount': amount,
+      'channelCode': channelCode,
+    },
+  );
 
   _i2.Future<_i15.Payment?> getPaymentByExternalId(String externalId) =>
       caller.callServerEndpoint<_i15.Payment?>(
@@ -577,16 +571,15 @@ class EndpointPayment extends _i1.EndpointRef {
     required String orderID,
     required double amount,
     String? userEmail,
-  }) =>
-      caller.callServerEndpoint<_i14.PaymentResponse>(
-        'payment',
-        'createPayment',
-        {
-          'orderID': orderID,
-          'amount': amount,
-          'userEmail': userEmail,
-        },
-      );
+  }) => caller.callServerEndpoint<_i14.PaymentResponse>(
+    'payment',
+    'createPayment',
+    {
+      'orderID': orderID,
+      'amount': amount,
+      'userEmail': userEmail,
+    },
+  );
 
   /// Creates a direct card payment with 3DS authentication
   _i2.Future<_i14.PaymentResponse> createCardPayment({
@@ -603,63 +596,60 @@ class EndpointPayment extends _i1.EndpointRef {
     String? cardholderPhone,
     String? description,
     required bool preAuthorize,
-  }) =>
-      caller.callServerEndpoint<_i14.PaymentResponse>(
-        'payment',
-        'createCardPayment',
-        {
-          'orderId': orderId,
-          'amount': amount,
-          'currency': currency,
-          'cardNumber': cardNumber,
-          'expiryMonth': expiryMonth,
-          'expiryYear': expiryYear,
-          'cvn': cvn,
-          'cardholderFirstName': cardholderFirstName,
-          'cardholderLastName': cardholderLastName,
-          'cardholderEmail': cardholderEmail,
-          'cardholderPhone': cardholderPhone,
-          'description': description,
-          'preAuthorize': preAuthorize,
-        },
-      );
+  }) => caller.callServerEndpoint<_i14.PaymentResponse>(
+    'payment',
+    'createCardPayment',
+    {
+      'orderId': orderId,
+      'amount': amount,
+      'currency': currency,
+      'cardNumber': cardNumber,
+      'expiryMonth': expiryMonth,
+      'expiryYear': expiryYear,
+      'cvn': cvn,
+      'cardholderFirstName': cardholderFirstName,
+      'cardholderLastName': cardholderLastName,
+      'cardholderEmail': cardholderEmail,
+      'cardholderPhone': cardholderPhone,
+      'description': description,
+      'preAuthorize': preAuthorize,
+    },
+  );
 
   /// Captures a pre-authorized card payment
   _i2.Future<_i14.PaymentResponse> captureCardPayment({
     required String paymentRequestId,
     required double captureAmount,
-  }) =>
-      caller.callServerEndpoint<_i14.PaymentResponse>(
-        'payment',
-        'captureCardPayment',
-        {
-          'paymentRequestId': paymentRequestId,
-          'captureAmount': captureAmount,
-        },
-      );
+  }) => caller.callServerEndpoint<_i14.PaymentResponse>(
+    'payment',
+    'captureCardPayment',
+    {
+      'paymentRequestId': paymentRequestId,
+      'captureAmount': captureAmount,
+    },
+  );
 
   /// Gets payment request status from Xendit
   _i2.Future<_i14.PaymentResponse> getCardPaymentStatus(
-          String paymentRequestId) =>
-      caller.callServerEndpoint<_i14.PaymentResponse>(
-        'payment',
-        'getCardPaymentStatus',
-        {'paymentRequestId': paymentRequestId},
-      );
+    String paymentRequestId,
+  ) => caller.callServerEndpoint<_i14.PaymentResponse>(
+    'payment',
+    'getCardPaymentStatus',
+    {'paymentRequestId': paymentRequestId},
+  );
 
   /// Creates a QR PH payment
   _i2.Future<_i14.PaymentResponse> createQrPayment(
     String orderId,
     double amount,
-  ) =>
-      caller.callServerEndpoint<_i14.PaymentResponse>(
-        'payment',
-        'createQrPayment',
-        {
-          'orderId': orderId,
-          'amount': amount,
-        },
-      );
+  ) => caller.callServerEndpoint<_i14.PaymentResponse>(
+    'payment',
+    'createQrPayment',
+    {
+      'orderId': orderId,
+      'amount': amount,
+    },
+  );
 
   /// Creates a PayLater payment (BillEase, Cashalo)
   _i2.Future<_i14.PaymentResponse> createPayLater(
@@ -668,18 +658,17 @@ class EndpointPayment extends _i1.EndpointRef {
     String channelCode,
     String? email,
     String? phone,
-  ) =>
-      caller.callServerEndpoint<_i14.PaymentResponse>(
-        'payment',
-        'createPayLater',
-        {
-          'orderId': orderId,
-          'amount': amount,
-          'channelCode': channelCode,
-          'email': email,
-          'phone': phone,
-        },
-      );
+  ) => caller.callServerEndpoint<_i14.PaymentResponse>(
+    'payment',
+    'createPayLater',
+    {
+      'orderId': orderId,
+      'amount': amount,
+      'channelCode': channelCode,
+      'email': email,
+      'phone': phone,
+    },
+  );
 
   /// Creates a Direct Debit payment (BPI, UnionBank)
   _i2.Future<_i14.PaymentResponse> createDirectDebit(
@@ -687,17 +676,16 @@ class EndpointPayment extends _i1.EndpointRef {
     double amount,
     String channelCode,
     String? email,
-  ) =>
-      caller.callServerEndpoint<_i14.PaymentResponse>(
-        'payment',
-        'createDirectDebit',
-        {
-          'orderId': orderId,
-          'amount': amount,
-          'channelCode': channelCode,
-          'email': email,
-        },
-      );
+  ) => caller.callServerEndpoint<_i14.PaymentResponse>(
+    'payment',
+    'createDirectDebit',
+    {
+      'orderId': orderId,
+      'amount': amount,
+      'channelCode': channelCode,
+      'email': email,
+    },
+  );
 
   /// Webhook handler for Xendit payment callbacks
   _i2.Future<void> handleWebhook(Map<String, dynamic> payload) =>
@@ -758,10 +746,10 @@ class EndpointProduct extends _i1.EndpointRef {
       );
 
   _i2.Future<void> deleteProductById(int id) => caller.callServerEndpoint<void>(
-        'product',
-        'deleteProductById',
-        {'id': id},
-      );
+    'product',
+    'deleteProductById',
+    {'id': id},
+  );
 }
 
 /// {@category Endpoint}
@@ -888,31 +876,29 @@ class EndpointUser extends _i1.EndpointRef {
     required String firstName,
     required String middleName,
     required String lastName,
-  }) =>
-      caller.callServerEndpoint<_i20.User?>(
-        'user',
-        'updateProfile',
-        {
-          'userId': userId,
-          'firstName': firstName,
-          'middleName': middleName,
-          'lastName': lastName,
-        },
-      );
+  }) => caller.callServerEndpoint<_i20.User?>(
+    'user',
+    'updateProfile',
+    {
+      'userId': userId,
+      'firstName': firstName,
+      'middleName': middleName,
+      'lastName': lastName,
+    },
+  );
 
   /// Update user phone number
   _i2.Future<_i20.User?> updatePhone({
     required int userId,
     required String phone,
-  }) =>
-      caller.callServerEndpoint<_i20.User?>(
-        'user',
-        'updatePhone',
-        {
-          'userId': userId,
-          'phone': phone,
-        },
-      );
+  }) => caller.callServerEndpoint<_i20.User?>(
+    'user',
+    'updatePhone',
+    {
+      'userId': userId,
+      'phone': phone,
+    },
+  );
 
   /// Get full name of user
   _i2.Future<String?> getFullName(int userId) =>
@@ -927,16 +913,15 @@ class EndpointUser extends _i1.EndpointRef {
     required int userId,
     required double latitude,
     required double longitude,
-  }) =>
-      caller.callServerEndpoint<_i20.User?>(
-        'user',
-        'updateLocation',
-        {
-          'userId': userId,
-          'latitude': latitude,
-          'longitude': longitude,
-        },
-      );
+  }) => caller.callServerEndpoint<_i20.User?>(
+    'user',
+    'updateLocation',
+    {
+      'userId': userId,
+      'latitude': latitude,
+      'longitude': longitude,
+    },
+  );
 
   /// Get user stats (referrals count, total earnings, orders count)
   _i2.Future<Map<String, dynamic>> getUserStats(int userId) =>
@@ -964,10 +949,10 @@ class EndpointUser extends _i1.EndpointRef {
 
   /// Get orders count for a user
   _i2.Future<int> getOrdersCount(int userId) => caller.callServerEndpoint<int>(
-        'user',
-        'getOrdersCount',
-        {'userId': userId},
-      );
+    'user',
+    'getOrdersCount',
+    {'userId': userId},
+  );
 }
 
 /// {@category Endpoint}
@@ -982,15 +967,14 @@ class EndpointWebhooks extends _i1.EndpointRef {
   _i2.Future<Map<String, dynamic>> xendit(
     Map<String, dynamic> body,
     String? callbackToken,
-  ) =>
-      caller.callServerEndpoint<Map<String, dynamic>>(
-        'webhooks',
-        'xendit',
-        {
-          'body': body,
-          'callbackToken': callbackToken,
-        },
-      );
+  ) => caller.callServerEndpoint<Map<String, dynamic>>(
+    'webhooks',
+    'xendit',
+    {
+      'body': body,
+      'callbackToken': callbackToken,
+    },
+  );
 }
 
 /// This is an example endpoint that returns a greeting message through
@@ -1023,28 +1007,31 @@ class Client extends _i1.ServerpodClientShared {
   Client(
     String host, {
     dynamic securityContext,
-    _i1.AuthenticationKeyManager? authenticationKeyManager,
+    @Deprecated(
+      'Use authKeyProvider instead. This will be removed in future releases.',
+    )
+    super.authenticationKeyManager,
     Duration? streamingConnectionTimeout,
     Duration? connectionTimeout,
     Function(
       _i1.MethodCallContext,
       Object,
       StackTrace,
-    )? onFailedCall,
+    )?
+    onFailedCall,
     Function(_i1.MethodCallContext)? onSucceededCall,
     bool? disconnectStreamsOnLostInternetConnection,
   }) : super(
-          host,
-          _i22.Protocol(),
-          securityContext: securityContext,
-          authenticationKeyManager: authenticationKeyManager,
-          streamingConnectionTimeout: streamingConnectionTimeout,
-          connectionTimeout: connectionTimeout,
-          onFailedCall: onFailedCall,
-          onSucceededCall: onSucceededCall,
-          disconnectStreamsOnLostInternetConnection:
-              disconnectStreamsOnLostInternetConnection,
-        ) {
+         host,
+         _i22.Protocol(),
+         securityContext: securityContext,
+         streamingConnectionTimeout: streamingConnectionTimeout,
+         connectionTimeout: connectionTimeout,
+         onFailedCall: onFailedCall,
+         onSucceededCall: onSucceededCall,
+         disconnectStreamsOnLostInternetConnection:
+             disconnectStreamsOnLostInternetConnection,
+       ) {
     address = EndpointAddress(this);
     admin = EndpointAdmin(this);
     cart = EndpointCart(this);
@@ -1106,27 +1093,28 @@ class Client extends _i1.ServerpodClientShared {
 
   @override
   Map<String, _i1.EndpointRef> get endpointRefLookup => {
-        'address': address,
-        'admin': admin,
-        'cart': cart,
-        'commissions': commissions,
-        'commissionsRule': commissionsRule,
-        'distributors': distributors,
-        'goldenSeat': goldenSeat,
-        'membership': membership,
-        'menu': menu,
-        'package': package,
-        'payment': payment,
-        'product': product,
-        'ranks': ranks,
-        'reaperCommission': reaperCommission,
-        'sale': sale,
-        'user': user,
-        'webhooks': webhooks,
-        'greeting': greeting,
-      };
+    'address': address,
+    'admin': admin,
+    'cart': cart,
+    'commissions': commissions,
+    'commissionsRule': commissionsRule,
+    'distributors': distributors,
+    'goldenSeat': goldenSeat,
+    'membership': membership,
+    'menu': menu,
+    'package': package,
+    'payment': payment,
+    'product': product,
+    'ranks': ranks,
+    'reaperCommission': reaperCommission,
+    'sale': sale,
+    'user': user,
+    'webhooks': webhooks,
+    'greeting': greeting,
+  };
 
   @override
-  Map<String, _i1.ModuleEndpointCaller> get moduleLookup =>
-      {'auth': modules.auth};
+  Map<String, _i1.ModuleEndpointCaller> get moduleLookup => {
+    'auth': modules.auth,
+  };
 }

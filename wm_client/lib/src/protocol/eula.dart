@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
@@ -42,7 +43,8 @@ abstract class Eula implements _i1.SerializableModel {
       content: jsonSerialization['content'] as String,
       version: jsonSerialization['version'] as String,
       effectiveDate: _i1.DateTimeJsonExtension.fromJson(
-          jsonSerialization['effectiveDate']),
+        jsonSerialization['effectiveDate'],
+      ),
       isActive: jsonSerialization['isActive'] as bool,
       language: jsonSerialization['language'] as String,
     );
@@ -83,6 +85,7 @@ abstract class Eula implements _i1.SerializableModel {
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'Eula',
       if (id != null) 'id': id,
       'menuId': menuId,
       'documentType': documentType,
@@ -113,15 +116,15 @@ class _EulaImpl extends Eula {
     required bool isActive,
     required String language,
   }) : super._(
-          id: id,
-          menuId: menuId,
-          documentType: documentType,
-          content: content,
-          version: version,
-          effectiveDate: effectiveDate,
-          isActive: isActive,
-          language: language,
-        );
+         id: id,
+         menuId: menuId,
+         documentType: documentType,
+         content: content,
+         version: version,
+         effectiveDate: effectiveDate,
+         isActive: isActive,
+         language: language,
+       );
 
   /// Returns a shallow copy of this [Eula]
   /// with some or all fields replaced by the given arguments.

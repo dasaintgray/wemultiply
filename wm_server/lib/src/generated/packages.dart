@@ -7,12 +7,13 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
-
+// ignore_for_file: invalid_use_of_internal_member
 // ignore_for_file: unnecessary_null_comparison
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 import 'reaper_commissions.dart' as _i2;
+import 'package:wm_server/src/generated/protocol.dart' as _i3;
 
 abstract class Package
     implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
@@ -60,10 +61,11 @@ abstract class Package
           : _i1.DateTimeJsonExtension.fromJson(jsonSerialization['updatedAt']),
       updatedBy: jsonSerialization['updatedBy'] as String?,
       isActive: jsonSerialization['isActive'] as bool,
-      packageId: (jsonSerialization['packageId'] as List?)
-          ?.map(
-              (e) => _i2.ReaperCommission.fromJson((e as Map<String, dynamic>)))
-          .toList(),
+      packageId: jsonSerialization['packageId'] == null
+          ? null
+          : _i3.Protocol().deserialize<List<_i2.ReaperCommission>>(
+              jsonSerialization['packageId'],
+            ),
     );
   }
 
@@ -116,6 +118,7 @@ abstract class Package
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'Package',
       if (id != null) 'id': id,
       'packageName': packageName,
       'packageDescription': packageDescription,
@@ -134,6 +137,7 @@ abstract class Package
   @override
   Map<String, dynamic> toJsonForProtocol() {
     return {
+      '__className__': 'Package',
       if (id != null) 'id': id,
       'packageName': packageName,
       'packageDescription': packageDescription,
@@ -145,8 +149,9 @@ abstract class Package
       if (updatedBy != null) 'updatedBy': updatedBy,
       'isActive': isActive,
       if (packageId != null)
-        'packageId':
-            packageId?.toJson(valueToJson: (v) => v.toJsonForProtocol()),
+        'packageId': packageId?.toJson(
+          valueToJson: (v) => v.toJsonForProtocol(),
+        ),
     };
   }
 
@@ -196,18 +201,18 @@ class _PackageImpl extends Package {
     required bool isActive,
     List<_i2.ReaperCommission>? packageId,
   }) : super._(
-          id: id,
-          packageName: packageName,
-          packageDescription: packageDescription,
-          membershipFee: membershipFee,
-          productId: productId,
-          createdAt: createdAt,
-          createdBy: createdBy,
-          updatedAt: updatedAt,
-          updatedBy: updatedBy,
-          isActive: isActive,
-          packageId: packageId,
-        );
+         id: id,
+         packageName: packageName,
+         packageDescription: packageDescription,
+         membershipFee: membershipFee,
+         productId: productId,
+         createdAt: createdAt,
+         createdBy: createdBy,
+         updatedAt: updatedAt,
+         updatedBy: updatedBy,
+         isActive: isActive,
+         packageId: packageId,
+       );
 
   /// Returns a shallow copy of this [Package]
   /// with some or all fields replaced by the given arguments.
@@ -244,8 +249,62 @@ class _PackageImpl extends Package {
   }
 }
 
+class PackageUpdateTable extends _i1.UpdateTable<PackageTable> {
+  PackageUpdateTable(super.table);
+
+  _i1.ColumnValue<String, String> packageName(String value) => _i1.ColumnValue(
+    table.packageName,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> packageDescription(String value) =>
+      _i1.ColumnValue(
+        table.packageDescription,
+        value,
+      );
+
+  _i1.ColumnValue<double, double> membershipFee(double value) =>
+      _i1.ColumnValue(
+        table.membershipFee,
+        value,
+      );
+
+  _i1.ColumnValue<int, int> productId(int value) => _i1.ColumnValue(
+    table.productId,
+    value,
+  );
+
+  _i1.ColumnValue<DateTime, DateTime> createdAt(DateTime? value) =>
+      _i1.ColumnValue(
+        table.createdAt,
+        value,
+      );
+
+  _i1.ColumnValue<String, String> createdBy(String? value) => _i1.ColumnValue(
+    table.createdBy,
+    value,
+  );
+
+  _i1.ColumnValue<DateTime, DateTime> updatedAt(DateTime? value) =>
+      _i1.ColumnValue(
+        table.updatedAt,
+        value,
+      );
+
+  _i1.ColumnValue<String, String> updatedBy(String? value) => _i1.ColumnValue(
+    table.updatedBy,
+    value,
+  );
+
+  _i1.ColumnValue<bool, bool> isActive(bool value) => _i1.ColumnValue(
+    table.isActive,
+    value,
+  );
+}
+
 class PackageTable extends _i1.Table<int?> {
   PackageTable({super.tableRelation}) : super(tableName: 'packages') {
+    updateTable = PackageUpdateTable(this);
     packageName = _i1.ColumnString(
       'packageName',
       this,
@@ -283,6 +342,8 @@ class PackageTable extends _i1.Table<int?> {
       this,
     );
   }
+
+  late final PackageUpdateTable updateTable;
 
   late final _i1.ColumnString packageName;
 
@@ -332,24 +393,25 @@ class PackageTable extends _i1.Table<int?> {
     _packageId = _i1.ManyRelation<_i2.ReaperCommissionTable>(
       tableWithRelations: relationTable,
       table: _i2.ReaperCommissionTable(
-          tableRelation: relationTable.tableRelation!.lastRelation),
+        tableRelation: relationTable.tableRelation!.lastRelation,
+      ),
     );
     return _packageId!;
   }
 
   @override
   List<_i1.Column> get columns => [
-        id,
-        packageName,
-        packageDescription,
-        membershipFee,
-        productId,
-        createdAt,
-        createdBy,
-        updatedAt,
-        updatedBy,
-        isActive,
-      ];
+    id,
+    packageName,
+    packageDescription,
+    membershipFee,
+    productId,
+    createdAt,
+    createdBy,
+    updatedAt,
+    updatedBy,
+    isActive,
+  ];
 
   @override
   _i1.Table? getRelationTable(String relationField) {
@@ -567,6 +629,46 @@ class PackageRepository {
     );
   }
 
+  /// Updates a single [Package] by its [id] with the specified [columnValues].
+  /// Returns the updated row or null if no row with the given id exists.
+  Future<Package?> updateById(
+    _i1.Session session,
+    int id, {
+    required _i1.ColumnValueListBuilder<PackageUpdateTable> columnValues,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateById<Package>(
+      id,
+      columnValues: columnValues(Package.t.updateTable),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates all [Package]s matching the [where] expression with the specified [columnValues].
+  /// Returns the list of updated rows.
+  Future<List<Package>> updateWhere(
+    _i1.Session session, {
+    required _i1.ColumnValueListBuilder<PackageUpdateTable> columnValues,
+    required _i1.WhereExpressionBuilder<PackageTable> where,
+    int? limit,
+    int? offset,
+    _i1.OrderByBuilder<PackageTable>? orderBy,
+    _i1.OrderByListBuilder<PackageTable>? orderByList,
+    bool orderDescending = false,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateWhere<Package>(
+      columnValues: columnValues(Package.t.updateTable),
+      where: where(Package.t),
+      limit: limit,
+      offset: offset,
+      orderBy: orderBy?.call(Package.t),
+      orderByList: orderByList?.call(Package.t),
+      orderDescending: orderDescending,
+      transaction: transaction,
+    );
+  }
+
   /// Deletes all [Package]s in the list and returns the deleted rows.
   /// This is an atomic operation, meaning that if one of the rows fail to
   /// be deleted, none of the rows will be deleted.
@@ -640,10 +742,12 @@ class PackageAttachRepository {
     }
 
     var $reaperCommission = reaperCommission
-        .map((e) => _i2.ReaperCommissionImplicit(
-              e,
-              $_packagesPackageidPackagesId: package.id,
-            ))
+        .map(
+          (e) => _i2.ReaperCommissionImplicit(
+            e,
+            $_packagesPackageidPackagesId: package.id,
+          ),
+        )
         .toList();
     await session.db.update<_i2.ReaperCommission>(
       $reaperCommission,
@@ -701,10 +805,12 @@ class PackageDetachRepository {
     }
 
     var $reaperCommission = reaperCommission
-        .map((e) => _i2.ReaperCommissionImplicit(
-              e,
-              $_packagesPackageidPackagesId: null,
-            ))
+        .map(
+          (e) => _i2.ReaperCommissionImplicit(
+            e,
+            $_packagesPackageidPackagesId: null,
+          ),
+        )
         .toList();
     await session.db.update<_i2.ReaperCommission>(
       $reaperCommission,

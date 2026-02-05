@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
@@ -44,8 +45,9 @@ abstract class MenuItems
       menuItemDesc: jsonSerialization['menuItemDesc'] as String,
       menuItemImage: jsonSerialization['menuItemImage'] as String,
       isActive: jsonSerialization['isActive'] as bool,
-      createdAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
+      createdAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['createdAt'],
+      ),
       productID: jsonSerialization['productID'] as int,
       productDesc: jsonSerialization['productDesc'] as String,
       price: (jsonSerialization['price'] as num).toDouble(),
@@ -98,6 +100,7 @@ abstract class MenuItems
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'MenuItems',
       if (id != null) 'id': id,
       'menuId': menuId,
       'menuItemDesc': menuItemDesc,
@@ -115,6 +118,7 @@ abstract class MenuItems
   @override
   Map<String, dynamic> toJsonForProtocol() {
     return {
+      '__className__': 'MenuItems',
       if (id != null) 'id': id,
       'menuId': menuId,
       'menuItemDesc': menuItemDesc,
@@ -171,16 +175,16 @@ class _MenuItemsImpl extends MenuItems {
     required String productDesc,
     required double price,
   }) : super._(
-          id: id,
-          menuId: menuId,
-          menuItemDesc: menuItemDesc,
-          menuItemImage: menuItemImage,
-          isActive: isActive,
-          createdAt: createdAt,
-          productID: productID,
-          productDesc: productDesc,
-          price: price,
-        );
+         id: id,
+         menuId: menuId,
+         menuItemDesc: menuItemDesc,
+         menuItemImage: menuItemImage,
+         isActive: isActive,
+         createdAt: createdAt,
+         productID: productID,
+         productDesc: productDesc,
+         price: price,
+       );
 
   /// Returns a shallow copy of this [MenuItems]
   /// with some or all fields replaced by the given arguments.
@@ -224,18 +228,18 @@ class MenuItemsImplicit extends _MenuItemsImpl {
     required String productDesc,
     required double price,
     int? $_menuMenuitemsMenuId,
-  })  : _menuMenuitemsMenuId = $_menuMenuitemsMenuId,
-        super(
-          id: id,
-          menuId: menuId,
-          menuItemDesc: menuItemDesc,
-          menuItemImage: menuItemImage,
-          isActive: isActive,
-          createdAt: createdAt,
-          productID: productID,
-          productDesc: productDesc,
-          price: price,
-        );
+  }) : _menuMenuitemsMenuId = $_menuMenuitemsMenuId,
+       super(
+         id: id,
+         menuId: menuId,
+         menuItemDesc: menuItemDesc,
+         menuItemImage: menuItemImage,
+         isActive: isActive,
+         createdAt: createdAt,
+         productID: productID,
+         productDesc: productDesc,
+         price: price,
+       );
 
   factory MenuItemsImplicit(
     MenuItems menuItems, {
@@ -259,8 +263,61 @@ class MenuItemsImplicit extends _MenuItemsImpl {
   final int? _menuMenuitemsMenuId;
 }
 
+class MenuItemsUpdateTable extends _i1.UpdateTable<MenuItemsTable> {
+  MenuItemsUpdateTable(super.table);
+
+  _i1.ColumnValue<int, int> menuId(int value) => _i1.ColumnValue(
+    table.menuId,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> menuItemDesc(String value) => _i1.ColumnValue(
+    table.menuItemDesc,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> menuItemImage(String value) =>
+      _i1.ColumnValue(
+        table.menuItemImage,
+        value,
+      );
+
+  _i1.ColumnValue<bool, bool> isActive(bool value) => _i1.ColumnValue(
+    table.isActive,
+    value,
+  );
+
+  _i1.ColumnValue<DateTime, DateTime> createdAt(DateTime value) =>
+      _i1.ColumnValue(
+        table.createdAt,
+        value,
+      );
+
+  _i1.ColumnValue<int, int> productID(int value) => _i1.ColumnValue(
+    table.productID,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> productDesc(String value) => _i1.ColumnValue(
+    table.productDesc,
+    value,
+  );
+
+  _i1.ColumnValue<double, double> price(double value) => _i1.ColumnValue(
+    table.price,
+    value,
+  );
+
+  _i1.ColumnValue<int, int> $_menuMenuitemsMenuId(int? value) =>
+      _i1.ColumnValue(
+        table.$_menuMenuitemsMenuId,
+        value,
+      );
+}
+
 class MenuItemsTable extends _i1.Table<int?> {
   MenuItemsTable({super.tableRelation}) : super(tableName: 'menu_items') {
+    updateTable = MenuItemsUpdateTable(this);
     menuId = _i1.ColumnInt(
       'menuId',
       this,
@@ -299,6 +356,8 @@ class MenuItemsTable extends _i1.Table<int?> {
     );
   }
 
+  late final MenuItemsUpdateTable updateTable;
+
   late final _i1.ColumnInt menuId;
 
   late final _i1.ColumnString menuItemDesc;
@@ -319,30 +378,30 @@ class MenuItemsTable extends _i1.Table<int?> {
 
   @override
   List<_i1.Column> get columns => [
-        id,
-        menuId,
-        menuItemDesc,
-        menuItemImage,
-        isActive,
-        createdAt,
-        productID,
-        productDesc,
-        price,
-        $_menuMenuitemsMenuId,
-      ];
+    id,
+    menuId,
+    menuItemDesc,
+    menuItemImage,
+    isActive,
+    createdAt,
+    productID,
+    productDesc,
+    price,
+    $_menuMenuitemsMenuId,
+  ];
 
   @override
   List<_i1.Column> get managedColumns => [
-        id,
-        menuId,
-        menuItemDesc,
-        menuItemImage,
-        isActive,
-        createdAt,
-        productID,
-        productDesc,
-        price,
-      ];
+    id,
+    menuId,
+    menuItemDesc,
+    menuItemImage,
+    isActive,
+    createdAt,
+    productID,
+    productDesc,
+    price,
+  ];
 }
 
 class MenuItemsInclude extends _i1.IncludeObject {
@@ -530,6 +589,46 @@ class MenuItemsRepository {
     return session.db.updateRow<MenuItems>(
       row,
       columns: columns?.call(MenuItems.t),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates a single [MenuItems] by its [id] with the specified [columnValues].
+  /// Returns the updated row or null if no row with the given id exists.
+  Future<MenuItems?> updateById(
+    _i1.Session session,
+    int id, {
+    required _i1.ColumnValueListBuilder<MenuItemsUpdateTable> columnValues,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateById<MenuItems>(
+      id,
+      columnValues: columnValues(MenuItems.t.updateTable),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates all [MenuItems]s matching the [where] expression with the specified [columnValues].
+  /// Returns the list of updated rows.
+  Future<List<MenuItems>> updateWhere(
+    _i1.Session session, {
+    required _i1.ColumnValueListBuilder<MenuItemsUpdateTable> columnValues,
+    required _i1.WhereExpressionBuilder<MenuItemsTable> where,
+    int? limit,
+    int? offset,
+    _i1.OrderByBuilder<MenuItemsTable>? orderBy,
+    _i1.OrderByListBuilder<MenuItemsTable>? orderByList,
+    bool orderDescending = false,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateWhere<MenuItems>(
+      columnValues: columnValues(MenuItems.t.updateTable),
+      where: where(MenuItems.t),
+      limit: limit,
+      offset: offset,
+      orderBy: orderBy?.call(MenuItems.t),
+      orderByList: orderByList?.call(MenuItems.t),
+      orderDescending: orderDescending,
       transaction: transaction,
     );
   }

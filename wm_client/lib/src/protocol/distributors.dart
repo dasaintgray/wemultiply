@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
@@ -38,8 +39,9 @@ abstract class Distributors implements _i1.SerializableModel {
       distributorName: jsonSerialization['distributorName'] as String,
       email: jsonSerialization['email'] as String,
       userID: jsonSerialization['userID'] as int,
-      joinDate:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['joinDate']),
+      joinDate: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['joinDate'],
+      ),
       currentRankId: jsonSerialization['currentRankId'] as int,
       isActive: jsonSerialization['isActive'] as bool,
     );
@@ -77,6 +79,7 @@ abstract class Distributors implements _i1.SerializableModel {
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'Distributors',
       if (id != null) 'id': id,
       'distributorName': distributorName,
       'email': email,
@@ -105,14 +108,14 @@ class _DistributorsImpl extends Distributors {
     required int currentRankId,
     required bool isActive,
   }) : super._(
-          id: id,
-          distributorName: distributorName,
-          email: email,
-          userID: userID,
-          joinDate: joinDate,
-          currentRankId: currentRankId,
-          isActive: isActive,
-        );
+         id: id,
+         distributorName: distributorName,
+         email: email,
+         userID: userID,
+         joinDate: joinDate,
+         currentRankId: currentRankId,
+         isActive: isActive,
+       );
 
   /// Returns a shallow copy of this [Distributors]
   /// with some or all fields replaced by the given arguments.

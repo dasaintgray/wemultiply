@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
@@ -54,8 +55,9 @@ abstract class ReaperCommission
       ronDescription: jsonSerialization['ronDescription'] as String?,
       isActive: jsonSerialization['isActive'] as bool,
       createdBy: jsonSerialization['createdBy'] as String,
-      createdAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
+      createdAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['createdAt'],
+      ),
       updatedBy: jsonSerialization['updatedBy'] as String?,
       updatedAt: jsonSerialization['updatedAt'] == null
           ? null
@@ -119,6 +121,7 @@ abstract class ReaperCommission
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'ReaperCommission',
       if (id != null) 'id': id,
       'packageId': packageId,
       'level': level,
@@ -139,6 +142,7 @@ abstract class ReaperCommission
   @override
   Map<String, dynamic> toJsonForProtocol() {
     return {
+      '__className__': 'ReaperCommission',
       if (id != null) 'id': id,
       'packageId': packageId,
       'level': level,
@@ -201,19 +205,19 @@ class _ReaperCommissionImpl extends ReaperCommission {
     String? updatedBy,
     DateTime? updatedAt,
   }) : super._(
-          id: id,
-          packageId: packageId,
-          level: level,
-          productId: productId,
-          netPerMember: netPerMember,
-          repeatOrderNet: repeatOrderNet,
-          ronDescription: ronDescription,
-          isActive: isActive,
-          createdBy: createdBy,
-          createdAt: createdAt,
-          updatedBy: updatedBy,
-          updatedAt: updatedAt,
-        );
+         id: id,
+         packageId: packageId,
+         level: level,
+         productId: productId,
+         netPerMember: netPerMember,
+         repeatOrderNet: repeatOrderNet,
+         ronDescription: ronDescription,
+         isActive: isActive,
+         createdBy: createdBy,
+         createdAt: createdAt,
+         updatedBy: updatedBy,
+         updatedAt: updatedAt,
+       );
 
   /// Returns a shallow copy of this [ReaperCommission]
   /// with some or all fields replaced by the given arguments.
@@ -240,8 +244,9 @@ class _ReaperCommissionImpl extends ReaperCommission {
       productId: productId ?? this.productId,
       netPerMember: netPerMember ?? this.netPerMember,
       repeatOrderNet: repeatOrderNet ?? this.repeatOrderNet,
-      ronDescription:
-          ronDescription is String? ? ronDescription : this.ronDescription,
+      ronDescription: ronDescription is String?
+          ? ronDescription
+          : this.ronDescription,
       isActive: isActive ?? this.isActive,
       createdBy: createdBy ?? this.createdBy,
       createdAt: createdAt ?? this.createdAt,
@@ -267,21 +272,21 @@ class ReaperCommissionImplicit extends _ReaperCommissionImpl {
     String? updatedBy,
     DateTime? updatedAt,
     int? $_packagesPackageidPackagesId,
-  })  : _packagesPackageidPackagesId = $_packagesPackageidPackagesId,
-        super(
-          id: id,
-          packageId: packageId,
-          level: level,
-          productId: productId,
-          netPerMember: netPerMember,
-          repeatOrderNet: repeatOrderNet,
-          ronDescription: ronDescription,
-          isActive: isActive,
-          createdBy: createdBy,
-          createdAt: createdAt,
-          updatedBy: updatedBy,
-          updatedAt: updatedAt,
-        );
+  }) : _packagesPackageidPackagesId = $_packagesPackageidPackagesId,
+       super(
+         id: id,
+         packageId: packageId,
+         level: level,
+         productId: productId,
+         netPerMember: netPerMember,
+         repeatOrderNet: repeatOrderNet,
+         ronDescription: ronDescription,
+         isActive: isActive,
+         createdBy: createdBy,
+         createdAt: createdAt,
+         updatedBy: updatedBy,
+         updatedAt: updatedAt,
+       );
 
   factory ReaperCommissionImplicit(
     ReaperCommission reaperCommission, {
@@ -308,9 +313,80 @@ class ReaperCommissionImplicit extends _ReaperCommissionImpl {
   final int? _packagesPackageidPackagesId;
 }
 
+class ReaperCommissionUpdateTable
+    extends _i1.UpdateTable<ReaperCommissionTable> {
+  ReaperCommissionUpdateTable(super.table);
+
+  _i1.ColumnValue<int, int> packageId(int value) => _i1.ColumnValue(
+    table.packageId,
+    value,
+  );
+
+  _i1.ColumnValue<int, int> level(int value) => _i1.ColumnValue(
+    table.level,
+    value,
+  );
+
+  _i1.ColumnValue<int, int> productId(int value) => _i1.ColumnValue(
+    table.productId,
+    value,
+  );
+
+  _i1.ColumnValue<double, double> netPerMember(double value) => _i1.ColumnValue(
+    table.netPerMember,
+    value,
+  );
+
+  _i1.ColumnValue<double, double> repeatOrderNet(double value) =>
+      _i1.ColumnValue(
+        table.repeatOrderNet,
+        value,
+      );
+
+  _i1.ColumnValue<String, String> ronDescription(String? value) =>
+      _i1.ColumnValue(
+        table.ronDescription,
+        value,
+      );
+
+  _i1.ColumnValue<bool, bool> isActive(bool value) => _i1.ColumnValue(
+    table.isActive,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> createdBy(String value) => _i1.ColumnValue(
+    table.createdBy,
+    value,
+  );
+
+  _i1.ColumnValue<DateTime, DateTime> createdAt(DateTime value) =>
+      _i1.ColumnValue(
+        table.createdAt,
+        value,
+      );
+
+  _i1.ColumnValue<String, String> updatedBy(String? value) => _i1.ColumnValue(
+    table.updatedBy,
+    value,
+  );
+
+  _i1.ColumnValue<DateTime, DateTime> updatedAt(DateTime? value) =>
+      _i1.ColumnValue(
+        table.updatedAt,
+        value,
+      );
+
+  _i1.ColumnValue<int, int> $_packagesPackageidPackagesId(int? value) =>
+      _i1.ColumnValue(
+        table.$_packagesPackageidPackagesId,
+        value,
+      );
+}
+
 class ReaperCommissionTable extends _i1.Table<int?> {
   ReaperCommissionTable({super.tableRelation})
-      : super(tableName: 'reaper_commissions') {
+    : super(tableName: 'reaper_commissions') {
+    updateTable = ReaperCommissionUpdateTable(this);
     packageId = _i1.ColumnInt(
       'packageId',
       this,
@@ -361,6 +437,8 @@ class ReaperCommissionTable extends _i1.Table<int?> {
     );
   }
 
+  late final ReaperCommissionUpdateTable updateTable;
+
   late final _i1.ColumnInt packageId;
 
   late final _i1.ColumnInt level;
@@ -387,36 +465,36 @@ class ReaperCommissionTable extends _i1.Table<int?> {
 
   @override
   List<_i1.Column> get columns => [
-        id,
-        packageId,
-        level,
-        productId,
-        netPerMember,
-        repeatOrderNet,
-        ronDescription,
-        isActive,
-        createdBy,
-        createdAt,
-        updatedBy,
-        updatedAt,
-        $_packagesPackageidPackagesId,
-      ];
+    id,
+    packageId,
+    level,
+    productId,
+    netPerMember,
+    repeatOrderNet,
+    ronDescription,
+    isActive,
+    createdBy,
+    createdAt,
+    updatedBy,
+    updatedAt,
+    $_packagesPackageidPackagesId,
+  ];
 
   @override
   List<_i1.Column> get managedColumns => [
-        id,
-        packageId,
-        level,
-        productId,
-        netPerMember,
-        repeatOrderNet,
-        ronDescription,
-        isActive,
-        createdBy,
-        createdAt,
-        updatedBy,
-        updatedAt,
-      ];
+    id,
+    packageId,
+    level,
+    productId,
+    netPerMember,
+    repeatOrderNet,
+    ronDescription,
+    isActive,
+    createdBy,
+    createdAt,
+    updatedBy,
+    updatedAt,
+  ];
 }
 
 class ReaperCommissionInclude extends _i1.IncludeObject {
@@ -604,6 +682,48 @@ class ReaperCommissionRepository {
     return session.db.updateRow<ReaperCommission>(
       row,
       columns: columns?.call(ReaperCommission.t),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates a single [ReaperCommission] by its [id] with the specified [columnValues].
+  /// Returns the updated row or null if no row with the given id exists.
+  Future<ReaperCommission?> updateById(
+    _i1.Session session,
+    int id, {
+    required _i1.ColumnValueListBuilder<ReaperCommissionUpdateTable>
+    columnValues,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateById<ReaperCommission>(
+      id,
+      columnValues: columnValues(ReaperCommission.t.updateTable),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates all [ReaperCommission]s matching the [where] expression with the specified [columnValues].
+  /// Returns the list of updated rows.
+  Future<List<ReaperCommission>> updateWhere(
+    _i1.Session session, {
+    required _i1.ColumnValueListBuilder<ReaperCommissionUpdateTable>
+    columnValues,
+    required _i1.WhereExpressionBuilder<ReaperCommissionTable> where,
+    int? limit,
+    int? offset,
+    _i1.OrderByBuilder<ReaperCommissionTable>? orderBy,
+    _i1.OrderByListBuilder<ReaperCommissionTable>? orderByList,
+    bool orderDescending = false,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateWhere<ReaperCommission>(
+      columnValues: columnValues(ReaperCommission.t.updateTable),
+      where: where(ReaperCommission.t),
+      limit: limit,
+      offset: offset,
+      orderBy: orderBy?.call(ReaperCommission.t),
+      orderByList: orderByList?.call(ReaperCommission.t),
+      orderDescending: orderDescending,
       transaction: transaction,
     );
   }

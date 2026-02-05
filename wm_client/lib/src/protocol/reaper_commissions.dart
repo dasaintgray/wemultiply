@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
@@ -53,8 +54,9 @@ abstract class ReaperCommission implements _i1.SerializableModel {
       ronDescription: jsonSerialization['ronDescription'] as String?,
       isActive: jsonSerialization['isActive'] as bool,
       createdBy: jsonSerialization['createdBy'] as String,
-      createdAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
+      createdAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['createdAt'],
+      ),
       updatedBy: jsonSerialization['updatedBy'] as String?,
       updatedAt: jsonSerialization['updatedAt'] == null
           ? null
@@ -109,6 +111,7 @@ abstract class ReaperCommission implements _i1.SerializableModel {
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'ReaperCommission',
       if (id != null) 'id': id,
       'packageId': packageId,
       'level': level,
@@ -147,19 +150,19 @@ class _ReaperCommissionImpl extends ReaperCommission {
     String? updatedBy,
     DateTime? updatedAt,
   }) : super._(
-          id: id,
-          packageId: packageId,
-          level: level,
-          productId: productId,
-          netPerMember: netPerMember,
-          repeatOrderNet: repeatOrderNet,
-          ronDescription: ronDescription,
-          isActive: isActive,
-          createdBy: createdBy,
-          createdAt: createdAt,
-          updatedBy: updatedBy,
-          updatedAt: updatedAt,
-        );
+         id: id,
+         packageId: packageId,
+         level: level,
+         productId: productId,
+         netPerMember: netPerMember,
+         repeatOrderNet: repeatOrderNet,
+         ronDescription: ronDescription,
+         isActive: isActive,
+         createdBy: createdBy,
+         createdAt: createdAt,
+         updatedBy: updatedBy,
+         updatedAt: updatedAt,
+       );
 
   /// Returns a shallow copy of this [ReaperCommission]
   /// with some or all fields replaced by the given arguments.
@@ -186,8 +189,9 @@ class _ReaperCommissionImpl extends ReaperCommission {
       productId: productId ?? this.productId,
       netPerMember: netPerMember ?? this.netPerMember,
       repeatOrderNet: repeatOrderNet ?? this.repeatOrderNet,
-      ronDescription:
-          ronDescription is String? ? ronDescription : this.ronDescription,
+      ronDescription: ronDescription is String?
+          ? ronDescription
+          : this.ronDescription,
       isActive: isActive ?? this.isActive,
       createdBy: createdBy ?? this.createdBy,
       createdAt: createdAt ?? this.createdAt,

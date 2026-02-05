@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
@@ -34,8 +35,9 @@ abstract class PaymentEvent implements _i1.SerializableModel {
       paymentId: jsonSerialization['paymentId'] as int,
       eventType: jsonSerialization['eventType'] as String,
       payload: jsonSerialization['payload'] as String,
-      createdAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
+      createdAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['createdAt'],
+      ),
     );
   }
 
@@ -65,6 +67,7 @@ abstract class PaymentEvent implements _i1.SerializableModel {
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'PaymentEvent',
       if (id != null) 'id': id,
       'paymentId': paymentId,
       'eventType': eventType,
@@ -89,12 +92,12 @@ class _PaymentEventImpl extends PaymentEvent {
     required String payload,
     required DateTime createdAt,
   }) : super._(
-          id: id,
-          paymentId: paymentId,
-          eventType: eventType,
-          payload: payload,
-          createdAt: createdAt,
-        );
+         id: id,
+         paymentId: paymentId,
+         eventType: eventType,
+         payload: payload,
+         createdAt: createdAt,
+       );
 
   /// Returns a shallow copy of this [PaymentEvent]
   /// with some or all fields replaced by the given arguments.

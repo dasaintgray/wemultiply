@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
@@ -41,8 +42,9 @@ abstract class UserInfo implements _i1.SerializableModel {
       userName: jsonSerialization['userName'] as String,
       fullName: jsonSerialization['fullName'] as String,
       email: jsonSerialization['email'] as String,
-      createdAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
+      createdAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['createdAt'],
+      ),
       imageUrl: jsonSerialization['imageUrl'] as String,
       blocked: jsonSerialization['blocked'] as bool,
     );
@@ -80,6 +82,7 @@ abstract class UserInfo implements _i1.SerializableModel {
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'UserInfo',
       'id': id,
       'userIdentifier': userIdentifier,
       'userName': userName,
@@ -108,15 +111,15 @@ class _UserInfoImpl extends UserInfo {
     required String imageUrl,
     required bool blocked,
   }) : super._(
-          id: id,
-          userIdentifier: userIdentifier,
-          userName: userName,
-          fullName: fullName,
-          email: email,
-          createdAt: createdAt,
-          imageUrl: imageUrl,
-          blocked: blocked,
-        );
+         id: id,
+         userIdentifier: userIdentifier,
+         userName: userName,
+         fullName: fullName,
+         email: email,
+         createdAt: createdAt,
+         imageUrl: imageUrl,
+         blocked: blocked,
+       );
 
   /// Returns a shallow copy of this [UserInfo]
   /// with some or all fields replaced by the given arguments.

@@ -7,11 +7,13 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import 'menu_items.dart' as _i2;
 import 'eula.dart' as _i3;
+import 'package:wm_client/src/protocol/protocol.dart' as _i4;
 
 abstract class Menu implements _i1.SerializableModel {
   Menu._({
@@ -39,15 +41,20 @@ abstract class Menu implements _i1.SerializableModel {
       id: jsonSerialization['id'] as int?,
       menuName: jsonSerialization['menuName'] as String,
       menuImagePath: jsonSerialization['menuImagePath'] as String,
-      createdAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
+      createdAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['createdAt'],
+      ),
       isActive: jsonSerialization['isActive'] as bool,
-      menuItems: (jsonSerialization['menuItems'] as List?)
-          ?.map((e) => _i2.MenuItems.fromJson((e as Map<String, dynamic>)))
-          .toList(),
-      eulaItems: (jsonSerialization['eulaItems'] as List?)
-          ?.map((e) => _i3.Eula.fromJson((e as Map<String, dynamic>)))
-          .toList(),
+      menuItems: jsonSerialization['menuItems'] == null
+          ? null
+          : _i4.Protocol().deserialize<List<_i2.MenuItems>>(
+              jsonSerialization['menuItems'],
+            ),
+      eulaItems: jsonSerialization['eulaItems'] == null
+          ? null
+          : _i4.Protocol().deserialize<List<_i3.Eula>>(
+              jsonSerialization['eulaItems'],
+            ),
     );
   }
 
@@ -83,6 +90,7 @@ abstract class Menu implements _i1.SerializableModel {
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'Menu',
       if (id != null) 'id': id,
       'menuName': menuName,
       'menuImagePath': menuImagePath,
@@ -113,14 +121,14 @@ class _MenuImpl extends Menu {
     List<_i2.MenuItems>? menuItems,
     List<_i3.Eula>? eulaItems,
   }) : super._(
-          id: id,
-          menuName: menuName,
-          menuImagePath: menuImagePath,
-          createdAt: createdAt,
-          isActive: isActive,
-          menuItems: menuItems,
-          eulaItems: eulaItems,
-        );
+         id: id,
+         menuName: menuName,
+         menuImagePath: menuImagePath,
+         createdAt: createdAt,
+         isActive: isActive,
+         menuItems: menuItems,
+         eulaItems: eulaItems,
+       );
 
   /// Returns a shallow copy of this [Menu]
   /// with some or all fields replaced by the given arguments.

@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
@@ -41,8 +42,9 @@ abstract class GoldenSeats implements _i1.SerializableModel {
       territory: jsonSerialization['territory'] as String,
       ownerId: jsonSerialization['ownerId'] as int,
       price: (jsonSerialization['price'] as num).toDouble(),
-      startDate:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['startDate']),
+      startDate: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['startDate'],
+      ),
       endDate: _i1.DateTimeJsonExtension.fromJson(jsonSerialization['endDate']),
       isActive: jsonSerialization['isActive'] as bool,
     );
@@ -83,6 +85,7 @@ abstract class GoldenSeats implements _i1.SerializableModel {
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'GoldenSeats',
       if (id != null) 'id': id,
       'seatType': seatType,
       'territory': territory,
@@ -113,15 +116,15 @@ class _GoldenSeatsImpl extends GoldenSeats {
     required DateTime endDate,
     required bool isActive,
   }) : super._(
-          id: id,
-          seatType: seatType,
-          territory: territory,
-          ownerId: ownerId,
-          price: price,
-          startDate: startDate,
-          endDate: endDate,
-          isActive: isActive,
-        );
+         id: id,
+         seatType: seatType,
+         territory: territory,
+         ownerId: ownerId,
+         price: price,
+         startDate: startDate,
+         endDate: endDate,
+         isActive: isActive,
+       );
 
   /// Returns a shallow copy of this [GoldenSeats]
   /// with some or all fields replaced by the given arguments.

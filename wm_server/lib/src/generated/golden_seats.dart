@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
@@ -42,8 +43,9 @@ abstract class GoldenSeats
       territory: jsonSerialization['territory'] as String,
       ownerId: jsonSerialization['ownerId'] as int,
       price: (jsonSerialization['price'] as num).toDouble(),
-      startDate:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['startDate']),
+      startDate: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['startDate'],
+      ),
       endDate: _i1.DateTimeJsonExtension.fromJson(jsonSerialization['endDate']),
       isActive: jsonSerialization['isActive'] as bool,
     );
@@ -89,6 +91,7 @@ abstract class GoldenSeats
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'GoldenSeats',
       if (id != null) 'id': id,
       'seatType': seatType,
       'territory': territory,
@@ -103,6 +106,7 @@ abstract class GoldenSeats
   @override
   Map<String, dynamic> toJsonForProtocol() {
     return {
+      '__className__': 'GoldenSeats',
       if (id != null) 'id': id,
       'seatType': seatType,
       'territory': territory,
@@ -157,15 +161,15 @@ class _GoldenSeatsImpl extends GoldenSeats {
     required DateTime endDate,
     required bool isActive,
   }) : super._(
-          id: id,
-          seatType: seatType,
-          territory: territory,
-          ownerId: ownerId,
-          price: price,
-          startDate: startDate,
-          endDate: endDate,
-          isActive: isActive,
-        );
+         id: id,
+         seatType: seatType,
+         territory: territory,
+         ownerId: ownerId,
+         price: price,
+         startDate: startDate,
+         endDate: endDate,
+         isActive: isActive,
+       );
 
   /// Returns a shallow copy of this [GoldenSeats]
   /// with some or all fields replaced by the given arguments.
@@ -194,8 +198,50 @@ class _GoldenSeatsImpl extends GoldenSeats {
   }
 }
 
+class GoldenSeatsUpdateTable extends _i1.UpdateTable<GoldenSeatsTable> {
+  GoldenSeatsUpdateTable(super.table);
+
+  _i1.ColumnValue<String, String> seatType(String value) => _i1.ColumnValue(
+    table.seatType,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> territory(String value) => _i1.ColumnValue(
+    table.territory,
+    value,
+  );
+
+  _i1.ColumnValue<int, int> ownerId(int value) => _i1.ColumnValue(
+    table.ownerId,
+    value,
+  );
+
+  _i1.ColumnValue<double, double> price(double value) => _i1.ColumnValue(
+    table.price,
+    value,
+  );
+
+  _i1.ColumnValue<DateTime, DateTime> startDate(DateTime value) =>
+      _i1.ColumnValue(
+        table.startDate,
+        value,
+      );
+
+  _i1.ColumnValue<DateTime, DateTime> endDate(DateTime value) =>
+      _i1.ColumnValue(
+        table.endDate,
+        value,
+      );
+
+  _i1.ColumnValue<bool, bool> isActive(bool value) => _i1.ColumnValue(
+    table.isActive,
+    value,
+  );
+}
+
 class GoldenSeatsTable extends _i1.Table<int?> {
   GoldenSeatsTable({super.tableRelation}) : super(tableName: 'golden_seats') {
+    updateTable = GoldenSeatsUpdateTable(this);
     seatType = _i1.ColumnString(
       'seatType',
       this,
@@ -226,6 +272,8 @@ class GoldenSeatsTable extends _i1.Table<int?> {
     );
   }
 
+  late final GoldenSeatsUpdateTable updateTable;
+
   late final _i1.ColumnString seatType;
 
   late final _i1.ColumnString territory;
@@ -242,15 +290,15 @@ class GoldenSeatsTable extends _i1.Table<int?> {
 
   @override
   List<_i1.Column> get columns => [
-        id,
-        seatType,
-        territory,
-        ownerId,
-        price,
-        startDate,
-        endDate,
-        isActive,
-      ];
+    id,
+    seatType,
+    territory,
+    ownerId,
+    price,
+    startDate,
+    endDate,
+    isActive,
+  ];
 }
 
 class GoldenSeatsInclude extends _i1.IncludeObject {
@@ -438,6 +486,46 @@ class GoldenSeatsRepository {
     return session.db.updateRow<GoldenSeats>(
       row,
       columns: columns?.call(GoldenSeats.t),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates a single [GoldenSeats] by its [id] with the specified [columnValues].
+  /// Returns the updated row or null if no row with the given id exists.
+  Future<GoldenSeats?> updateById(
+    _i1.Session session,
+    int id, {
+    required _i1.ColumnValueListBuilder<GoldenSeatsUpdateTable> columnValues,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateById<GoldenSeats>(
+      id,
+      columnValues: columnValues(GoldenSeats.t.updateTable),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates all [GoldenSeats]s matching the [where] expression with the specified [columnValues].
+  /// Returns the list of updated rows.
+  Future<List<GoldenSeats>> updateWhere(
+    _i1.Session session, {
+    required _i1.ColumnValueListBuilder<GoldenSeatsUpdateTable> columnValues,
+    required _i1.WhereExpressionBuilder<GoldenSeatsTable> where,
+    int? limit,
+    int? offset,
+    _i1.OrderByBuilder<GoldenSeatsTable>? orderBy,
+    _i1.OrderByListBuilder<GoldenSeatsTable>? orderByList,
+    bool orderDescending = false,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateWhere<GoldenSeats>(
+      columnValues: columnValues(GoldenSeats.t.updateTable),
+      where: where(GoldenSeats.t),
+      limit: limit,
+      offset: offset,
+      orderBy: orderBy?.call(GoldenSeats.t),
+      orderByList: orderByList?.call(GoldenSeats.t),
+      orderDescending: orderDescending,
       transaction: transaction,
     );
   }

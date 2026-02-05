@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
@@ -34,8 +35,9 @@ abstract class Level implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
       levelName: jsonSerialization['levelName'] as String,
       description: jsonSerialization['description'] as String?,
       isActive: jsonSerialization['isActive'] as bool,
-      createdAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
+      createdAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['createdAt'],
+      ),
     );
   }
 
@@ -70,6 +72,7 @@ abstract class Level implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'Level',
       if (id != null) 'id': id,
       'levelName': levelName,
       if (description != null) 'description': description,
@@ -81,6 +84,7 @@ abstract class Level implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
   @override
   Map<String, dynamic> toJsonForProtocol() {
     return {
+      '__className__': 'Level',
       if (id != null) 'id': id,
       'levelName': levelName,
       if (description != null) 'description': description,
@@ -129,12 +133,12 @@ class _LevelImpl extends Level {
     required bool isActive,
     required DateTime createdAt,
   }) : super._(
-          id: id,
-          levelName: levelName,
-          description: description,
-          isActive: isActive,
-          createdAt: createdAt,
-        );
+         id: id,
+         levelName: levelName,
+         description: description,
+         isActive: isActive,
+         createdAt: createdAt,
+       );
 
   /// Returns a shallow copy of this [Level]
   /// with some or all fields replaced by the given arguments.
@@ -157,8 +161,34 @@ class _LevelImpl extends Level {
   }
 }
 
+class LevelUpdateTable extends _i1.UpdateTable<LevelTable> {
+  LevelUpdateTable(super.table);
+
+  _i1.ColumnValue<String, String> levelName(String value) => _i1.ColumnValue(
+    table.levelName,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> description(String? value) => _i1.ColumnValue(
+    table.description,
+    value,
+  );
+
+  _i1.ColumnValue<bool, bool> isActive(bool value) => _i1.ColumnValue(
+    table.isActive,
+    value,
+  );
+
+  _i1.ColumnValue<DateTime, DateTime> createdAt(DateTime value) =>
+      _i1.ColumnValue(
+        table.createdAt,
+        value,
+      );
+}
+
 class LevelTable extends _i1.Table<int?> {
   LevelTable({super.tableRelation}) : super(tableName: 'levels') {
+    updateTable = LevelUpdateTable(this);
     levelName = _i1.ColumnString(
       'levelName',
       this,
@@ -177,6 +207,8 @@ class LevelTable extends _i1.Table<int?> {
     );
   }
 
+  late final LevelUpdateTable updateTable;
+
   late final _i1.ColumnString levelName;
 
   late final _i1.ColumnString description;
@@ -187,12 +219,12 @@ class LevelTable extends _i1.Table<int?> {
 
   @override
   List<_i1.Column> get columns => [
-        id,
-        levelName,
-        description,
-        isActive,
-        createdAt,
-      ];
+    id,
+    levelName,
+    description,
+    isActive,
+    createdAt,
+  ];
 }
 
 class LevelInclude extends _i1.IncludeObject {
@@ -380,6 +412,46 @@ class LevelRepository {
     return session.db.updateRow<Level>(
       row,
       columns: columns?.call(Level.t),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates a single [Level] by its [id] with the specified [columnValues].
+  /// Returns the updated row or null if no row with the given id exists.
+  Future<Level?> updateById(
+    _i1.Session session,
+    int id, {
+    required _i1.ColumnValueListBuilder<LevelUpdateTable> columnValues,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateById<Level>(
+      id,
+      columnValues: columnValues(Level.t.updateTable),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates all [Level]s matching the [where] expression with the specified [columnValues].
+  /// Returns the list of updated rows.
+  Future<List<Level>> updateWhere(
+    _i1.Session session, {
+    required _i1.ColumnValueListBuilder<LevelUpdateTable> columnValues,
+    required _i1.WhereExpressionBuilder<LevelTable> where,
+    int? limit,
+    int? offset,
+    _i1.OrderByBuilder<LevelTable>? orderBy,
+    _i1.OrderByListBuilder<LevelTable>? orderByList,
+    bool orderDescending = false,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateWhere<Level>(
+      columnValues: columnValues(Level.t.updateTable),
+      where: where(Level.t),
+      limit: limit,
+      offset: offset,
+      orderBy: orderBy?.call(Level.t),
+      orderByList: orderByList?.call(Level.t),
+      orderDescending: orderDescending,
       transaction: transaction,
     );
   }

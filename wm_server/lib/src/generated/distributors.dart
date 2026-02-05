@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
@@ -39,8 +40,9 @@ abstract class Distributors
       distributorName: jsonSerialization['distributorName'] as String,
       email: jsonSerialization['email'] as String,
       userID: jsonSerialization['userID'] as int,
-      joinDate:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['joinDate']),
+      joinDate: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['joinDate'],
+      ),
       currentRankId: jsonSerialization['currentRankId'] as int,
       isActive: jsonSerialization['isActive'] as bool,
     );
@@ -83,6 +85,7 @@ abstract class Distributors
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'Distributors',
       if (id != null) 'id': id,
       'distributorName': distributorName,
       'email': email,
@@ -96,6 +99,7 @@ abstract class Distributors
   @override
   Map<String, dynamic> toJsonForProtocol() {
     return {
+      '__className__': 'Distributors',
       if (id != null) 'id': id,
       'distributorName': distributorName,
       'email': email,
@@ -148,14 +152,14 @@ class _DistributorsImpl extends Distributors {
     required int currentRankId,
     required bool isActive,
   }) : super._(
-          id: id,
-          distributorName: distributorName,
-          email: email,
-          userID: userID,
-          joinDate: joinDate,
-          currentRankId: currentRankId,
-          isActive: isActive,
-        );
+         id: id,
+         distributorName: distributorName,
+         email: email,
+         userID: userID,
+         joinDate: joinDate,
+         currentRankId: currentRankId,
+         isActive: isActive,
+       );
 
   /// Returns a shallow copy of this [Distributors]
   /// with some or all fields replaced by the given arguments.
@@ -182,8 +186,45 @@ class _DistributorsImpl extends Distributors {
   }
 }
 
+class DistributorsUpdateTable extends _i1.UpdateTable<DistributorsTable> {
+  DistributorsUpdateTable(super.table);
+
+  _i1.ColumnValue<String, String> distributorName(String value) =>
+      _i1.ColumnValue(
+        table.distributorName,
+        value,
+      );
+
+  _i1.ColumnValue<String, String> email(String value) => _i1.ColumnValue(
+    table.email,
+    value,
+  );
+
+  _i1.ColumnValue<int, int> userID(int value) => _i1.ColumnValue(
+    table.userID,
+    value,
+  );
+
+  _i1.ColumnValue<DateTime, DateTime> joinDate(DateTime value) =>
+      _i1.ColumnValue(
+        table.joinDate,
+        value,
+      );
+
+  _i1.ColumnValue<int, int> currentRankId(int value) => _i1.ColumnValue(
+    table.currentRankId,
+    value,
+  );
+
+  _i1.ColumnValue<bool, bool> isActive(bool value) => _i1.ColumnValue(
+    table.isActive,
+    value,
+  );
+}
+
 class DistributorsTable extends _i1.Table<int?> {
   DistributorsTable({super.tableRelation}) : super(tableName: 'distributors') {
+    updateTable = DistributorsUpdateTable(this);
     distributorName = _i1.ColumnString(
       'distributorName',
       this,
@@ -210,6 +251,8 @@ class DistributorsTable extends _i1.Table<int?> {
     );
   }
 
+  late final DistributorsUpdateTable updateTable;
+
   late final _i1.ColumnString distributorName;
 
   late final _i1.ColumnString email;
@@ -224,14 +267,14 @@ class DistributorsTable extends _i1.Table<int?> {
 
   @override
   List<_i1.Column> get columns => [
-        id,
-        distributorName,
-        email,
-        userID,
-        joinDate,
-        currentRankId,
-        isActive,
-      ];
+    id,
+    distributorName,
+    email,
+    userID,
+    joinDate,
+    currentRankId,
+    isActive,
+  ];
 }
 
 class DistributorsInclude extends _i1.IncludeObject {
@@ -419,6 +462,46 @@ class DistributorsRepository {
     return session.db.updateRow<Distributors>(
       row,
       columns: columns?.call(Distributors.t),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates a single [Distributors] by its [id] with the specified [columnValues].
+  /// Returns the updated row or null if no row with the given id exists.
+  Future<Distributors?> updateById(
+    _i1.Session session,
+    int id, {
+    required _i1.ColumnValueListBuilder<DistributorsUpdateTable> columnValues,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateById<Distributors>(
+      id,
+      columnValues: columnValues(Distributors.t.updateTable),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates all [Distributors]s matching the [where] expression with the specified [columnValues].
+  /// Returns the list of updated rows.
+  Future<List<Distributors>> updateWhere(
+    _i1.Session session, {
+    required _i1.ColumnValueListBuilder<DistributorsUpdateTable> columnValues,
+    required _i1.WhereExpressionBuilder<DistributorsTable> where,
+    int? limit,
+    int? offset,
+    _i1.OrderByBuilder<DistributorsTable>? orderBy,
+    _i1.OrderByListBuilder<DistributorsTable>? orderByList,
+    bool orderDescending = false,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateWhere<Distributors>(
+      columnValues: columnValues(Distributors.t.updateTable),
+      where: where(Distributors.t),
+      limit: limit,
+      offset: offset,
+      orderBy: orderBy?.call(Distributors.t),
+      orderByList: orderByList?.call(Distributors.t),
+      orderDescending: orderDescending,
       transaction: transaction,
     );
   }

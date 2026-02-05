@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
@@ -66,10 +67,12 @@ abstract class Addresses implements _i1.SerializableModel {
       latitude: (jsonSerialization['latitude'] as num?)?.toDouble(),
       longitude: (jsonSerialization['longitude'] as num?)?.toDouble(),
       isPrimary: jsonSerialization['isPrimary'] as bool,
-      createdAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
-      updatedAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['updatedAt']),
+      createdAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['createdAt'],
+      ),
+      updatedAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['updatedAt'],
+      ),
     );
   }
 
@@ -132,6 +135,7 @@ abstract class Addresses implements _i1.SerializableModel {
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'Addresses',
       if (id != null) 'id': id,
       'userId': userId,
       'label': label,
@@ -178,23 +182,23 @@ class _AddressesImpl extends Addresses {
     required DateTime createdAt,
     required DateTime updatedAt,
   }) : super._(
-          id: id,
-          userId: userId,
-          label: label,
-          contactName: contactName,
-          contactPhone: contactPhone,
-          street: street,
-          brgy: brgy,
-          city: city,
-          province: province,
-          postalCode: postalCode,
-          country: country,
-          latitude: latitude,
-          longitude: longitude,
-          isPrimary: isPrimary,
-          createdAt: createdAt,
-          updatedAt: updatedAt,
-        );
+         id: id,
+         userId: userId,
+         label: label,
+         contactName: contactName,
+         contactPhone: contactPhone,
+         street: street,
+         brgy: brgy,
+         city: city,
+         province: province,
+         postalCode: postalCode,
+         country: country,
+         latitude: latitude,
+         longitude: longitude,
+         isPrimary: isPrimary,
+         createdAt: createdAt,
+         updatedAt: updatedAt,
+       );
 
   /// Returns a shallow copy of this [Addresses]
   /// with some or all fields replaced by the given arguments.

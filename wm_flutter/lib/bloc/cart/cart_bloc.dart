@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:wm_client/wm_client.dart';
 import 'package:wm_flutter/core/repositories/cart_repository.dart';
 import 'package:wm_flutter/core/spc_core.dart';
@@ -20,21 +19,17 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     on<ConfirmCheckout>(onConfirmCHeckout);
   }
 
-  Future<void> addItemToCart(
-    AddItemToCart event,
-    Emitter<CartState> emit,
-  ) async {
+  Future<void> addItemToCart(AddItemToCart event, Emitter<CartState> emit) async {
     try {
       emit(CartLoading());
       // ignore: avoid_print
       print('=== addItemToCart: Adding product ${event.product.id} qty ${event.qty} ===');
-      final updatedCart = await cartRepository.addToCart(
-        event.product,
-        event.qty,
-      );
+      final updatedCart = await cartRepository.addToCart(event.product, event.qty);
       if (updatedCart != null) {
         // ignore: avoid_print
-        print('Cart returned: id=${updatedCart.id}, isActive=${updatedCart.isActive}, status=${updatedCart.status}, items=${updatedCart.cartItems?.length ?? 0}');
+        print(
+          'Cart returned: id=${updatedCart.id}, isActive=${updatedCart.isActive}, status=${updatedCart.status}, items=${updatedCart.cartItems?.length ?? 0}',
+        );
         // Emit CartLoaded with the updated cart so UI updates
         emit(CartLoaded([updatedCart]));
       }
@@ -45,16 +40,10 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     }
   }
 
-  Future<void> onConfirmCHeckout(
-    ConfirmCheckout event,
-    Emitter<CartState> emit,
-  ) async {
+  Future<void> onConfirmCHeckout(ConfirmCheckout event, Emitter<CartState> emit) async {
     try {
       emit(CartLoading());
-      final order = await cartRepository.checkoutCart(
-        userID: event.userID,
-        paymentMethod: event.paymentMethod,
-      );
+      final order = await cartRepository.checkoutCart(userID: event.userID, paymentMethod: event.paymentMethod);
       emit(CartCheckoutCompleted(order!));
     } catch (er) {
       emit(CartError(er.toString()));
@@ -83,31 +72,19 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   //   }
   // }
 
-  Future<void> removeFromCart(
-    RemoveFromCart event,
-    Emitter<CartState> emit,
-  ) async {
+  Future<void> removeFromCart(RemoveFromCart event, Emitter<CartState> emit) async {
     try {
       await cartRepository.removeFromCart(event.cart);
       final currentState = state;
       if (currentState is CartLoaded) {
-        emit(
-          CartLoaded(
-            currentState.cartItems
-                .where((item) => item.id != event.cart.id)
-                .toList(),
-          ),
-        );
+        emit(CartLoaded(currentState.cartItems.where((item) => item.id != event.cart.id).toList()));
       }
     } catch (e) {
       emit(CartError('Failed to remove from cart: $e'));
     }
   }
 
-  Future<void> updateCartItem(
-    UpdateCartItem event,
-    Emitter<CartState> emit,
-  ) async {
+  Future<void> updateCartItem(UpdateCartItem event, Emitter<CartState> emit) async {
     try {
       final updatedCartItem = await cartRepository.updateCartItem(event.cart);
       final currentState = state;
@@ -126,10 +103,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     emit(CartLoaded([]));
   }
 
-  Future<void> _onClearCartAfterPayment(
-    ClearCartAfterPayment event,
-    Emitter<CartState> emit,
-  ) async {
+  Future<void> _onClearCartAfterPayment(ClearCartAfterPayment event, Emitter<CartState> emit) async {
     // ignore: avoid_print
     print('=== ClearCartAfterPayment called for userId: ${event.userId} ===');
     try {

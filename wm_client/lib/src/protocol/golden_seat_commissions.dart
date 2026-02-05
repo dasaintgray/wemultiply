@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
@@ -35,7 +36,8 @@ abstract class GoldenSeatCommission implements _i1.SerializableModel {
   }) = _GoldenSeatCommissionImpl;
 
   factory GoldenSeatCommission.fromJson(
-      Map<String, dynamic> jsonSerialization) {
+    Map<String, dynamic> jsonSerialization,
+  ) {
     return GoldenSeatCommission(
       id: jsonSerialization['id'] as int?,
       seatType: jsonSerialization['seatType'] as String,
@@ -43,10 +45,11 @@ abstract class GoldenSeatCommission implements _i1.SerializableModel {
       productId: jsonSerialization['productId'] as int,
       netPerMember: (jsonSerialization['netPerMember'] as num).toDouble(),
       netPerBottle: (jsonSerialization['netPerBottle'] as num).toDouble(),
-      commissionAmount:
-          (jsonSerialization['commissionAmount'] as num).toDouble(),
-      createdAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
+      commissionAmount: (jsonSerialization['commissionAmount'] as num)
+          .toDouble(),
+      createdAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['createdAt'],
+      ),
     );
   }
 
@@ -85,6 +88,7 @@ abstract class GoldenSeatCommission implements _i1.SerializableModel {
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'GoldenSeatCommission',
       if (id != null) 'id': id,
       'seatType': seatType,
       'packageId': packageId,
@@ -115,15 +119,15 @@ class _GoldenSeatCommissionImpl extends GoldenSeatCommission {
     required double commissionAmount,
     required DateTime createdAt,
   }) : super._(
-          id: id,
-          seatType: seatType,
-          packageId: packageId,
-          productId: productId,
-          netPerMember: netPerMember,
-          netPerBottle: netPerBottle,
-          commissionAmount: commissionAmount,
-          createdAt: createdAt,
-        );
+         id: id,
+         seatType: seatType,
+         packageId: packageId,
+         productId: productId,
+         netPerMember: netPerMember,
+         netPerBottle: netPerBottle,
+         commissionAmount: commissionAmount,
+         createdAt: createdAt,
+       );
 
   /// Returns a shallow copy of this [GoldenSeatCommission]
   /// with some or all fields replaced by the given arguments.

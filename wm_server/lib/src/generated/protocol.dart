@@ -7,24 +7,26 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 import 'package:serverpod/protocol.dart' as _i2;
 import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i3;
-import 'greeting.dart' as _i4;
-import 'userinfo.dart' as _i5;
-import 'addresses.dart' as _i6;
-import 'cart.dart' as _i7;
-import 'cart_items.dart' as _i8;
-import 'cdn.dart' as _i9;
-import 'commission_rule.dart' as _i10;
-import 'commissions.dart' as _i11;
-import 'crown_package.dart' as _i12;
-import 'distributors.dart' as _i13;
-import 'eula.dart' as _i14;
-import 'golden_seat_commissions.dart' as _i15;
-import 'golden_seats.dart' as _i16;
+import 'addresses.dart' as _i4;
+import 'cart.dart' as _i5;
+import 'cart_items.dart' as _i6;
+import 'cdn.dart' as _i7;
+import 'commission_rule.dart' as _i8;
+import 'commissions.dart' as _i9;
+import 'crown_package.dart' as _i10;
+import 'distributors.dart' as _i11;
+import 'eula.dart' as _i12;
+import 'future_calls_generated_models/birthday_reminder_send_reminder_model.dart'
+    as _i13;
+import 'golden_seat_commissions.dart' as _i14;
+import 'golden_seats.dart' as _i15;
+import 'greeting.dart' as _i16;
 import 'level.dart' as _i17;
 import 'membership_package.dart' as _i18;
 import 'menu.dart' as _i19;
@@ -43,22 +45,21 @@ import 'ranks.dart' as _i31;
 import 'reaper_commissions.dart' as _i32;
 import 'sale.dart' as _i33;
 import 'sale_items.dart' as _i34;
-import 'users.dart' as _i35;
-import 'package:wm_server/src/generated/addresses.dart' as _i36;
-import 'package:wm_server/src/generated/cart.dart' as _i37;
-import 'package:wm_server/src/generated/commissions.dart' as _i38;
-import 'package:wm_server/src/generated/commission_rule.dart' as _i39;
-import 'package:wm_server/src/generated/distributors.dart' as _i40;
-import 'package:wm_server/src/generated/golden_seats.dart' as _i41;
-import 'package:wm_server/src/generated/membership_package.dart' as _i42;
-import 'package:wm_server/src/generated/menu.dart' as _i43;
-import 'package:wm_server/src/generated/packages.dart' as _i44;
-import 'package:wm_server/src/generated/products.dart' as _i45;
-import 'package:wm_server/src/generated/ranks.dart' as _i46;
-import 'package:wm_server/src/generated/reaper_commissions.dart' as _i47;
-import 'package:wm_server/src/generated/sale.dart' as _i48;
-export 'greeting.dart';
-export 'userinfo.dart';
+import 'userinfo.dart' as _i35;
+import 'users.dart' as _i36;
+import 'package:wm_server/src/generated/addresses.dart' as _i37;
+import 'package:wm_server/src/generated/cart.dart' as _i38;
+import 'package:wm_server/src/generated/commissions.dart' as _i39;
+import 'package:wm_server/src/generated/commission_rule.dart' as _i40;
+import 'package:wm_server/src/generated/distributors.dart' as _i41;
+import 'package:wm_server/src/generated/golden_seats.dart' as _i42;
+import 'package:wm_server/src/generated/membership_package.dart' as _i43;
+import 'package:wm_server/src/generated/menu.dart' as _i44;
+import 'package:wm_server/src/generated/packages.dart' as _i45;
+import 'package:wm_server/src/generated/products.dart' as _i46;
+import 'package:wm_server/src/generated/ranks.dart' as _i47;
+import 'package:wm_server/src/generated/reaper_commissions.dart' as _i48;
+import 'package:wm_server/src/generated/sale.dart' as _i49;
 export 'addresses.dart';
 export 'cart.dart';
 export 'cart_items.dart';
@@ -70,6 +71,7 @@ export 'distributors.dart';
 export 'eula.dart';
 export 'golden_seat_commissions.dart';
 export 'golden_seats.dart';
+export 'greeting.dart';
 export 'level.dart';
 export 'membership_package.dart';
 export 'menu.dart';
@@ -88,6 +90,7 @@ export 'ranks.dart';
 export 'reaper_commissions.dart';
 export 'sale.dart';
 export 'sale_items.dart';
+export 'userinfo.dart';
 export 'users.dart';
 
 class Protocol extends _i1.SerializationManagerServer {
@@ -212,7 +215,7 @@ class Protocol extends _i1.SerializationManagerServer {
           onUpdate: _i2.ForeignKeyAction.noAction,
           onDelete: _i2.ForeignKeyAction.noAction,
           matchType: null,
-        )
+        ),
       ],
       indexes: [
         _i2.IndexDefinition(
@@ -222,12 +225,12 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'id',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: true,
           isPrimary: true,
-        )
+        ),
       ],
       managed: true,
     ),
@@ -345,7 +348,7 @@ class Protocol extends _i1.SerializationManagerServer {
           onUpdate: _i2.ForeignKeyAction.noAction,
           onDelete: _i2.ForeignKeyAction.noAction,
           matchType: null,
-        )
+        ),
       ],
       indexes: [
         _i2.IndexDefinition(
@@ -355,7 +358,7 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'id',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: true,
@@ -368,7 +371,7 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'userID',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: true,
@@ -479,7 +482,7 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'id',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: true,
@@ -546,12 +549,12 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'id',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: true,
           isPrimary: true,
-        )
+        ),
       ],
       managed: true,
     ),
@@ -603,7 +606,7 @@ class Protocol extends _i1.SerializationManagerServer {
           onUpdate: _i2.ForeignKeyAction.noAction,
           onDelete: _i2.ForeignKeyAction.noAction,
           matchType: null,
-        )
+        ),
       ],
       indexes: [
         _i2.IndexDefinition(
@@ -613,12 +616,12 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'id',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: true,
           isPrimary: true,
-        )
+        ),
       ],
       managed: true,
     ),
@@ -714,12 +717,12 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'id',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: true,
           isPrimary: true,
-        )
+        ),
       ],
       managed: true,
     ),
@@ -795,7 +798,7 @@ class Protocol extends _i1.SerializationManagerServer {
           onUpdate: _i2.ForeignKeyAction.noAction,
           onDelete: _i2.ForeignKeyAction.noAction,
           matchType: null,
-        )
+        ),
       ],
       indexes: [
         _i2.IndexDefinition(
@@ -805,7 +808,7 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'id',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: true,
@@ -818,7 +821,7 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'packageId',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: true,
@@ -907,12 +910,12 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'id',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: true,
           isPrimary: true,
-        )
+        ),
       ],
       managed: true,
     ),
@@ -988,7 +991,7 @@ class Protocol extends _i1.SerializationManagerServer {
           onUpdate: _i2.ForeignKeyAction.noAction,
           onDelete: _i2.ForeignKeyAction.noAction,
           matchType: null,
-        )
+        ),
       ],
       indexes: [
         _i2.IndexDefinition(
@@ -998,7 +1001,7 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'id',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: true,
@@ -1115,7 +1118,7 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'id',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: true,
@@ -1211,7 +1214,7 @@ class Protocol extends _i1.SerializationManagerServer {
           onUpdate: _i2.ForeignKeyAction.noAction,
           onDelete: _i2.ForeignKeyAction.noAction,
           matchType: null,
-        )
+        ),
       ],
       indexes: [
         _i2.IndexDefinition(
@@ -1221,7 +1224,7 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'id',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: true,
@@ -1294,12 +1297,12 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'id',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: true,
           isPrimary: true,
-        )
+        ),
       ],
       managed: true,
     ),
@@ -1356,7 +1359,7 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'id',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: true,
@@ -1369,7 +1372,7 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'name',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: true,
@@ -1425,12 +1428,12 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'id',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: true,
           isPrimary: true,
-        )
+        ),
       ],
       managed: true,
     ),
@@ -1532,12 +1535,12 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'id',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: true,
           isPrimary: true,
-        )
+        ),
       ],
       managed: true,
     ),
@@ -1643,7 +1646,7 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'id',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: true,
@@ -1785,7 +1788,7 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'id',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: true,
@@ -1798,7 +1801,7 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'userID',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: false,
@@ -1885,7 +1888,7 @@ class Protocol extends _i1.SerializationManagerServer {
           onUpdate: _i2.ForeignKeyAction.noAction,
           onDelete: _i2.ForeignKeyAction.noAction,
           matchType: null,
-        )
+        ),
       ],
       indexes: [
         _i2.IndexDefinition(
@@ -1895,12 +1898,12 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'id',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: true,
           isPrimary: true,
-        )
+        ),
       ],
       managed: true,
     ),
@@ -1951,12 +1954,12 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'id',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: true,
           isPrimary: true,
-        )
+        ),
       ],
       managed: true,
     ),
@@ -2037,12 +2040,12 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'id',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: true,
           isPrimary: true,
-        )
+        ),
       ],
       managed: true,
     ),
@@ -2126,12 +2129,12 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'id',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: true,
           isPrimary: true,
-        )
+        ),
       ],
       managed: true,
     ),
@@ -2224,7 +2227,7 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'id',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: true,
@@ -2237,7 +2240,7 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'id',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: true,
@@ -2250,7 +2253,7 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'productName',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: false,
@@ -2312,12 +2315,12 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'id',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: true,
           isPrimary: true,
-        )
+        ),
       ],
       managed: true,
     ),
@@ -2368,12 +2371,12 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'id',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: true,
           isPrimary: true,
-        )
+        ),
       ],
       managed: true,
     ),
@@ -2430,12 +2433,12 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'id',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: true,
           isPrimary: true,
-        )
+        ),
       ],
       managed: true,
     ),
@@ -2575,12 +2578,12 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'id',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: true,
           isPrimary: true,
-        )
+        ),
       ],
       managed: true,
     ),
@@ -2670,12 +2673,12 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'id',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: true,
           isPrimary: true,
-        )
+        ),
       ],
       managed: true,
     ),
@@ -2775,12 +2778,12 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'id',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: true,
           isPrimary: true,
-        )
+        ),
       ],
       managed: true,
     ),
@@ -2958,7 +2961,7 @@ class Protocol extends _i1.SerializationManagerServer {
             _i2.IndexElementDefinition(
               type: _i2.IndexElementDefinitionType.column,
               definition: 'id',
-            )
+            ),
           ],
           type: 'btree',
           isUnique: true,
@@ -2988,50 +2991,71 @@ class Protocol extends _i1.SerializationManagerServer {
     ..._i2.Protocol.targetTableDefinitions,
   ];
 
+  static String? getClassNameFromObjectJson(dynamic data) {
+    if (data is! Map) return null;
+    final className = data['__className__'] as String?;
+    return className;
+  }
+
   @override
   T deserialize<T>(
     dynamic data, [
     Type? t,
   ]) {
     t ??= T;
-    if (t == _i4.Greeting) {
-      return _i4.Greeting.fromJson(data) as T;
+
+    final dataClassName = getClassNameFromObjectJson(data);
+    if (dataClassName != null && dataClassName != getClassNameForType(t)) {
+      try {
+        return deserializeByClassName({
+          'className': dataClassName,
+          'data': data,
+        });
+      } on FormatException catch (_) {
+        // If the className is not recognized (e.g., older client receiving
+        // data with a new subtype), fall back to deserializing without the
+        // className, using the expected type T.
+      }
     }
-    if (t == _i5.UserInfo) {
-      return _i5.UserInfo.fromJson(data) as T;
+
+    if (t == _i4.Addresses) {
+      return _i4.Addresses.fromJson(data) as T;
     }
-    if (t == _i6.Addresses) {
-      return _i6.Addresses.fromJson(data) as T;
+    if (t == _i5.Cart) {
+      return _i5.Cart.fromJson(data) as T;
     }
-    if (t == _i7.Cart) {
-      return _i7.Cart.fromJson(data) as T;
+    if (t == _i6.CartItem) {
+      return _i6.CartItem.fromJson(data) as T;
     }
-    if (t == _i8.CartItem) {
-      return _i8.CartItem.fromJson(data) as T;
+    if (t == _i7.Cdnconfig) {
+      return _i7.Cdnconfig.fromJson(data) as T;
     }
-    if (t == _i9.Cdnconfig) {
-      return _i9.Cdnconfig.fromJson(data) as T;
+    if (t == _i8.CommissionRule) {
+      return _i8.CommissionRule.fromJson(data) as T;
     }
-    if (t == _i10.CommissionRule) {
-      return _i10.CommissionRule.fromJson(data) as T;
+    if (t == _i9.Commissions) {
+      return _i9.Commissions.fromJson(data) as T;
     }
-    if (t == _i11.Commissions) {
-      return _i11.Commissions.fromJson(data) as T;
+    if (t == _i10.CrownPackage) {
+      return _i10.CrownPackage.fromJson(data) as T;
     }
-    if (t == _i12.CrownPackage) {
-      return _i12.CrownPackage.fromJson(data) as T;
+    if (t == _i11.Distributors) {
+      return _i11.Distributors.fromJson(data) as T;
     }
-    if (t == _i13.Distributors) {
-      return _i13.Distributors.fromJson(data) as T;
+    if (t == _i12.Eula) {
+      return _i12.Eula.fromJson(data) as T;
     }
-    if (t == _i14.Eula) {
-      return _i14.Eula.fromJson(data) as T;
+    if (t == _i13.BirthdayReminderSendReminderModel) {
+      return _i13.BirthdayReminderSendReminderModel.fromJson(data) as T;
     }
-    if (t == _i15.GoldenSeatCommission) {
-      return _i15.GoldenSeatCommission.fromJson(data) as T;
+    if (t == _i14.GoldenSeatCommission) {
+      return _i14.GoldenSeatCommission.fromJson(data) as T;
     }
-    if (t == _i16.GoldenSeats) {
-      return _i16.GoldenSeats.fromJson(data) as T;
+    if (t == _i15.GoldenSeats) {
+      return _i15.GoldenSeats.fromJson(data) as T;
+    }
+    if (t == _i16.Greeting) {
+      return _i16.Greeting.fromJson(data) as T;
     }
     if (t == _i17.Level) {
       return _i17.Level.fromJson(data) as T;
@@ -3087,48 +3111,54 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i34.SaleItem) {
       return _i34.SaleItem.fromJson(data) as T;
     }
-    if (t == _i35.User) {
-      return _i35.User.fromJson(data) as T;
+    if (t == _i35.UserInfo) {
+      return _i35.UserInfo.fromJson(data) as T;
     }
-    if (t == _i1.getType<_i4.Greeting?>()) {
-      return (data != null ? _i4.Greeting.fromJson(data) : null) as T;
+    if (t == _i36.User) {
+      return _i36.User.fromJson(data) as T;
     }
-    if (t == _i1.getType<_i5.UserInfo?>()) {
-      return (data != null ? _i5.UserInfo.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i4.Addresses?>()) {
+      return (data != null ? _i4.Addresses.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i6.Addresses?>()) {
-      return (data != null ? _i6.Addresses.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i5.Cart?>()) {
+      return (data != null ? _i5.Cart.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i7.Cart?>()) {
-      return (data != null ? _i7.Cart.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i6.CartItem?>()) {
+      return (data != null ? _i6.CartItem.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i8.CartItem?>()) {
-      return (data != null ? _i8.CartItem.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i7.Cdnconfig?>()) {
+      return (data != null ? _i7.Cdnconfig.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i9.Cdnconfig?>()) {
-      return (data != null ? _i9.Cdnconfig.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i8.CommissionRule?>()) {
+      return (data != null ? _i8.CommissionRule.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i10.CommissionRule?>()) {
-      return (data != null ? _i10.CommissionRule.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i9.Commissions?>()) {
+      return (data != null ? _i9.Commissions.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i11.Commissions?>()) {
-      return (data != null ? _i11.Commissions.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i10.CrownPackage?>()) {
+      return (data != null ? _i10.CrownPackage.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i12.CrownPackage?>()) {
-      return (data != null ? _i12.CrownPackage.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i11.Distributors?>()) {
+      return (data != null ? _i11.Distributors.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i13.Distributors?>()) {
-      return (data != null ? _i13.Distributors.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i12.Eula?>()) {
+      return (data != null ? _i12.Eula.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i14.Eula?>()) {
-      return (data != null ? _i14.Eula.fromJson(data) : null) as T;
-    }
-    if (t == _i1.getType<_i15.GoldenSeatCommission?>()) {
-      return (data != null ? _i15.GoldenSeatCommission.fromJson(data) : null)
+    if (t == _i1.getType<_i13.BirthdayReminderSendReminderModel?>()) {
+      return (data != null
+              ? _i13.BirthdayReminderSendReminderModel.fromJson(data)
+              : null)
           as T;
     }
-    if (t == _i1.getType<_i16.GoldenSeats?>()) {
-      return (data != null ? _i16.GoldenSeats.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i14.GoldenSeatCommission?>()) {
+      return (data != null ? _i14.GoldenSeatCommission.fromJson(data) : null)
+          as T;
+    }
+    if (t == _i1.getType<_i15.GoldenSeats?>()) {
+      return (data != null ? _i15.GoldenSeats.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i16.Greeting?>()) {
+      return (data != null ? _i16.Greeting.fromJson(data) : null) as T;
     }
     if (t == _i1.getType<_i17.Level?>()) {
       return (data != null ? _i17.Level.fromJson(data) : null) as T;
@@ -3184,107 +3214,163 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i1.getType<_i34.SaleItem?>()) {
       return (data != null ? _i34.SaleItem.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i35.User?>()) {
-      return (data != null ? _i35.User.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i35.UserInfo?>()) {
+      return (data != null ? _i35.UserInfo.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<List<_i8.CartItem>?>()) {
+    if (t == _i1.getType<_i36.User?>()) {
+      return (data != null ? _i36.User.fromJson(data) : null) as T;
+    }
+    if (t == List<_i6.CartItem>) {
+      return (data as List).map((e) => deserialize<_i6.CartItem>(e)).toList()
+          as T;
+    }
+    if (t == _i1.getType<List<_i6.CartItem>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i8.CartItem>(e)).toList()
-          : null) as T;
+              ? (data as List).map((e) => deserialize<_i6.CartItem>(e)).toList()
+              : null)
+          as T;
+    }
+    if (t == List<_i20.MenuItems>) {
+      return (data as List).map((e) => deserialize<_i20.MenuItems>(e)).toList()
+          as T;
     }
     if (t == _i1.getType<List<_i20.MenuItems>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i20.MenuItems>(e)).toList()
-          : null) as T;
+              ? (data as List)
+                    .map((e) => deserialize<_i20.MenuItems>(e))
+                    .toList()
+              : null)
+          as T;
     }
-    if (t == _i1.getType<List<_i14.Eula>?>()) {
+    if (t == List<_i12.Eula>) {
+      return (data as List).map((e) => deserialize<_i12.Eula>(e)).toList() as T;
+    }
+    if (t == _i1.getType<List<_i12.Eula>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i14.Eula>(e)).toList()
-          : null) as T;
+              ? (data as List).map((e) => deserialize<_i12.Eula>(e)).toList()
+              : null)
+          as T;
+    }
+    if (t == List<_i22.OrderItem>) {
+      return (data as List).map((e) => deserialize<_i22.OrderItem>(e)).toList()
+          as T;
     }
     if (t == _i1.getType<List<_i22.OrderItem>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i22.OrderItem>(e)).toList()
-          : null) as T;
+              ? (data as List)
+                    .map((e) => deserialize<_i22.OrderItem>(e))
+                    .toList()
+              : null)
+          as T;
+    }
+    if (t == List<_i32.ReaperCommission>) {
+      return (data as List)
+              .map((e) => deserialize<_i32.ReaperCommission>(e))
+              .toList()
+          as T;
     }
     if (t == _i1.getType<List<_i32.ReaperCommission>?>()) {
       return (data != null
-          ? (data as List)
-              .map((e) => deserialize<_i32.ReaperCommission>(e))
-              .toList()
-          : null) as T;
+              ? (data as List)
+                    .map((e) => deserialize<_i32.ReaperCommission>(e))
+                    .toList()
+              : null)
+          as T;
+    }
+    if (t == List<_i34.SaleItem>) {
+      return (data as List).map((e) => deserialize<_i34.SaleItem>(e)).toList()
+          as T;
     }
     if (t == _i1.getType<List<_i34.SaleItem>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i34.SaleItem>(e)).toList()
-          : null) as T;
+              ? (data as List)
+                    .map((e) => deserialize<_i34.SaleItem>(e))
+                    .toList()
+              : null)
+          as T;
     }
-    if (t == List<_i36.Addresses>) {
-      return (data as List).map((e) => deserialize<_i36.Addresses>(e)).toList()
+    if (t == List<_i37.Addresses>) {
+      return (data as List).map((e) => deserialize<_i37.Addresses>(e)).toList()
           as T;
     }
     if (t == List<_i3.UserInfo>) {
       return (data as List).map((e) => deserialize<_i3.UserInfo>(e)).toList()
           as T;
     }
-    if (t == List<_i37.Cart>) {
-      return (data as List).map((e) => deserialize<_i37.Cart>(e)).toList() as T;
+    if (t == List<_i38.Cart>) {
+      return (data as List).map((e) => deserialize<_i38.Cart>(e)).toList() as T;
     }
     if (t == Map<String, dynamic>) {
-      return (data as Map).map((k, v) =>
-          MapEntry(deserialize<String>(k), deserialize<dynamic>(v))) as T;
+      return (data as Map).map(
+            (k, v) => MapEntry(deserialize<String>(k), deserialize<dynamic>(v)),
+          )
+          as T;
     }
-    if (t == List<_i38.Commissions>) {
+    if (t == List<_i39.Commissions>) {
       return (data as List)
-          .map((e) => deserialize<_i38.Commissions>(e))
-          .toList() as T;
+              .map((e) => deserialize<_i39.Commissions>(e))
+              .toList()
+          as T;
     }
-    if (t == List<_i39.CommissionRule>) {
+    if (t == List<_i40.CommissionRule>) {
       return (data as List)
-          .map((e) => deserialize<_i39.CommissionRule>(e))
-          .toList() as T;
+              .map((e) => deserialize<_i40.CommissionRule>(e))
+              .toList()
+          as T;
     }
-    if (t == List<_i40.Distributors>) {
+    if (t == List<_i41.Distributors>) {
       return (data as List)
-          .map((e) => deserialize<_i40.Distributors>(e))
-          .toList() as T;
+              .map((e) => deserialize<_i41.Distributors>(e))
+              .toList()
+          as T;
     }
-    if (t == List<_i41.GoldenSeats>) {
+    if (t == List<_i42.GoldenSeats>) {
       return (data as List)
-          .map((e) => deserialize<_i41.GoldenSeats>(e))
-          .toList() as T;
+              .map((e) => deserialize<_i42.GoldenSeats>(e))
+              .toList()
+          as T;
     }
-    if (t == List<_i42.MembershipPackage>) {
+    if (t == List<_i43.MembershipPackage>) {
       return (data as List)
-          .map((e) => deserialize<_i42.MembershipPackage>(e))
-          .toList() as T;
+              .map((e) => deserialize<_i43.MembershipPackage>(e))
+              .toList()
+          as T;
     }
-    if (t == _i1.getType<List<_i43.Menu>?>()) {
+    if (t == List<_i44.Menu>) {
+      return (data as List).map((e) => deserialize<_i44.Menu>(e)).toList() as T;
+    }
+    if (t == _i1.getType<List<_i44.Menu>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i43.Menu>(e)).toList()
-          : null) as T;
-    }
-    if (t == List<_i44.Package>) {
-      return (data as List).map((e) => deserialize<_i44.Package>(e)).toList()
+              ? (data as List).map((e) => deserialize<_i44.Menu>(e)).toList()
+              : null)
           as T;
     }
-    if (t == List<_i45.Product>) {
-      return (data as List).map((e) => deserialize<_i45.Product>(e)).toList()
+    if (t == List<_i45.Package>) {
+      return (data as List).map((e) => deserialize<_i45.Package>(e)).toList()
           as T;
     }
-    if (t == List<_i46.Ranks>) {
-      return (data as List).map((e) => deserialize<_i46.Ranks>(e)).toList()
+    if (t == List<_i46.Product>) {
+      return (data as List).map((e) => deserialize<_i46.Product>(e)).toList()
           as T;
     }
-    if (t == List<_i47.ReaperCommission>) {
+    if (t == List<_i47.Ranks>) {
+      return (data as List).map((e) => deserialize<_i47.Ranks>(e)).toList()
+          as T;
+    }
+    if (t == List<_i48.ReaperCommission>) {
       return (data as List)
-          .map((e) => deserialize<_i47.ReaperCommission>(e))
-          .toList() as T;
+              .map((e) => deserialize<_i48.ReaperCommission>(e))
+              .toList()
+          as T;
     }
-    if (t == _i1.getType<List<_i48.Sale>?>()) {
+    if (t == List<_i49.Sale>) {
+      return (data as List).map((e) => deserialize<_i49.Sale>(e)).toList() as T;
+    }
+    if (t == _i1.getType<List<_i49.Sale>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i48.Sale>(e)).toList()
-          : null) as T;
+              ? (data as List).map((e) => deserialize<_i49.Sale>(e)).toList()
+              : null)
+          as T;
     }
     try {
       return _i3.Protocol().deserialize<T>(data, t);
@@ -3295,105 +3381,122 @@ class Protocol extends _i1.SerializationManagerServer {
     return super.deserialize<T>(data, t);
   }
 
+  static String? getClassNameForType(Type type) {
+    return switch (type) {
+      _i4.Addresses => 'Addresses',
+      _i5.Cart => 'Cart',
+      _i6.CartItem => 'CartItem',
+      _i7.Cdnconfig => 'Cdnconfig',
+      _i8.CommissionRule => 'CommissionRule',
+      _i9.Commissions => 'Commissions',
+      _i10.CrownPackage => 'CrownPackage',
+      _i11.Distributors => 'Distributors',
+      _i12.Eula => 'Eula',
+      _i13.BirthdayReminderSendReminderModel =>
+        'BirthdayReminderSendReminderModel',
+      _i14.GoldenSeatCommission => 'GoldenSeatCommission',
+      _i15.GoldenSeats => 'GoldenSeats',
+      _i16.Greeting => 'Greeting',
+      _i17.Level => 'Level',
+      _i18.MembershipPackage => 'MembershipPackage',
+      _i19.Menu => 'Menu',
+      _i20.MenuItems => 'MenuItems',
+      _i21.Order => 'Order',
+      _i22.OrderItem => 'OrderItem',
+      _i23.Package => 'Package',
+      _i24.PaymentEvent => 'PaymentEvent',
+      _i25.PaymentResponse => 'PaymentResponse',
+      _i26.Payment => 'Payment',
+      _i27.PioneerAccounts => 'PioneerAccounts',
+      _i28.Product => 'Product',
+      _i29.ProfitSharing => 'ProfitSharing',
+      _i30.RankCategory => 'RankCategory',
+      _i31.Ranks => 'Ranks',
+      _i32.ReaperCommission => 'ReaperCommission',
+      _i33.Sale => 'Sale',
+      _i34.SaleItem => 'SaleItem',
+      _i35.UserInfo => 'UserInfo',
+      _i36.User => 'User',
+      _ => null,
+    };
+  }
+
   @override
   String? getClassNameForObject(Object? data) {
     String? className = super.getClassNameForObject(data);
     if (className != null) return className;
-    if (data is _i4.Greeting) {
-      return 'Greeting';
+
+    if (data is Map<String, dynamic> && data['__className__'] is String) {
+      return (data['__className__'] as String).replaceFirst('wm.', '');
     }
-    if (data is _i5.UserInfo) {
-      return 'UserInfo';
-    }
-    if (data is _i6.Addresses) {
-      return 'Addresses';
-    }
-    if (data is _i7.Cart) {
-      return 'Cart';
-    }
-    if (data is _i8.CartItem) {
-      return 'CartItem';
-    }
-    if (data is _i9.Cdnconfig) {
-      return 'Cdnconfig';
-    }
-    if (data is _i10.CommissionRule) {
-      return 'CommissionRule';
-    }
-    if (data is _i11.Commissions) {
-      return 'Commissions';
-    }
-    if (data is _i12.CrownPackage) {
-      return 'CrownPackage';
-    }
-    if (data is _i13.Distributors) {
-      return 'Distributors';
-    }
-    if (data is _i14.Eula) {
-      return 'Eula';
-    }
-    if (data is _i15.GoldenSeatCommission) {
-      return 'GoldenSeatCommission';
-    }
-    if (data is _i16.GoldenSeats) {
-      return 'GoldenSeats';
-    }
-    if (data is _i17.Level) {
-      return 'Level';
-    }
-    if (data is _i18.MembershipPackage) {
-      return 'MembershipPackage';
-    }
-    if (data is _i19.Menu) {
-      return 'Menu';
-    }
-    if (data is _i20.MenuItems) {
-      return 'MenuItems';
-    }
-    if (data is _i21.Order) {
-      return 'Order';
-    }
-    if (data is _i22.OrderItem) {
-      return 'OrderItem';
-    }
-    if (data is _i23.Package) {
-      return 'Package';
-    }
-    if (data is _i24.PaymentEvent) {
-      return 'PaymentEvent';
-    }
-    if (data is _i25.PaymentResponse) {
-      return 'PaymentResponse';
-    }
-    if (data is _i26.Payment) {
-      return 'Payment';
-    }
-    if (data is _i27.PioneerAccounts) {
-      return 'PioneerAccounts';
-    }
-    if (data is _i28.Product) {
-      return 'Product';
-    }
-    if (data is _i29.ProfitSharing) {
-      return 'ProfitSharing';
-    }
-    if (data is _i30.RankCategory) {
-      return 'RankCategory';
-    }
-    if (data is _i31.Ranks) {
-      return 'Ranks';
-    }
-    if (data is _i32.ReaperCommission) {
-      return 'ReaperCommission';
-    }
-    if (data is _i33.Sale) {
-      return 'Sale';
-    }
-    if (data is _i34.SaleItem) {
-      return 'SaleItem';
-    }
-    if (data is _i35.User) {
-      return 'User';
+
+    switch (data) {
+      case _i4.Addresses():
+        return 'Addresses';
+      case _i5.Cart():
+        return 'Cart';
+      case _i6.CartItem():
+        return 'CartItem';
+      case _i7.Cdnconfig():
+        return 'Cdnconfig';
+      case _i8.CommissionRule():
+        return 'CommissionRule';
+      case _i9.Commissions():
+        return 'Commissions';
+      case _i10.CrownPackage():
+        return 'CrownPackage';
+      case _i11.Distributors():
+        return 'Distributors';
+      case _i12.Eula():
+        return 'Eula';
+      case _i13.BirthdayReminderSendReminderModel():
+        return 'BirthdayReminderSendReminderModel';
+      case _i14.GoldenSeatCommission():
+        return 'GoldenSeatCommission';
+      case _i15.GoldenSeats():
+        return 'GoldenSeats';
+      case _i16.Greeting():
+        return 'Greeting';
+      case _i17.Level():
+        return 'Level';
+      case _i18.MembershipPackage():
+        return 'MembershipPackage';
+      case _i19.Menu():
+        return 'Menu';
+      case _i20.MenuItems():
+        return 'MenuItems';
+      case _i21.Order():
+        return 'Order';
+      case _i22.OrderItem():
+        return 'OrderItem';
+      case _i23.Package():
+        return 'Package';
+      case _i24.PaymentEvent():
+        return 'PaymentEvent';
+      case _i25.PaymentResponse():
+        return 'PaymentResponse';
+      case _i26.Payment():
+        return 'Payment';
+      case _i27.PioneerAccounts():
+        return 'PioneerAccounts';
+      case _i28.Product():
+        return 'Product';
+      case _i29.ProfitSharing():
+        return 'ProfitSharing';
+      case _i30.RankCategory():
+        return 'RankCategory';
+      case _i31.Ranks():
+        return 'Ranks';
+      case _i32.ReaperCommission():
+        return 'ReaperCommission';
+      case _i33.Sale():
+        return 'Sale';
+      case _i34.SaleItem():
+        return 'SaleItem';
+      case _i35.UserInfo():
+        return 'UserInfo';
+      case _i36.User():
+        return 'User';
     }
     className = _i2.Protocol().getClassNameForObject(data);
     if (className != null) {
@@ -3412,44 +3515,44 @@ class Protocol extends _i1.SerializationManagerServer {
     if (dataClassName is! String) {
       return super.deserializeByClassName(data);
     }
-    if (dataClassName == 'Greeting') {
-      return deserialize<_i4.Greeting>(data['data']);
-    }
-    if (dataClassName == 'UserInfo') {
-      return deserialize<_i5.UserInfo>(data['data']);
-    }
     if (dataClassName == 'Addresses') {
-      return deserialize<_i6.Addresses>(data['data']);
+      return deserialize<_i4.Addresses>(data['data']);
     }
     if (dataClassName == 'Cart') {
-      return deserialize<_i7.Cart>(data['data']);
+      return deserialize<_i5.Cart>(data['data']);
     }
     if (dataClassName == 'CartItem') {
-      return deserialize<_i8.CartItem>(data['data']);
+      return deserialize<_i6.CartItem>(data['data']);
     }
     if (dataClassName == 'Cdnconfig') {
-      return deserialize<_i9.Cdnconfig>(data['data']);
+      return deserialize<_i7.Cdnconfig>(data['data']);
     }
     if (dataClassName == 'CommissionRule') {
-      return deserialize<_i10.CommissionRule>(data['data']);
+      return deserialize<_i8.CommissionRule>(data['data']);
     }
     if (dataClassName == 'Commissions') {
-      return deserialize<_i11.Commissions>(data['data']);
+      return deserialize<_i9.Commissions>(data['data']);
     }
     if (dataClassName == 'CrownPackage') {
-      return deserialize<_i12.CrownPackage>(data['data']);
+      return deserialize<_i10.CrownPackage>(data['data']);
     }
     if (dataClassName == 'Distributors') {
-      return deserialize<_i13.Distributors>(data['data']);
+      return deserialize<_i11.Distributors>(data['data']);
     }
     if (dataClassName == 'Eula') {
-      return deserialize<_i14.Eula>(data['data']);
+      return deserialize<_i12.Eula>(data['data']);
+    }
+    if (dataClassName == 'BirthdayReminderSendReminderModel') {
+      return deserialize<_i13.BirthdayReminderSendReminderModel>(data['data']);
     }
     if (dataClassName == 'GoldenSeatCommission') {
-      return deserialize<_i15.GoldenSeatCommission>(data['data']);
+      return deserialize<_i14.GoldenSeatCommission>(data['data']);
     }
     if (dataClassName == 'GoldenSeats') {
-      return deserialize<_i16.GoldenSeats>(data['data']);
+      return deserialize<_i15.GoldenSeats>(data['data']);
+    }
+    if (dataClassName == 'Greeting') {
+      return deserialize<_i16.Greeting>(data['data']);
     }
     if (dataClassName == 'Level') {
       return deserialize<_i17.Level>(data['data']);
@@ -3505,8 +3608,11 @@ class Protocol extends _i1.SerializationManagerServer {
     if (dataClassName == 'SaleItem') {
       return deserialize<_i34.SaleItem>(data['data']);
     }
+    if (dataClassName == 'UserInfo') {
+      return deserialize<_i35.UserInfo>(data['data']);
+    }
     if (dataClassName == 'User') {
-      return deserialize<_i35.User>(data['data']);
+      return deserialize<_i36.User>(data['data']);
     }
     if (dataClassName.startsWith('serverpod.')) {
       data['className'] = dataClassName.substring(10);
@@ -3534,28 +3640,28 @@ class Protocol extends _i1.SerializationManagerServer {
       }
     }
     switch (t) {
-      case _i6.Addresses:
-        return _i6.Addresses.t;
-      case _i7.Cart:
-        return _i7.Cart.t;
-      case _i8.CartItem:
-        return _i8.CartItem.t;
-      case _i9.Cdnconfig:
-        return _i9.Cdnconfig.t;
-      case _i10.CommissionRule:
-        return _i10.CommissionRule.t;
-      case _i11.Commissions:
-        return _i11.Commissions.t;
-      case _i12.CrownPackage:
-        return _i12.CrownPackage.t;
-      case _i13.Distributors:
-        return _i13.Distributors.t;
-      case _i14.Eula:
-        return _i14.Eula.t;
-      case _i15.GoldenSeatCommission:
-        return _i15.GoldenSeatCommission.t;
-      case _i16.GoldenSeats:
-        return _i16.GoldenSeats.t;
+      case _i4.Addresses:
+        return _i4.Addresses.t;
+      case _i5.Cart:
+        return _i5.Cart.t;
+      case _i6.CartItem:
+        return _i6.CartItem.t;
+      case _i7.Cdnconfig:
+        return _i7.Cdnconfig.t;
+      case _i8.CommissionRule:
+        return _i8.CommissionRule.t;
+      case _i9.Commissions:
+        return _i9.Commissions.t;
+      case _i10.CrownPackage:
+        return _i10.CrownPackage.t;
+      case _i11.Distributors:
+        return _i11.Distributors.t;
+      case _i12.Eula:
+        return _i12.Eula.t;
+      case _i14.GoldenSeatCommission:
+        return _i14.GoldenSeatCommission.t;
+      case _i15.GoldenSeats:
+        return _i15.GoldenSeats.t;
       case _i17.Level:
         return _i17.Level.t;
       case _i18.MembershipPackage:
@@ -3590,8 +3696,8 @@ class Protocol extends _i1.SerializationManagerServer {
         return _i33.Sale.t;
       case _i34.SaleItem:
         return _i34.SaleItem.t;
-      case _i35.User:
-        return _i35.User.t;
+      case _i36.User:
+        return _i36.User.t;
     }
     return null;
   }
@@ -3602,4 +3708,19 @@ class Protocol extends _i1.SerializationManagerServer {
 
   @override
   String getModuleName() => 'wm';
+
+  /// Maps any `Record`s known to this [Protocol] to their JSON representation
+  ///
+  /// Throws in case the record type is not known.
+  ///
+  /// This method will return `null` (only) for `null` inputs.
+  Map<String, dynamic>? mapRecordToJson(Record? record) {
+    if (record == null) {
+      return null;
+    }
+    try {
+      return _i3.Protocol().mapRecordToJson(record);
+    } catch (_) {}
+    throw Exception('Unsupported record type ${record.runtimeType}');
+  }
 }

@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
@@ -44,14 +45,15 @@ abstract class Commissions
       recipientId: jsonSerialization['recipientId'] as int,
       sourceLevel: jsonSerialization['sourceLevel'] as int,
       commissionType: jsonSerialization['commissionType'] as String,
-      commissionAmount:
-          (jsonSerialization['commissionAmount'] as num).toDouble(),
+      commissionAmount: (jsonSerialization['commissionAmount'] as num)
+          .toDouble(),
       isPaid: jsonSerialization['isPaid'] as bool,
       paidAt: jsonSerialization['paidAt'] == null
           ? null
           : _i1.DateTimeJsonExtension.fromJson(jsonSerialization['paidAt']),
-      createdAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
+      createdAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['createdAt'],
+      ),
     );
   }
 
@@ -98,6 +100,7 @@ abstract class Commissions
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'Commissions',
       if (id != null) 'id': id,
       'saleId': saleId,
       'recipientId': recipientId,
@@ -113,6 +116,7 @@ abstract class Commissions
   @override
   Map<String, dynamic> toJsonForProtocol() {
     return {
+      '__className__': 'Commissions',
       if (id != null) 'id': id,
       'saleId': saleId,
       'recipientId': recipientId,
@@ -169,16 +173,16 @@ class _CommissionsImpl extends Commissions {
     DateTime? paidAt,
     required DateTime createdAt,
   }) : super._(
-          id: id,
-          saleId: saleId,
-          recipientId: recipientId,
-          sourceLevel: sourceLevel,
-          commissionType: commissionType,
-          commissionAmount: commissionAmount,
-          isPaid: isPaid,
-          paidAt: paidAt,
-          createdAt: createdAt,
-        );
+         id: id,
+         saleId: saleId,
+         recipientId: recipientId,
+         sourceLevel: sourceLevel,
+         commissionType: commissionType,
+         commissionAmount: commissionAmount,
+         isPaid: isPaid,
+         paidAt: paidAt,
+         createdAt: createdAt,
+       );
 
   /// Returns a shallow copy of this [Commissions]
   /// with some or all fields replaced by the given arguments.
@@ -209,8 +213,57 @@ class _CommissionsImpl extends Commissions {
   }
 }
 
+class CommissionsUpdateTable extends _i1.UpdateTable<CommissionsTable> {
+  CommissionsUpdateTable(super.table);
+
+  _i1.ColumnValue<int, int> saleId(int value) => _i1.ColumnValue(
+    table.saleId,
+    value,
+  );
+
+  _i1.ColumnValue<int, int> recipientId(int value) => _i1.ColumnValue(
+    table.recipientId,
+    value,
+  );
+
+  _i1.ColumnValue<int, int> sourceLevel(int value) => _i1.ColumnValue(
+    table.sourceLevel,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> commissionType(String value) =>
+      _i1.ColumnValue(
+        table.commissionType,
+        value,
+      );
+
+  _i1.ColumnValue<double, double> commissionAmount(double value) =>
+      _i1.ColumnValue(
+        table.commissionAmount,
+        value,
+      );
+
+  _i1.ColumnValue<bool, bool> isPaid(bool value) => _i1.ColumnValue(
+    table.isPaid,
+    value,
+  );
+
+  _i1.ColumnValue<DateTime, DateTime> paidAt(DateTime? value) =>
+      _i1.ColumnValue(
+        table.paidAt,
+        value,
+      );
+
+  _i1.ColumnValue<DateTime, DateTime> createdAt(DateTime value) =>
+      _i1.ColumnValue(
+        table.createdAt,
+        value,
+      );
+}
+
 class CommissionsTable extends _i1.Table<int?> {
   CommissionsTable({super.tableRelation}) : super(tableName: 'commissions') {
+    updateTable = CommissionsUpdateTable(this);
     saleId = _i1.ColumnInt(
       'saleId',
       this,
@@ -245,6 +298,8 @@ class CommissionsTable extends _i1.Table<int?> {
     );
   }
 
+  late final CommissionsUpdateTable updateTable;
+
   late final _i1.ColumnInt saleId;
 
   late final _i1.ColumnInt recipientId;
@@ -263,16 +318,16 @@ class CommissionsTable extends _i1.Table<int?> {
 
   @override
   List<_i1.Column> get columns => [
-        id,
-        saleId,
-        recipientId,
-        sourceLevel,
-        commissionType,
-        commissionAmount,
-        isPaid,
-        paidAt,
-        createdAt,
-      ];
+    id,
+    saleId,
+    recipientId,
+    sourceLevel,
+    commissionType,
+    commissionAmount,
+    isPaid,
+    paidAt,
+    createdAt,
+  ];
 }
 
 class CommissionsInclude extends _i1.IncludeObject {
@@ -460,6 +515,46 @@ class CommissionsRepository {
     return session.db.updateRow<Commissions>(
       row,
       columns: columns?.call(Commissions.t),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates a single [Commissions] by its [id] with the specified [columnValues].
+  /// Returns the updated row or null if no row with the given id exists.
+  Future<Commissions?> updateById(
+    _i1.Session session,
+    int id, {
+    required _i1.ColumnValueListBuilder<CommissionsUpdateTable> columnValues,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateById<Commissions>(
+      id,
+      columnValues: columnValues(Commissions.t.updateTable),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates all [Commissions]s matching the [where] expression with the specified [columnValues].
+  /// Returns the list of updated rows.
+  Future<List<Commissions>> updateWhere(
+    _i1.Session session, {
+    required _i1.ColumnValueListBuilder<CommissionsUpdateTable> columnValues,
+    required _i1.WhereExpressionBuilder<CommissionsTable> where,
+    int? limit,
+    int? offset,
+    _i1.OrderByBuilder<CommissionsTable>? orderBy,
+    _i1.OrderByListBuilder<CommissionsTable>? orderByList,
+    bool orderDescending = false,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateWhere<Commissions>(
+      columnValues: columnValues(Commissions.t.updateTable),
+      where: where(Commissions.t),
+      limit: limit,
+      offset: offset,
+      orderBy: orderBy?.call(Commissions.t),
+      orderByList: orderByList?.call(Commissions.t),
+      orderDescending: orderDescending,
       transaction: transaction,
     );
   }

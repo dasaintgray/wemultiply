@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
@@ -53,11 +54,13 @@ abstract class Product
       imageName: jsonSerialization['imageName'] as String,
       imageURL: jsonSerialization['imageURL'] as String,
       isActive: jsonSerialization['isActive'] as bool,
-      createdAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
+      createdAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['createdAt'],
+      ),
       createdBy: jsonSerialization['createdBy'] as String,
-      updatedat:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['updatedat']),
+      updatedat: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['updatedat'],
+      ),
       updatedBy: jsonSerialization['updatedBy'] as String,
     );
   }
@@ -114,6 +117,7 @@ abstract class Product
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'Product',
       if (id != null) 'id': id,
       'productName': productName,
       'description': description,
@@ -132,6 +136,7 @@ abstract class Product
   @override
   Map<String, dynamic> toJsonForProtocol() {
     return {
+      '__className__': 'Product',
       if (id != null) 'id': id,
       'productName': productName,
       'description': description,
@@ -194,19 +199,19 @@ class _ProductImpl extends Product {
     required DateTime updatedat,
     required String updatedBy,
   }) : super._(
-          id: id,
-          productName: productName,
-          description: description,
-          price: price,
-          stock: stock,
-          imageName: imageName,
-          imageURL: imageURL,
-          isActive: isActive,
-          createdAt: createdAt,
-          createdBy: createdBy,
-          updatedat: updatedat,
-          updatedBy: updatedBy,
-        );
+         id: id,
+         productName: productName,
+         description: description,
+         price: price,
+         stock: stock,
+         imageName: imageName,
+         imageURL: imageURL,
+         isActive: isActive,
+         createdAt: createdAt,
+         createdBy: createdBy,
+         updatedat: updatedat,
+         updatedBy: updatedBy,
+       );
 
   /// Returns a shallow copy of this [Product]
   /// with some or all fields replaced by the given arguments.
@@ -243,8 +248,70 @@ class _ProductImpl extends Product {
   }
 }
 
+class ProductUpdateTable extends _i1.UpdateTable<ProductTable> {
+  ProductUpdateTable(super.table);
+
+  _i1.ColumnValue<String, String> productName(String value) => _i1.ColumnValue(
+    table.productName,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> description(String value) => _i1.ColumnValue(
+    table.description,
+    value,
+  );
+
+  _i1.ColumnValue<double, double> price(double value) => _i1.ColumnValue(
+    table.price,
+    value,
+  );
+
+  _i1.ColumnValue<int, int> stock(int value) => _i1.ColumnValue(
+    table.stock,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> imageName(String value) => _i1.ColumnValue(
+    table.imageName,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> imageURL(String value) => _i1.ColumnValue(
+    table.imageURL,
+    value,
+  );
+
+  _i1.ColumnValue<bool, bool> isActive(bool value) => _i1.ColumnValue(
+    table.isActive,
+    value,
+  );
+
+  _i1.ColumnValue<DateTime, DateTime> createdAt(DateTime value) =>
+      _i1.ColumnValue(
+        table.createdAt,
+        value,
+      );
+
+  _i1.ColumnValue<String, String> createdBy(String value) => _i1.ColumnValue(
+    table.createdBy,
+    value,
+  );
+
+  _i1.ColumnValue<DateTime, DateTime> updatedat(DateTime value) =>
+      _i1.ColumnValue(
+        table.updatedat,
+        value,
+      );
+
+  _i1.ColumnValue<String, String> updatedBy(String value) => _i1.ColumnValue(
+    table.updatedBy,
+    value,
+  );
+}
+
 class ProductTable extends _i1.Table<int?> {
   ProductTable({super.tableRelation}) : super(tableName: 'products') {
+    updateTable = ProductUpdateTable(this);
     productName = _i1.ColumnString(
       'productName',
       this,
@@ -291,6 +358,8 @@ class ProductTable extends _i1.Table<int?> {
     );
   }
 
+  late final ProductUpdateTable updateTable;
+
   late final _i1.ColumnString productName;
 
   late final _i1.ColumnString description;
@@ -315,19 +384,19 @@ class ProductTable extends _i1.Table<int?> {
 
   @override
   List<_i1.Column> get columns => [
-        id,
-        productName,
-        description,
-        price,
-        stock,
-        imageName,
-        imageURL,
-        isActive,
-        createdAt,
-        createdBy,
-        updatedat,
-        updatedBy,
-      ];
+    id,
+    productName,
+    description,
+    price,
+    stock,
+    imageName,
+    imageURL,
+    isActive,
+    createdAt,
+    createdBy,
+    updatedat,
+    updatedBy,
+  ];
 }
 
 class ProductInclude extends _i1.IncludeObject {
@@ -515,6 +584,46 @@ class ProductRepository {
     return session.db.updateRow<Product>(
       row,
       columns: columns?.call(Product.t),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates a single [Product] by its [id] with the specified [columnValues].
+  /// Returns the updated row or null if no row with the given id exists.
+  Future<Product?> updateById(
+    _i1.Session session,
+    int id, {
+    required _i1.ColumnValueListBuilder<ProductUpdateTable> columnValues,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateById<Product>(
+      id,
+      columnValues: columnValues(Product.t.updateTable),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates all [Product]s matching the [where] expression with the specified [columnValues].
+  /// Returns the list of updated rows.
+  Future<List<Product>> updateWhere(
+    _i1.Session session, {
+    required _i1.ColumnValueListBuilder<ProductUpdateTable> columnValues,
+    required _i1.WhereExpressionBuilder<ProductTable> where,
+    int? limit,
+    int? offset,
+    _i1.OrderByBuilder<ProductTable>? orderBy,
+    _i1.OrderByListBuilder<ProductTable>? orderByList,
+    bool orderDescending = false,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateWhere<Product>(
+      columnValues: columnValues(Product.t.updateTable),
+      where: where(Product.t),
+      limit: limit,
+      offset: offset,
+      orderBy: orderBy?.call(Product.t),
+      orderByList: orderByList?.call(Product.t),
+      orderDescending: orderDescending,
       transaction: transaction,
     );
   }

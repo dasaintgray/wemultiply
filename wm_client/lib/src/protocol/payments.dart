@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
@@ -48,10 +49,12 @@ abstract class Payment implements _i1.SerializableModel {
       currency: jsonSerialization['currency'] as String,
       status: jsonSerialization['status'] as String,
       metadata: jsonSerialization['metadata'] as String,
-      createdAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
-      updatedAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['updatedAt']),
+      createdAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['createdAt'],
+      ),
+      updatedAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['updatedAt'],
+      ),
     );
   }
 
@@ -96,6 +99,7 @@ abstract class Payment implements _i1.SerializableModel {
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'Payment',
       if (id != null) 'id': id,
       'orderId': orderId,
       'externalId': externalId,
@@ -130,17 +134,17 @@ class _PaymentImpl extends Payment {
     required DateTime createdAt,
     required DateTime updatedAt,
   }) : super._(
-          id: id,
-          orderId: orderId,
-          externalId: externalId,
-          channel: channel,
-          amount: amount,
-          currency: currency,
-          status: status,
-          metadata: metadata,
-          createdAt: createdAt,
-          updatedAt: updatedAt,
-        );
+         id: id,
+         orderId: orderId,
+         externalId: externalId,
+         channel: channel,
+         amount: amount,
+         currency: currency,
+         status: status,
+         metadata: metadata,
+         createdAt: createdAt,
+         updatedAt: updatedAt,
+       );
 
   /// Returns a shallow copy of this [Payment]
   /// with some or all fields replaced by the given arguments.

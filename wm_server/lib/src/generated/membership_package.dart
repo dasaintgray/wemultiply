@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
@@ -76,6 +77,7 @@ abstract class MembershipPackage
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'MembershipPackage',
       if (id != null) 'id': id,
       'name': name,
       'price': price,
@@ -88,6 +90,7 @@ abstract class MembershipPackage
   @override
   Map<String, dynamic> toJsonForProtocol() {
     return {
+      '__className__': 'MembershipPackage',
       if (id != null) 'id': id,
       'name': name,
       'price': price,
@@ -138,13 +141,13 @@ class _MembershipPackageImpl extends MembershipPackage {
     double? cashback,
     String? description,
   }) : super._(
-          id: id,
-          name: name,
-          price: price,
-          bottlesIncluded: bottlesIncluded,
-          cashback: cashback,
-          description: description,
-        );
+         id: id,
+         name: name,
+         price: price,
+         bottlesIncluded: bottlesIncluded,
+         cashback: cashback,
+         description: description,
+       );
 
   /// Returns a shallow copy of this [MembershipPackage]
   /// with some or all fields replaced by the given arguments.
@@ -169,9 +172,40 @@ class _MembershipPackageImpl extends MembershipPackage {
   }
 }
 
+class MembershipPackageUpdateTable
+    extends _i1.UpdateTable<MembershipPackageTable> {
+  MembershipPackageUpdateTable(super.table);
+
+  _i1.ColumnValue<String, String> name(String value) => _i1.ColumnValue(
+    table.name,
+    value,
+  );
+
+  _i1.ColumnValue<double, double> price(double value) => _i1.ColumnValue(
+    table.price,
+    value,
+  );
+
+  _i1.ColumnValue<int, int> bottlesIncluded(int value) => _i1.ColumnValue(
+    table.bottlesIncluded,
+    value,
+  );
+
+  _i1.ColumnValue<double, double> cashback(double? value) => _i1.ColumnValue(
+    table.cashback,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> description(String? value) => _i1.ColumnValue(
+    table.description,
+    value,
+  );
+}
+
 class MembershipPackageTable extends _i1.Table<int?> {
   MembershipPackageTable({super.tableRelation})
-      : super(tableName: 'membership_packages') {
+    : super(tableName: 'membership_packages') {
+    updateTable = MembershipPackageUpdateTable(this);
     name = _i1.ColumnString(
       'name',
       this,
@@ -194,6 +228,8 @@ class MembershipPackageTable extends _i1.Table<int?> {
     );
   }
 
+  late final MembershipPackageUpdateTable updateTable;
+
   late final _i1.ColumnString name;
 
   late final _i1.ColumnDouble price;
@@ -206,13 +242,13 @@ class MembershipPackageTable extends _i1.Table<int?> {
 
   @override
   List<_i1.Column> get columns => [
-        id,
-        name,
-        price,
-        bottlesIncluded,
-        cashback,
-        description,
-      ];
+    id,
+    name,
+    price,
+    bottlesIncluded,
+    cashback,
+    description,
+  ];
 }
 
 class MembershipPackageInclude extends _i1.IncludeObject {
@@ -400,6 +436,48 @@ class MembershipPackageRepository {
     return session.db.updateRow<MembershipPackage>(
       row,
       columns: columns?.call(MembershipPackage.t),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates a single [MembershipPackage] by its [id] with the specified [columnValues].
+  /// Returns the updated row or null if no row with the given id exists.
+  Future<MembershipPackage?> updateById(
+    _i1.Session session,
+    int id, {
+    required _i1.ColumnValueListBuilder<MembershipPackageUpdateTable>
+    columnValues,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateById<MembershipPackage>(
+      id,
+      columnValues: columnValues(MembershipPackage.t.updateTable),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates all [MembershipPackage]s matching the [where] expression with the specified [columnValues].
+  /// Returns the list of updated rows.
+  Future<List<MembershipPackage>> updateWhere(
+    _i1.Session session, {
+    required _i1.ColumnValueListBuilder<MembershipPackageUpdateTable>
+    columnValues,
+    required _i1.WhereExpressionBuilder<MembershipPackageTable> where,
+    int? limit,
+    int? offset,
+    _i1.OrderByBuilder<MembershipPackageTable>? orderBy,
+    _i1.OrderByListBuilder<MembershipPackageTable>? orderByList,
+    bool orderDescending = false,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateWhere<MembershipPackage>(
+      columnValues: columnValues(MembershipPackage.t.updateTable),
+      where: where(MembershipPackage.t),
+      limit: limit,
+      offset: offset,
+      orderBy: orderBy?.call(MembershipPackage.t),
+      orderByList: orderByList?.call(MembershipPackage.t),
+      orderDescending: orderDescending,
       transaction: transaction,
     );
   }

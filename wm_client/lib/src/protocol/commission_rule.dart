@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
@@ -64,6 +65,7 @@ abstract class CommissionRule implements _i1.SerializableModel {
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'CommissionRule',
       if (id != null) 'id': id,
       'rankId': rankId,
       'level': level,
@@ -88,12 +90,12 @@ class _CommissionRuleImpl extends CommissionRule {
     required double commissionRate,
     required String commissionType,
   }) : super._(
-          id: id,
-          rankId: rankId,
-          level: level,
-          commissionRate: commissionRate,
-          commissionType: commissionType,
-        );
+         id: id,
+         rankId: rankId,
+         level: level,
+         commissionRate: commissionRate,
+         commissionType: commissionType,
+       );
 
   /// Returns a shallow copy of this [CommissionRule]
   /// with some or all fields replaced by the given arguments.

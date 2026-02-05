@@ -7,12 +7,13 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
-
+// ignore_for_file: invalid_use_of_internal_member
 // ignore_for_file: unnecessary_null_comparison
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 import 'order_items.dart' as _i2;
+import 'package:wm_server/src/generated/protocol.dart' as _i3;
 
 abstract class Order implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
   Order._({
@@ -62,13 +63,17 @@ abstract class Order implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
       discountTotal: (jsonSerialization['discountTotal'] as num).toDouble(),
       grandTotal: (jsonSerialization['grandTotal'] as num).toDouble(),
       paymentMethod: jsonSerialization['paymentMethod'] as String,
-      createdAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
-      updatedAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['updatedAt']),
-      orderItems: (jsonSerialization['orderItems'] as List?)
-          ?.map((e) => _i2.OrderItem.fromJson((e as Map<String, dynamic>)))
-          .toList(),
+      createdAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['createdAt'],
+      ),
+      updatedAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['updatedAt'],
+      ),
+      orderItems: jsonSerialization['orderItems'] == null
+          ? null
+          : _i3.Protocol().deserialize<List<_i2.OrderItem>>(
+              jsonSerialization['orderItems'],
+            ),
     );
   }
 
@@ -130,6 +135,7 @@ abstract class Order implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'Order',
       if (id != null) 'id': id,
       'userID': userID,
       'cartId': cartId,
@@ -151,6 +157,7 @@ abstract class Order implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
   @override
   Map<String, dynamic> toJsonForProtocol() {
     return {
+      '__className__': 'Order',
       if (id != null) 'id': id,
       'userID': userID,
       'cartId': cartId,
@@ -165,8 +172,9 @@ abstract class Order implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
       'createdAt': createdAt.toJson(),
       'updatedAt': updatedAt.toJson(),
       if (orderItems != null)
-        'orderItems':
-            orderItems?.toJson(valueToJson: (v) => v.toJsonForProtocol()),
+        'orderItems': orderItems?.toJson(
+          valueToJson: (v) => v.toJsonForProtocol(),
+        ),
     };
   }
 
@@ -219,21 +227,21 @@ class _OrderImpl extends Order {
     required DateTime updatedAt,
     List<_i2.OrderItem>? orderItems,
   }) : super._(
-          id: id,
-          userID: userID,
-          cartId: cartId,
-          status: status,
-          currency: currency,
-          subtotal: subtotal,
-          taxTotal: taxTotal,
-          shippingTotal: shippingTotal,
-          discountTotal: discountTotal,
-          grandTotal: grandTotal,
-          paymentMethod: paymentMethod,
-          createdAt: createdAt,
-          updatedAt: updatedAt,
-          orderItems: orderItems,
-        );
+         id: id,
+         userID: userID,
+         cartId: cartId,
+         status: status,
+         currency: currency,
+         subtotal: subtotal,
+         taxTotal: taxTotal,
+         shippingTotal: shippingTotal,
+         discountTotal: discountTotal,
+         grandTotal: grandTotal,
+         paymentMethod: paymentMethod,
+         createdAt: createdAt,
+         updatedAt: updatedAt,
+         orderItems: orderItems,
+       );
 
   /// Returns a shallow copy of this [Order]
   /// with some or all fields replaced by the given arguments.
@@ -276,8 +284,78 @@ class _OrderImpl extends Order {
   }
 }
 
+class OrderUpdateTable extends _i1.UpdateTable<OrderTable> {
+  OrderUpdateTable(super.table);
+
+  _i1.ColumnValue<int, int> userID(int value) => _i1.ColumnValue(
+    table.userID,
+    value,
+  );
+
+  _i1.ColumnValue<int, int> cartId(int value) => _i1.ColumnValue(
+    table.cartId,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> status(String value) => _i1.ColumnValue(
+    table.status,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> currency(String value) => _i1.ColumnValue(
+    table.currency,
+    value,
+  );
+
+  _i1.ColumnValue<double, double> subtotal(double value) => _i1.ColumnValue(
+    table.subtotal,
+    value,
+  );
+
+  _i1.ColumnValue<double, double> taxTotal(double value) => _i1.ColumnValue(
+    table.taxTotal,
+    value,
+  );
+
+  _i1.ColumnValue<double, double> shippingTotal(double value) =>
+      _i1.ColumnValue(
+        table.shippingTotal,
+        value,
+      );
+
+  _i1.ColumnValue<double, double> discountTotal(double value) =>
+      _i1.ColumnValue(
+        table.discountTotal,
+        value,
+      );
+
+  _i1.ColumnValue<double, double> grandTotal(double value) => _i1.ColumnValue(
+    table.grandTotal,
+    value,
+  );
+
+  _i1.ColumnValue<String, String> paymentMethod(String value) =>
+      _i1.ColumnValue(
+        table.paymentMethod,
+        value,
+      );
+
+  _i1.ColumnValue<DateTime, DateTime> createdAt(DateTime value) =>
+      _i1.ColumnValue(
+        table.createdAt,
+        value,
+      );
+
+  _i1.ColumnValue<DateTime, DateTime> updatedAt(DateTime value) =>
+      _i1.ColumnValue(
+        table.updatedAt,
+        value,
+      );
+}
+
 class OrderTable extends _i1.Table<int?> {
   OrderTable({super.tableRelation}) : super(tableName: 'orders') {
+    updateTable = OrderUpdateTable(this);
     userID = _i1.ColumnInt(
       'userID',
       this,
@@ -327,6 +405,8 @@ class OrderTable extends _i1.Table<int?> {
       this,
     );
   }
+
+  late final OrderUpdateTable updateTable;
 
   late final _i1.ColumnInt userID;
 
@@ -382,27 +462,28 @@ class OrderTable extends _i1.Table<int?> {
     _orderItems = _i1.ManyRelation<_i2.OrderItemTable>(
       tableWithRelations: relationTable,
       table: _i2.OrderItemTable(
-          tableRelation: relationTable.tableRelation!.lastRelation),
+        tableRelation: relationTable.tableRelation!.lastRelation,
+      ),
     );
     return _orderItems!;
   }
 
   @override
   List<_i1.Column> get columns => [
-        id,
-        userID,
-        cartId,
-        status,
-        currency,
-        subtotal,
-        taxTotal,
-        shippingTotal,
-        discountTotal,
-        grandTotal,
-        paymentMethod,
-        createdAt,
-        updatedAt,
-      ];
+    id,
+    userID,
+    cartId,
+    status,
+    currency,
+    subtotal,
+    taxTotal,
+    shippingTotal,
+    discountTotal,
+    grandTotal,
+    paymentMethod,
+    createdAt,
+    updatedAt,
+  ];
 
   @override
   _i1.Table? getRelationTable(String relationField) {
@@ -620,6 +701,46 @@ class OrderRepository {
     );
   }
 
+  /// Updates a single [Order] by its [id] with the specified [columnValues].
+  /// Returns the updated row or null if no row with the given id exists.
+  Future<Order?> updateById(
+    _i1.Session session,
+    int id, {
+    required _i1.ColumnValueListBuilder<OrderUpdateTable> columnValues,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateById<Order>(
+      id,
+      columnValues: columnValues(Order.t.updateTable),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates all [Order]s matching the [where] expression with the specified [columnValues].
+  /// Returns the list of updated rows.
+  Future<List<Order>> updateWhere(
+    _i1.Session session, {
+    required _i1.ColumnValueListBuilder<OrderUpdateTable> columnValues,
+    required _i1.WhereExpressionBuilder<OrderTable> where,
+    int? limit,
+    int? offset,
+    _i1.OrderByBuilder<OrderTable>? orderBy,
+    _i1.OrderByListBuilder<OrderTable>? orderByList,
+    bool orderDescending = false,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateWhere<Order>(
+      columnValues: columnValues(Order.t.updateTable),
+      where: where(Order.t),
+      limit: limit,
+      offset: offset,
+      orderBy: orderBy?.call(Order.t),
+      orderByList: orderByList?.call(Order.t),
+      orderDescending: orderDescending,
+      transaction: transaction,
+    );
+  }
+
   /// Deletes all [Order]s in the list and returns the deleted rows.
   /// This is an atomic operation, meaning that if one of the rows fail to
   /// be deleted, none of the rows will be deleted.
@@ -693,10 +814,12 @@ class OrderAttachRepository {
     }
 
     var $orderItem = orderItem
-        .map((e) => _i2.OrderItemImplicit(
-              e,
-              $_ordersOrderitemsOrdersId: order.id,
-            ))
+        .map(
+          (e) => _i2.OrderItemImplicit(
+            e,
+            $_ordersOrderitemsOrdersId: order.id,
+          ),
+        )
         .toList();
     await session.db.update<_i2.OrderItem>(
       $orderItem,
@@ -754,10 +877,12 @@ class OrderDetachRepository {
     }
 
     var $orderItem = orderItem
-        .map((e) => _i2.OrderItemImplicit(
-              e,
-              $_ordersOrderitemsOrdersId: null,
-            ))
+        .map(
+          (e) => _i2.OrderItemImplicit(
+            e,
+            $_ordersOrderitemsOrdersId: null,
+          ),
+        )
         .toList();
     await session.db.update<_i2.OrderItem>(
       $orderItem,

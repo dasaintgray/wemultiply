@@ -7,10 +7,12 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import 'sale_items.dart' as _i2;
+import 'package:wm_client/src/protocol/protocol.dart' as _i3;
 
 abstract class Sale implements _i1.SerializableModel {
   Sale._({
@@ -41,16 +43,19 @@ abstract class Sale implements _i1.SerializableModel {
     return Sale(
       id: jsonSerialization['id'] as int?,
       saleNumber: jsonSerialization['saleNumber'] as String,
-      saleDate:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['saleDate']),
+      saleDate: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['saleDate'],
+      ),
       buyerId: jsonSerialization['buyerId'] as int,
       packageId: jsonSerialization['packageId'] as int,
       saleType: jsonSerialization['saleType'] as String,
       amount: (jsonSerialization['amount'] as num).toDouble(),
       status: jsonSerialization['status'] as String,
-      salesItems: (jsonSerialization['salesItems'] as List?)
-          ?.map((e) => _i2.SaleItem.fromJson((e as Map<String, dynamic>)))
-          .toList(),
+      salesItems: jsonSerialization['salesItems'] == null
+          ? null
+          : _i3.Protocol().deserialize<List<_i2.SaleItem>>(
+              jsonSerialization['salesItems'],
+            ),
     );
   }
 
@@ -92,6 +97,7 @@ abstract class Sale implements _i1.SerializableModel {
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'Sale',
       if (id != null) 'id': id,
       'saleNumber': saleNumber,
       'saleDate': saleDate.toJson(),
@@ -125,16 +131,16 @@ class _SaleImpl extends Sale {
     required String status,
     List<_i2.SaleItem>? salesItems,
   }) : super._(
-          id: id,
-          saleNumber: saleNumber,
-          saleDate: saleDate,
-          buyerId: buyerId,
-          packageId: packageId,
-          saleType: saleType,
-          amount: amount,
-          status: status,
-          salesItems: salesItems,
-        );
+         id: id,
+         saleNumber: saleNumber,
+         saleDate: saleDate,
+         buyerId: buyerId,
+         packageId: packageId,
+         saleType: saleType,
+         amount: amount,
+         status: status,
+         salesItems: salesItems,
+       );
 
   /// Returns a shallow copy of this [Sale]
   /// with some or all fields replaced by the given arguments.

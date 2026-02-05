@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
@@ -36,7 +37,8 @@ abstract class GoldenSeatCommission
   }) = _GoldenSeatCommissionImpl;
 
   factory GoldenSeatCommission.fromJson(
-      Map<String, dynamic> jsonSerialization) {
+    Map<String, dynamic> jsonSerialization,
+  ) {
     return GoldenSeatCommission(
       id: jsonSerialization['id'] as int?,
       seatType: jsonSerialization['seatType'] as String,
@@ -44,10 +46,11 @@ abstract class GoldenSeatCommission
       productId: jsonSerialization['productId'] as int,
       netPerMember: (jsonSerialization['netPerMember'] as num).toDouble(),
       netPerBottle: (jsonSerialization['netPerBottle'] as num).toDouble(),
-      commissionAmount:
-          (jsonSerialization['commissionAmount'] as num).toDouble(),
-      createdAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
+      commissionAmount: (jsonSerialization['commissionAmount'] as num)
+          .toDouble(),
+      createdAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['createdAt'],
+      ),
     );
   }
 
@@ -91,6 +94,7 @@ abstract class GoldenSeatCommission
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'GoldenSeatCommission',
       if (id != null) 'id': id,
       'seatType': seatType,
       'packageId': packageId,
@@ -105,6 +109,7 @@ abstract class GoldenSeatCommission
   @override
   Map<String, dynamic> toJsonForProtocol() {
     return {
+      '__className__': 'GoldenSeatCommission',
       if (id != null) 'id': id,
       'seatType': seatType,
       'packageId': packageId,
@@ -159,15 +164,15 @@ class _GoldenSeatCommissionImpl extends GoldenSeatCommission {
     required double commissionAmount,
     required DateTime createdAt,
   }) : super._(
-          id: id,
-          seatType: seatType,
-          packageId: packageId,
-          productId: productId,
-          netPerMember: netPerMember,
-          netPerBottle: netPerBottle,
-          commissionAmount: commissionAmount,
-          createdAt: createdAt,
-        );
+         id: id,
+         seatType: seatType,
+         packageId: packageId,
+         productId: productId,
+         netPerMember: netPerMember,
+         netPerBottle: netPerBottle,
+         commissionAmount: commissionAmount,
+         createdAt: createdAt,
+       );
 
   /// Returns a shallow copy of this [GoldenSeatCommission]
   /// with some or all fields replaced by the given arguments.
@@ -196,9 +201,52 @@ class _GoldenSeatCommissionImpl extends GoldenSeatCommission {
   }
 }
 
+class GoldenSeatCommissionUpdateTable
+    extends _i1.UpdateTable<GoldenSeatCommissionTable> {
+  GoldenSeatCommissionUpdateTable(super.table);
+
+  _i1.ColumnValue<String, String> seatType(String value) => _i1.ColumnValue(
+    table.seatType,
+    value,
+  );
+
+  _i1.ColumnValue<int, int> packageId(int value) => _i1.ColumnValue(
+    table.packageId,
+    value,
+  );
+
+  _i1.ColumnValue<int, int> productId(int value) => _i1.ColumnValue(
+    table.productId,
+    value,
+  );
+
+  _i1.ColumnValue<double, double> netPerMember(double value) => _i1.ColumnValue(
+    table.netPerMember,
+    value,
+  );
+
+  _i1.ColumnValue<double, double> netPerBottle(double value) => _i1.ColumnValue(
+    table.netPerBottle,
+    value,
+  );
+
+  _i1.ColumnValue<double, double> commissionAmount(double value) =>
+      _i1.ColumnValue(
+        table.commissionAmount,
+        value,
+      );
+
+  _i1.ColumnValue<DateTime, DateTime> createdAt(DateTime value) =>
+      _i1.ColumnValue(
+        table.createdAt,
+        value,
+      );
+}
+
 class GoldenSeatCommissionTable extends _i1.Table<int?> {
   GoldenSeatCommissionTable({super.tableRelation})
-      : super(tableName: 'golden_seat_commissions') {
+    : super(tableName: 'golden_seat_commissions') {
+    updateTable = GoldenSeatCommissionUpdateTable(this);
     seatType = _i1.ColumnString(
       'seatType',
       this,
@@ -229,6 +277,8 @@ class GoldenSeatCommissionTable extends _i1.Table<int?> {
     );
   }
 
+  late final GoldenSeatCommissionUpdateTable updateTable;
+
   late final _i1.ColumnString seatType;
 
   late final _i1.ColumnInt packageId;
@@ -245,15 +295,15 @@ class GoldenSeatCommissionTable extends _i1.Table<int?> {
 
   @override
   List<_i1.Column> get columns => [
-        id,
-        seatType,
-        packageId,
-        productId,
-        netPerMember,
-        netPerBottle,
-        commissionAmount,
-        createdAt,
-      ];
+    id,
+    seatType,
+    packageId,
+    productId,
+    netPerMember,
+    netPerBottle,
+    commissionAmount,
+    createdAt,
+  ];
 }
 
 class GoldenSeatCommissionInclude extends _i1.IncludeObject {
@@ -441,6 +491,48 @@ class GoldenSeatCommissionRepository {
     return session.db.updateRow<GoldenSeatCommission>(
       row,
       columns: columns?.call(GoldenSeatCommission.t),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates a single [GoldenSeatCommission] by its [id] with the specified [columnValues].
+  /// Returns the updated row or null if no row with the given id exists.
+  Future<GoldenSeatCommission?> updateById(
+    _i1.Session session,
+    int id, {
+    required _i1.ColumnValueListBuilder<GoldenSeatCommissionUpdateTable>
+    columnValues,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateById<GoldenSeatCommission>(
+      id,
+      columnValues: columnValues(GoldenSeatCommission.t.updateTable),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates all [GoldenSeatCommission]s matching the [where] expression with the specified [columnValues].
+  /// Returns the list of updated rows.
+  Future<List<GoldenSeatCommission>> updateWhere(
+    _i1.Session session, {
+    required _i1.ColumnValueListBuilder<GoldenSeatCommissionUpdateTable>
+    columnValues,
+    required _i1.WhereExpressionBuilder<GoldenSeatCommissionTable> where,
+    int? limit,
+    int? offset,
+    _i1.OrderByBuilder<GoldenSeatCommissionTable>? orderBy,
+    _i1.OrderByListBuilder<GoldenSeatCommissionTable>? orderByList,
+    bool orderDescending = false,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateWhere<GoldenSeatCommission>(
+      columnValues: columnValues(GoldenSeatCommission.t.updateTable),
+      where: where(GoldenSeatCommission.t),
+      limit: limit,
+      offset: offset,
+      orderBy: orderBy?.call(GoldenSeatCommission.t),
+      orderByList: orderByList?.call(GoldenSeatCommission.t),
+      orderDescending: orderDescending,
       transaction: transaction,
     );
   }

@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
@@ -37,9 +38,11 @@ abstract class ProfitSharing
       profitType: jsonSerialization['profitType'] as String,
       percentage: (jsonSerialization['percentage'] as num).toDouble(),
       effectiveDate: _i1.DateTimeJsonExtension.fromJson(
-          jsonSerialization['effectiveDate']),
-      createdAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
+        jsonSerialization['effectiveDate'],
+      ),
+      createdAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['createdAt'],
+      ),
       isActive: jsonSerialization['isActive'] as bool,
     );
   }
@@ -78,6 +81,7 @@ abstract class ProfitSharing
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'ProfitSharing',
       if (id != null) 'id': id,
       'profitType': profitType,
       'percentage': percentage,
@@ -90,6 +94,7 @@ abstract class ProfitSharing
   @override
   Map<String, dynamic> toJsonForProtocol() {
     return {
+      '__className__': 'ProfitSharing',
       if (id != null) 'id': id,
       'profitType': profitType,
       'percentage': percentage,
@@ -140,13 +145,13 @@ class _ProfitSharingImpl extends ProfitSharing {
     required DateTime createdAt,
     required bool isActive,
   }) : super._(
-          id: id,
-          profitType: profitType,
-          percentage: percentage,
-          effectiveDate: effectiveDate,
-          createdAt: createdAt,
-          isActive: isActive,
-        );
+         id: id,
+         profitType: profitType,
+         percentage: percentage,
+         effectiveDate: effectiveDate,
+         createdAt: createdAt,
+         isActive: isActive,
+       );
 
   /// Returns a shallow copy of this [ProfitSharing]
   /// with some or all fields replaced by the given arguments.
@@ -171,9 +176,41 @@ class _ProfitSharingImpl extends ProfitSharing {
   }
 }
 
+class ProfitSharingUpdateTable extends _i1.UpdateTable<ProfitSharingTable> {
+  ProfitSharingUpdateTable(super.table);
+
+  _i1.ColumnValue<String, String> profitType(String value) => _i1.ColumnValue(
+    table.profitType,
+    value,
+  );
+
+  _i1.ColumnValue<double, double> percentage(double value) => _i1.ColumnValue(
+    table.percentage,
+    value,
+  );
+
+  _i1.ColumnValue<DateTime, DateTime> effectiveDate(DateTime value) =>
+      _i1.ColumnValue(
+        table.effectiveDate,
+        value,
+      );
+
+  _i1.ColumnValue<DateTime, DateTime> createdAt(DateTime value) =>
+      _i1.ColumnValue(
+        table.createdAt,
+        value,
+      );
+
+  _i1.ColumnValue<bool, bool> isActive(bool value) => _i1.ColumnValue(
+    table.isActive,
+    value,
+  );
+}
+
 class ProfitSharingTable extends _i1.Table<int?> {
   ProfitSharingTable({super.tableRelation})
-      : super(tableName: 'profit_sharing') {
+    : super(tableName: 'profit_sharing') {
+    updateTable = ProfitSharingUpdateTable(this);
     profitType = _i1.ColumnString(
       'profitType',
       this,
@@ -196,6 +233,8 @@ class ProfitSharingTable extends _i1.Table<int?> {
     );
   }
 
+  late final ProfitSharingUpdateTable updateTable;
+
   late final _i1.ColumnString profitType;
 
   late final _i1.ColumnDouble percentage;
@@ -208,13 +247,13 @@ class ProfitSharingTable extends _i1.Table<int?> {
 
   @override
   List<_i1.Column> get columns => [
-        id,
-        profitType,
-        percentage,
-        effectiveDate,
-        createdAt,
-        isActive,
-      ];
+    id,
+    profitType,
+    percentage,
+    effectiveDate,
+    createdAt,
+    isActive,
+  ];
 }
 
 class ProfitSharingInclude extends _i1.IncludeObject {
@@ -402,6 +441,46 @@ class ProfitSharingRepository {
     return session.db.updateRow<ProfitSharing>(
       row,
       columns: columns?.call(ProfitSharing.t),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates a single [ProfitSharing] by its [id] with the specified [columnValues].
+  /// Returns the updated row or null if no row with the given id exists.
+  Future<ProfitSharing?> updateById(
+    _i1.Session session,
+    int id, {
+    required _i1.ColumnValueListBuilder<ProfitSharingUpdateTable> columnValues,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateById<ProfitSharing>(
+      id,
+      columnValues: columnValues(ProfitSharing.t.updateTable),
+      transaction: transaction,
+    );
+  }
+
+  /// Updates all [ProfitSharing]s matching the [where] expression with the specified [columnValues].
+  /// Returns the list of updated rows.
+  Future<List<ProfitSharing>> updateWhere(
+    _i1.Session session, {
+    required _i1.ColumnValueListBuilder<ProfitSharingUpdateTable> columnValues,
+    required _i1.WhereExpressionBuilder<ProfitSharingTable> where,
+    int? limit,
+    int? offset,
+    _i1.OrderByBuilder<ProfitSharingTable>? orderBy,
+    _i1.OrderByListBuilder<ProfitSharingTable>? orderByList,
+    bool orderDescending = false,
+    _i1.Transaction? transaction,
+  }) async {
+    return session.db.updateWhere<ProfitSharing>(
+      columnValues: columnValues(ProfitSharing.t.updateTable),
+      where: where(ProfitSharing.t),
+      limit: limit,
+      offset: offset,
+      orderBy: orderBy?.call(ProfitSharing.t),
+      orderByList: orderByList?.call(ProfitSharing.t),
+      orderDescending: orderDescending,
       transaction: transaction,
     );
   }

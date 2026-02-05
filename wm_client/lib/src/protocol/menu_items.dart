@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
@@ -43,8 +44,9 @@ abstract class MenuItems implements _i1.SerializableModel {
       menuItemDesc: jsonSerialization['menuItemDesc'] as String,
       menuItemImage: jsonSerialization['menuItemImage'] as String,
       isActive: jsonSerialization['isActive'] as bool,
-      createdAt:
-          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
+      createdAt: _i1.DateTimeJsonExtension.fromJson(
+        jsonSerialization['createdAt'],
+      ),
       productID: jsonSerialization['productID'] as int,
       productDesc: jsonSerialization['productDesc'] as String,
       price: (jsonSerialization['price'] as num).toDouble(),
@@ -89,6 +91,7 @@ abstract class MenuItems implements _i1.SerializableModel {
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'MenuItems',
       if (id != null) 'id': id,
       'menuId': menuId,
       'menuItemDesc': menuItemDesc,
@@ -121,16 +124,16 @@ class _MenuItemsImpl extends MenuItems {
     required String productDesc,
     required double price,
   }) : super._(
-          id: id,
-          menuId: menuId,
-          menuItemDesc: menuItemDesc,
-          menuItemImage: menuItemImage,
-          isActive: isActive,
-          createdAt: createdAt,
-          productID: productID,
-          productDesc: productDesc,
-          price: price,
-        );
+         id: id,
+         menuId: menuId,
+         menuItemDesc: menuItemDesc,
+         menuItemImage: menuItemImage,
+         isActive: isActive,
+         createdAt: createdAt,
+         productID: productID,
+         productDesc: productDesc,
+         price: price,
+       );
 
   /// Returns a shallow copy of this [MenuItems]
   /// with some or all fields replaced by the given arguments.

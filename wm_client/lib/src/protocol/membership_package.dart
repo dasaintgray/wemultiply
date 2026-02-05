@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
@@ -70,6 +71,7 @@ abstract class MembershipPackage implements _i1.SerializableModel {
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'MembershipPackage',
       if (id != null) 'id': id,
       'name': name,
       'price': price,
@@ -96,13 +98,13 @@ class _MembershipPackageImpl extends MembershipPackage {
     double? cashback,
     String? description,
   }) : super._(
-          id: id,
-          name: name,
-          price: price,
-          bottlesIncluded: bottlesIncluded,
-          cashback: cashback,
-          description: description,
-        );
+         id: id,
+         name: name,
+         price: price,
+         bottlesIncluded: bottlesIncluded,
+         cashback: cashback,
+         description: description,
+       );
 
   /// Returns a shallow copy of this [MembershipPackage]
   /// with some or all fields replaced by the given arguments.

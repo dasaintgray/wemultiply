@@ -7,6 +7,7 @@
 // ignore_for_file: public_member_api_docs
 // ignore_for_file: type_literal_in_constant_pattern
 // ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
@@ -110,6 +111,7 @@ abstract class PaymentResponse
   @override
   Map<String, dynamic> toJson() {
     return {
+      '__className__': 'PaymentResponse',
       'success': success,
       if (paymentId != null) 'paymentId': paymentId,
       if (externalId != null) 'externalId': externalId,
@@ -129,6 +131,7 @@ abstract class PaymentResponse
   @override
   Map<String, dynamic> toJsonForProtocol() {
     return {
+      '__className__': 'PaymentResponse',
       'success': success,
       if (paymentId != null) 'paymentId': paymentId,
       if (externalId != null) 'externalId': externalId,
@@ -169,20 +172,20 @@ class _PaymentResponseImpl extends PaymentResponse {
     String? errorCode,
     String? errorMessage,
   }) : super._(
-          success: success,
-          paymentId: paymentId,
-          externalId: externalId,
-          referenceId: referenceId,
-          status: status,
-          checkoutUrl: checkoutUrl,
-          invoiceUrl: invoiceUrl,
-          qrString: qrString,
-          currency: currency,
-          amount: amount,
-          channel: channel,
-          errorCode: errorCode,
-          errorMessage: errorMessage,
-        );
+         success: success,
+         paymentId: paymentId,
+         externalId: externalId,
+         referenceId: referenceId,
+         status: status,
+         checkoutUrl: checkoutUrl,
+         invoiceUrl: invoiceUrl,
+         qrString: qrString,
+         currency: currency,
+         amount: amount,
+         channel: channel,
+         errorCode: errorCode,
+         errorMessage: errorMessage,
+       );
 
   /// Returns a shallow copy of this [PaymentResponse]
   /// with some or all fields replaced by the given arguments.
