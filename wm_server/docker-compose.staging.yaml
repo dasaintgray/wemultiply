@@ -1,0 +1,159 @@
+services:
+  # Traefik reverse proxy for SSL/TLS termination and routing
+  traefik:
+    restart: on-failure
+    image: traefik:v3.0
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=wemultiply27@gmail.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./letsencrypt-staging:/letsencrypt"
+    depends_on:
+      - postgres
+      - serverpod
+    networks:
+      - serverpod-staging-network
+
+  # PostgreSQL database with pgvector extension
+  postgres:
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: on-failure
+    image: pgvector/pgvector:pg16
+    labels:
+      - "traefik.enable=false" # We typically don't expose databases via HTTP.
+    ports:
+      # Expose on port 8090 to match staging.yaml configuration
+      - "8090:5432"
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_DB=${POSTGRES_DB:-wm}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - wm_staging_data:/var/lib/postgresql/data
+    networks:
+      - serverpod-staging-network
+
+  # Serverpod server running in staging mode
+  serverpod:
+    restart: on-failure
+    image: ghcr.io/${GHCR_ORG}/wm_server:latest
+    environment:
+      # Database configuration
+      - SERVERPOD_DATABASE_PASSWORD=${SERVERPOD_DATABASE_PASSWORD}
+      - SERVERPOD_DATABASE_HOST=${SERVERPOD_DATABASE_HOST:-postgres}
+      - SERVERPOD_DATABASE_NAME=${SERVERPOD_DATABASE_NAME:-wm}
+      - SERVERPOD_DATABASE_USER=${SERVERPOD_DATABASE_USER:-postgres}
+      - SERVERPOD_DATABASE_PORT=${SERVERPOD_DATABASE_PORT:-5432}
+      - SERVERPOD_DATABASE_REQUIRE_SSL=${SERVERPOD_DATABASE_REQUIRE_SSL:-false}
+      - SERVERPOD_DATABASE_IS_UNIX_SOCKET=${SERVERPOD_DATABASE_IS_UNIX_SOCKET:-false}
+
+      # API Server configuration
+      - SERVERPOD_API_SERVER_PUBLIC_HOST=${SERVERPOD_API_SERVER_PUBLIC_HOST:-api.wemultiply.store}
+      - SERVERPOD_API_SERVER_PUBLIC_PORT=${SERVERPOD_API_SERVER_PUBLIC_PORT:-443}
+      - SERVERPOD_API_SERVER_PUBLIC_SCHEME=${SERVERPOD_API_SERVER_PUBLIC_SCHEME:-https}
+      - SERVERPOD_API_SERVER_PORT=${SERVERPOD_API_SERVER_PORT:-8080}
+
+      # Insights Server configuration
+      - SERVERPOD_INSIGHTS_SERVER_PUBLIC_HOST=${SERVERPOD_INSIGHTS_SERVER_PUBLIC_HOST:-wminsights.wemultiply.store}
+      - SERVERPOD_INSIGHTS_SERVER_PUBLIC_PORT=${SERVERPOD_INSIGHTS_SERVER_PUBLIC_PORT:-443}
+      - SERVERPOD_INSIGHTS_SERVER_PUBLIC_SCHEME=${SERVERPOD_INSIGHTS_SERVER_PUBLIC_SCHEME:-https}
+      - SERVERPOD_INSIGHTS_SERVER_PORT=${SERVERPOD_INSIGHTS_SERVER_PORT:-8081}
+
+      # Web Server configuration
+      - SERVERPOD_WEB_SERVER_PUBLIC_HOST=${SERVERPOD_WEB_SERVER_PUBLIC_HOST:-ws.wemultiply.store}
+      - SERVERPOD_WEB_SERVER_PUBLIC_PORT=${SERVERPOD_WEB_SERVER_PUBLIC_PORT:-443}
+      - SERVERPOD_WEB_SERVER_PUBLIC_SCHEME=${SERVERPOD_WEB_SERVER_PUBLIC_SCHEME:-https}
+      - SERVERPOD_WEB_SERVER_PORT=${SERVERPOD_WEB_SERVER_PORT:-8082}
+
+      # Additional configuration
+      - SERVERPOD_SERVICE_SECRET=${SERVERPOD_SERVICE_SECRET}
+      - SERVERPOD_MAX_REQUEST_SIZE=${SERVERPOD_MAX_REQUEST_SIZE:-524288}
+
+      # Xendit Payment Gateway configuration
+      - XENDIT_SECRET_KEY=${XENDIT_SECRET_KEY}
+      - XENDIT_PUBLIC_KEY=${XENDIT_PUBLIC_KEY}
+      - XENDIT_BASE_URL=${XENDIT_BASE_URL:-https://api.xendit.co}
+      - XENDIT_WEBHOOK_TOKEN=${XENDIT_WEBHOOK_TOKEN}
+      - XENDIT_SUCCESS_REDIRECT_URL=${XENDIT_SUCCESS_REDIRECT_URL}
+      - XENDIT_FAILURE_REDIRECT_URL=${XENDIT_FAILURE_REDIRECT_URL}
+      - XENDIT_CALLBACK_URL=${XENDIT_CALLBACK_URL}
+    command:
+      [
+        "--mode",
+        "staging",
+        "--server-id",
+        "default",
+        "--logging",
+        "normal",
+        "--role",
+        "monolith",
+        "--apply-migrations",
+      ]
+    labels:
+      # Traefik configuration for API server
+      - "traefik.enable=true"
+      - "traefik.http.routers.api-staging.rule=Host(`${SERVERPOD_API_SERVER_PUBLIC_HOST:-api.wemultiply.store}`)"
+      - "traefik.http.routers.api-staging.entrypoints=websecure"
+      - "traefik.http.routers.api-staging.service=api-staging-service"
+      - "traefik.http.routers.api-staging.tls.certresolver=myresolver"
+      - "traefik.http.services.api-staging-service.loadbalancer.server.port=${SERVERPOD_API_SERVER_PORT:-8080}"
+
+      # Traefik configuration for Insights server
+      - "traefik.http.routers.insights-staging.rule=Host(`${SERVERPOD_INSIGHTS_SERVER_PUBLIC_HOST:-wminsights.wemultiply.store}`)"
+      - "traefik.http.routers.insights-staging.entrypoints=websecure"
+      - "traefik.http.routers.insights-staging.service=insights-staging-service"
+      - "traefik.http.routers.insights-staging.tls.certresolver=myresolver"
+      - "traefik.http.services.insights-staging-service.loadbalancer.server.port=${SERVERPOD_INSIGHTS_SERVER_PORT:-8081}"
+
+      # Traefik configuration for Web server
+      - "traefik.http.routers.web-staging.rule=Host(`${SERVERPOD_WEB_SERVER_PUBLIC_HOST:-ws.wemultiply.store}`)"
+      - "traefik.http.routers.web-staging.entrypoints=websecure"
+      - "traefik.http.routers.web-staging.service=web-staging-service"
+      - "traefik.http.routers.web-staging.tls.certresolver=myresolver"
+      - "traefik.http.services.web-staging-service.loadbalancer.server.port=${SERVERPOD_WEB_SERVER_PORT:-8082}"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - serverpod-staging-network
+
+  # Redis cache (optional - disabled by default in staging.yaml)
+  redis:
+    restart: on-failure
+    image: redis:6.2.6
+    labels:
+      - "traefik.enable=false"
+    ports:
+      - "8091:6379"
+    command: redis-server --requirepass "${REDIS_PASSWORD}"
+    environment:
+      - REDIS_REPLICATION_MODE=master
+    volumes:
+      - wm_staging_redis_data:/data
+    networks:
+      - serverpod-staging-network
+    # Uncomment the profile below to disable Redis by default
+    # profiles:
+    #   - with-redis
+
+networks:
+  serverpod-staging-network:
+    name: serverpod-staging-network
+    driver: bridge
+
+volumes:
+  wm_staging_data:
+  wm_staging_redis_data:

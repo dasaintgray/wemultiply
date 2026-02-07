@@ -62,12 +62,12 @@ flutter:
     - assets/svgs/
 
 icons_launcher:
-  image_path: "assets/pngs/logo2.png"
+  image_path: "assets/pngs/logo3.png"
   platforms:
     android:
       enable: true
       adaptive_background_color: "#ffffff"
-      adaptive_foreground_image: "assets/pngs/logo2.png"
+      adaptive_foreground_image: "assets/pngs/logo3.png"
     ios:
       enable: true
     web:
@@ -104,7 +104,7 @@ icons_launcher:
 splash_master:
   # Use to specifies the color for the splash screen
   color: '#FFFFFF'
-  # Use to specifies the splash image
+  # Use to specifies the splash imag3
   image: 'assets/pngs/logo2.png'
   # Provides content mode for splash image in iOS
   # iOS content mode options: scaleToFill, scaleAspectFit, scaleAspectFill, redraw, center, top, bottom,
@@ -133,6 +133,6 @@ splash_master:
     # Provides the background color of splash screen
     color: '#FFFFFF'
     # Provides custom icon to replace the default app icon
-    image: 'assets/pngs/logo2.png'
+    image: 'assets/pngs/logo3.png'
     # Provides branding image which is shown under main icon image. 
     # branding_image: 'assets/pngs/logo.png'

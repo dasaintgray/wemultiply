@@ -18,11 +18,9 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
   final _sessionManager = SpcCore.sessionManager;
 
-  String get _userName =>
-      _sessionManager.signedInUser?.userName ?? 'Guest User';
+  String get _userName => _sessionManager.signedInUser?.userName ?? 'Guest User';
   String get _email => _sessionManager.signedInUser?.email ?? 'No Email';
-  String get _referralCode =>
-      _sessionManager.signedInUser?.userName?.toUpperCase() ?? 'N/A';
+  String get _referralCode => _sessionManager.signedInUser?.userName?.toUpperCase() ?? 'N/A';
 
   // QR Code contains the referral code for easy sharing
   String get _qrData => 'wemultiply://referral/$_referralCode';
@@ -123,10 +121,7 @@ class _ProfileViewState extends State<ProfileView> {
           end: Alignment.bottomCenter,
           colors: [AppColors.darkGreen, AppColors.lightGreen],
         ),
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(30),
-          bottomRight: Radius.circular(30),
-        ),
+        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
       ),
       child: Column(
         children: [
@@ -143,11 +138,7 @@ class _ProfileViewState extends State<ProfileView> {
               backgroundColor: Colors.white,
               child: Text(
                 _userName.isNotEmpty ? _userName[0].toUpperCase() : 'G',
-                style: TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.darkGreen,
-                ),
+                style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: AppColors.darkGreen),
               ),
             ),
           ),
@@ -155,19 +146,11 @@ class _ProfileViewState extends State<ProfileView> {
           // Name
           Text(
             _userName,
-            style: theme.textTheme.headlineSmall?.copyWith(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
+            style: theme.textTheme.headlineSmall?.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 0.5.h),
           // Email
-          Text(
-            _email,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: Colors.white.withValues(alpha: 0.9),
-            ),
-          ),
+          Text(_email, style: theme.textTheme.bodyMedium?.copyWith(color: Colors.white.withValues(alpha: 0.9))),
           SizedBox(height: 1.h),
           // Member Badge
           Container(
@@ -183,10 +166,7 @@ class _ProfileViewState extends State<ProfileView> {
                 const SizedBox(width: 6),
                 Text(
                   'Active Member',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: theme.textTheme.bodySmall?.copyWith(color: Colors.white, fontWeight: FontWeight.w500),
                 ),
               ],
             ),
@@ -204,30 +184,16 @@ class _ProfileViewState extends State<ProfileView> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.08),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
-          ),
-        ],
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.08), blurRadius: 15, offset: const Offset(0, 5))],
       ),
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'My Referral QR Code',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              Text('My Referral QR Code', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
               IconButton(
-                icon: const Icon(
-                  Icons.share_outlined,
-                  color: AppColors.darkGreen,
-                ),
+                icon: const Icon(Icons.share_outlined, color: AppColors.darkGreen),
                 onPressed: _shareQRCode,
               ),
             ],
@@ -239,9 +205,7 @@ class _ProfileViewState extends State<ProfileView> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: AppColors.primary.withValues(alpha: 0.3),
-              ),
+              border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
             ),
             child: SizedBox(
               width: 200,
@@ -251,7 +215,7 @@ class _ProfileViewState extends State<ProfileView> {
                 decoration: const PrettyQrDecoration(
                   shape: PrettyQrSmoothSymbol(color: AppColors.darkGreen),
                   image: PrettyQrDecorationImage(
-                    image: AssetImage('assets/pngs/logo2.png'),
+                    image: AssetImage('assets/pngs/logo3.png'),
                     position: PrettyQrDecorationImagePosition.embedded,
                   ),
                 ),
@@ -262,19 +226,11 @@ class _ProfileViewState extends State<ProfileView> {
           // Referral Code
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            decoration: BoxDecoration(
-              color: AppColors.primaryLight,
-              borderRadius: BorderRadius.circular(12),
-            ),
+            decoration: BoxDecoration(color: AppColors.primaryLight, borderRadius: BorderRadius.circular(12)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  'Code: ',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: AppColors.darkGreen,
-                  ),
-                ),
+                Text('Code: ', style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.darkGreen)),
                 Text(
                   _referralCode,
                   style: theme.textTheme.titleMedium?.copyWith(
@@ -286,11 +242,7 @@ class _ProfileViewState extends State<ProfileView> {
                 const SizedBox(width: 8),
                 InkWell(
                   onTap: _copyReferralCode,
-                  child: const Icon(
-                    Icons.copy,
-                    size: 20,
-                    color: AppColors.darkGreen,
-                  ),
+                  child: const Icon(Icons.copy, size: 20, color: AppColors.darkGreen),
                 ),
               ],
             ),
@@ -298,9 +250,7 @@ class _ProfileViewState extends State<ProfileView> {
           SizedBox(height: 1.h),
           Text(
             'Share your code to earn rewards!',
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: AppColors.primaryTextInfo,
-            ),
+            style: theme.textTheme.bodySmall?.copyWith(color: AppColors.primaryTextInfo),
           ),
         ],
       ),
@@ -354,38 +304,23 @@ class _ProfileViewState extends State<ProfileView> {
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
-              blurRadius: 10,
-              offset: const Offset(0, 2),
-            ),
+            BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, 2)),
           ],
         ),
         child: Column(
           children: [
             Container(
               padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.1),
-                shape: BoxShape.circle,
-              ),
+              decoration: BoxDecoration(color: color.withValues(alpha: 0.1), shape: BoxShape.circle),
               child: Icon(icon, color: color, size: 24),
             ),
             const SizedBox(height: 8),
             Text(
               value,
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: color,
-              ),
+              style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold, color: color),
             ),
             const SizedBox(height: 2),
-            Text(
-              label,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: AppColors.primaryTextInfo,
-              ),
-            ),
+            Text(label, style: theme.textTheme.bodySmall?.copyWith(color: AppColors.primaryTextInfo)),
           ],
         ),
       ),
@@ -398,13 +333,7 @@ class _ProfileViewState extends State<ProfileView> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, 2))],
       ),
       child: Column(
         children: [
@@ -413,10 +342,7 @@ class _ProfileViewState extends State<ProfileView> {
             title: 'Edit Profile',
             subtitle: 'Update your name and details',
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const EditProfileView()),
-              );
+              Navigator.push(context, MaterialPageRoute(builder: (_) => const EditProfileView()));
             },
           ),
           _buildMenuDivider(),
@@ -425,12 +351,7 @@ class _ProfileViewState extends State<ProfileView> {
             title: 'Delivery Addresses',
             subtitle: 'Manage your delivery addresses',
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const DeliveryAddressesView(),
-                ),
-              );
+              Navigator.push(context, MaterialPageRoute(builder: (_) => const DeliveryAddressesView()));
             },
           ),
           _buildMenuDivider(),
@@ -441,23 +362,11 @@ class _ProfileViewState extends State<ProfileView> {
             onTap: () {},
           ),
           _buildMenuDivider(),
-          _buildMenuItem(
-            icon: Icons.history,
-            title: 'Transaction History',
-            onTap: () {},
-          ),
+          _buildMenuItem(icon: Icons.history, title: 'Transaction History', onTap: () {}),
           _buildMenuDivider(),
-          _buildMenuItem(
-            icon: Icons.payment,
-            title: 'Payment Methods',
-            onTap: () {},
-          ),
+          _buildMenuItem(icon: Icons.payment, title: 'Payment Methods', onTap: () {}),
           _buildMenuDivider(),
-          _buildMenuItem(
-            icon: Icons.help_outline,
-            title: 'Help & Support',
-            onTap: () {},
-          ),
+          _buildMenuItem(icon: Icons.help_outline, title: 'Help & Support', onTap: () {}),
         ],
       ),
     );
@@ -472,34 +381,20 @@ class _ProfileViewState extends State<ProfileView> {
     return ListTile(
       leading: Container(
         padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: AppColors.primaryLight,
-          borderRadius: BorderRadius.circular(10),
-        ),
+        decoration: BoxDecoration(color: AppColors.primaryLight, borderRadius: BorderRadius.circular(10)),
         child: Icon(icon, color: AppColors.darkGreen, size: 22),
       ),
       title: Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
       subtitle: subtitle != null
-          ? Text(
-              subtitle,
-              style: TextStyle(color: AppColors.primaryTextInfo, fontSize: 12),
-            )
+          ? Text(subtitle, style: TextStyle(color: AppColors.primaryTextInfo, fontSize: 12))
           : null,
-      trailing: const Icon(
-        Icons.chevron_right,
-        color: AppColors.primaryTextInfo,
-      ),
+      trailing: const Icon(Icons.chevron_right, color: AppColors.primaryTextInfo),
       onTap: onTap,
     );
   }
 
   Widget _buildMenuDivider() {
-    return Divider(
-      height: 1,
-      indent: 70,
-      endIndent: 20,
-      color: Colors.grey.withValues(alpha: 0.2),
-    );
+    return Divider(height: 1, indent: 70, endIndent: 20, color: Colors.grey.withValues(alpha: 0.2));
   }
 
   Widget _buildSignOutButton(ThemeData theme) {
@@ -509,16 +404,11 @@ class _ProfileViewState extends State<ProfileView> {
       child: OutlinedButton.icon(
         onPressed: _signOut,
         icon: const Icon(Icons.logout, color: AppColors.dangerColor),
-        label: const Text(
-          'Sign Out',
-          style: TextStyle(color: AppColors.dangerColor),
-        ),
+        label: const Text('Sign Out', style: TextStyle(color: AppColors.dangerColor)),
         style: OutlinedButton.styleFrom(
           padding: const EdgeInsets.symmetric(vertical: 14),
           side: const BorderSide(color: AppColors.dangerColor),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
       ),
     );
@@ -555,10 +445,7 @@ class _ProfileViewState extends State<ProfileView> {
         content: const Text('Are you sure you want to sign out?'),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
           ElevatedButton(
             onPressed: () {
               _sessionManager.signOutDevice();
@@ -569,13 +456,8 @@ class _ProfileViewState extends State<ProfileView> {
                 (route) => false,
               );
             },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.dangerColor,
-            ),
-            child: const Text(
-              'Sign Out',
-              style: TextStyle(color: Colors.white),
-            ),
+            style: ElevatedButton.styleFrom(backgroundColor: AppColors.dangerColor),
+            child: const Text('Sign Out', style: TextStyle(color: Colors.white)),
           ),
         ],
       ),

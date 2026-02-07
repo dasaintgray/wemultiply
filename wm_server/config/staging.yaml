@@ -28,7 +28,7 @@ insightsServer:
 webServer:
   port: 8082
   # publicHost: app-staging.examplepod.com
-  publicHost: wmweb.crabdance.com
+  publicHost: ws.wemultiply.store
   publicPort: 443
   publicScheme: https
 
@@ -38,7 +38,7 @@ webServer:
 # connect on the public IP of the database e.g. database-staging.examplepod.com.
 database:
   # host: database.private-staging.examplepod.com
-  host: wmdb.crabdance.com
+  host: db.wemultiply.store
   # port: 5432
   port: 8090
   # name: serverpod
@@ -54,7 +54,7 @@ database:
 redis:
   enabled: false
   # host: redis.private-staging.examplepod.com
-  host: wmredis.crabdance.com
+  host: redis.wemultiply.store
   # port: 6379
   port: 8091
   #user: # defaults to empty

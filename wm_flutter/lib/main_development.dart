@@ -3,13 +3,10 @@ import 'package:wm_flutter/app.dart';
 import 'package:wm_flutter/env/development_config.dart';
 import 'package:wm_flutter/env/env_config.dart';
 
-/// Main entry point for the app.
+/// Entry point for the Development flavor.
 ///
-/// By default, this uses the Development configuration.
-/// For other environments, use the specific flavor entry points:
-/// - lib/main_development.dart
-/// - lib/main_staging.dart
-/// - lib/main_production.dart
+/// This flavor connects to a local Serverpod server for development.
+/// Run with: flutter run --flavor development -t lib/main_development.dart
 void main() {
   const EnvConfig config = DevelopmentConfig();
   runApp(AppInitializer(config: config));

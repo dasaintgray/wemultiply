@@ -41,9 +41,7 @@ class _LoginViewState extends State<LoginView> {
             showDialog(
               context: context,
               barrierDismissible: false,
-              builder: (_) => const Center(
-                child: CircularProgressIndicator.adaptive(),
-              ),
+              builder: (_) => const Center(child: CircularProgressIndicator.adaptive()),
             );
           }
 
@@ -53,10 +51,7 @@ class _LoginViewState extends State<LoginView> {
             if (SpcCore.userId != null) {
               context.read<CartBloc>().add(LoadCart(SpcCore.userId!));
             }
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (_) => const MenuView()),
-            );
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const MenuView()));
           }
 
           if (state is AuthError) {
@@ -72,34 +67,24 @@ class _LoginViewState extends State<LoginView> {
                 children: [
                   SizedBox(height: 4.h),
                   // Logo
-                  SizedBox(
-                    height: 18.h,
-                    child: loadAssetImage(CoreConstant.logoWithText),
-                  ),
+                  SizedBox(height: 18.h, child: loadAssetImage(CoreConstant.logoWithText)),
                   SizedBox(height: 2.h),
                   // Welcome Text
                   Text(
                     'Welcome Back!',
-                    style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.darkBlue,
-                    ),
+                    style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold, color: AppColors.darkBlue),
                   ),
                   SizedBox(height: 0.5.h),
                   Text(
                     'Sign in to continue',
-                    style: TextStyle(
-                      fontSize: 15.sp,
-                      color: AppColors.primaryTextInfo,
-                    ),
+                    style: TextStyle(fontSize: 15.sp, color: AppColors.primaryTextInfo),
                   ),
                   SizedBox(height: 3.h),
                   // Login Card
                   Container(
                     padding: EdgeInsets.all(20.sp),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      // color: Colors.white,
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
@@ -146,9 +131,7 @@ class _LoginViewState extends State<LoginView> {
                               prefixIcon: Icons.lock_outline,
                               suffixIcon: IconButton(
                                 icon: Icon(
-                                  _obscurePassword
-                                      ? Icons.visibility_off_outlined
-                                      : Icons.visibility_outlined,
+                                  _obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
                                   color: AppColors.primaryTextInfo,
                                 ),
                                 onPressed: () {
@@ -186,18 +169,13 @@ class _LoginViewState extends State<LoginView> {
                                         });
                                       },
                                       activeColor: AppColors.darkGreen,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(4),
-                                      ),
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
                                     ),
                                   ),
                                   SizedBox(width: 1.w),
                                   Text(
                                     'Remember me',
-                                    style: TextStyle(
-                                      fontSize: 13.sp,
-                                      color: AppColors.primaryTextInfo,
-                                    ),
+                                    style: TextStyle(fontSize: 13.sp, color: AppColors.primaryTextInfo),
                                   ),
                                 ],
                               ),
@@ -227,17 +205,12 @@ class _LoginViewState extends State<LoginView> {
                               backgroundColor: AppColors.darkGreen,
                               foregroundColor: Colors.white,
                               padding: EdgeInsets.symmetric(vertical: 1.8.h),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                               elevation: 2,
                             ),
                             child: Text(
                               'Sign In',
-                              style: TextStyle(
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
                             ),
                           ),
                         ],
@@ -253,10 +226,7 @@ class _LoginViewState extends State<LoginView> {
                         padding: EdgeInsets.symmetric(horizontal: 3.w),
                         child: Text(
                           'Or continue with',
-                          style: TextStyle(
-                            fontSize: 13.sp,
-                            color: AppColors.primaryTextInfo,
-                          ),
+                          style: TextStyle(fontSize: 13.sp, color: AppColors.primaryTextInfo),
                         ),
                       ),
                       Expanded(child: Divider(color: AppColors.primaryTextInfo.withValues(alpha: 0.3))),
@@ -299,25 +269,15 @@ class _LoginViewState extends State<LoginView> {
                     children: [
                       Text(
                         "Don't have an account? ",
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          color: AppColors.primaryTextInfo,
-                        ),
+                        style: TextStyle(fontSize: 14.sp, color: AppColors.primaryTextInfo),
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => SignupView()),
-                          );
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => SignupView()));
                         },
                         child: Text(
                           'Sign Up',
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            color: AppColors.darkGreen,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: TextStyle(fontSize: 14.sp, color: AppColors.darkGreen, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ],
@@ -335,41 +295,20 @@ class _LoginViewState extends State<LoginView> {
   Widget _buildInputLabel(String label) {
     return Text(
       label,
-      style: TextStyle(
-        fontSize: 14.sp,
-        fontWeight: FontWeight.w600,
-        color: AppColors.primaryTextTitle,
-      ),
+      style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, color: AppColors.primaryTextTitle),
     );
   }
 
-  InputDecoration _buildInputDecoration({
-    required String hintText,
-    required IconData prefixIcon,
-    Widget? suffixIcon,
-  }) {
+  InputDecoration _buildInputDecoration({required String hintText, required IconData prefixIcon, Widget? suffixIcon}) {
     return InputDecoration(
       hintText: hintText,
-      hintStyle: TextStyle(
-        color: AppColors.primaryTextInfo.withValues(alpha: 0.6),
-        fontSize: 14.sp,
-      ),
-      prefixIcon: Icon(
-        prefixIcon,
-        color: AppColors.primaryTextInfo,
-        size: 20.sp,
-      ),
+      hintStyle: TextStyle(color: AppColors.primaryTextTitle.withValues(alpha: 0.6), fontSize: 14.sp),
+      prefixIcon: Icon(prefixIcon, color: AppColors.primaryTextTitle, size: 20.sp),
       suffixIcon: suffixIcon,
       filled: true,
-      fillColor: AppColors.whiteShade,
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide.none,
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide.none,
-      ),
+      fillColor: AppColors.whiteShade.withValues(alpha: 0.95),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide(color: AppColors.darkGreen, width: 1.5),
@@ -386,11 +325,7 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-  Widget _buildSocialButton({
-    required IconData icon,
-    required String label,
-    required VoidCallback onTap,
-  }) {
+  Widget _buildSocialButton({required IconData icon, required String label, required VoidCallback onTap}) {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(12),
@@ -401,18 +336,10 @@ class _LoginViewState extends State<LoginView> {
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: AppColors.primaryTextInfo.withValues(alpha: 0.2)),
           boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.04),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
-            ),
+            BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 8, offset: const Offset(0, 2)),
           ],
         ),
-        child: Icon(
-          icon,
-          size: 22.sp,
-          color: AppColors.darkBlue,
-        ),
+        child: Icon(icon, size: 22.sp, color: AppColors.darkBlue),
       ),
     );
   }
@@ -422,9 +349,7 @@ class _LoginViewState extends State<LoginView> {
       final email = _emailController.text.trim();
       final password = _passwordController.text.trim();
 
-      context.read<AuthBloc>().add(
-        LoginRequested(email, password),
-      );
+      context.read<AuthBloc>().add(LoginRequested(email, password));
     }
   }
 
@@ -434,15 +359,10 @@ class _LoginViewState extends State<LoginView> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: Text(
           'Reset Password',
-          style: TextStyle(
-            color: AppColors.darkBlue,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: AppColors.darkBlue, fontWeight: FontWeight.bold),
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -450,37 +370,26 @@ class _LoginViewState extends State<LoginView> {
           children: [
             Text(
               'Enter your email address and we\'ll send you a link to reset your password.',
-              style: TextStyle(
-                color: AppColors.primaryTextInfo,
-                fontSize: 14.sp,
-              ),
+              style: TextStyle(color: AppColors.primaryTextInfo, fontSize: 14.sp),
             ),
             SizedBox(height: 2.h),
             TextField(
               controller: resetEmailController,
               keyboardType: TextInputType.emailAddress,
-              decoration: _buildInputDecoration(
-                hintText: 'Enter your email',
-                prefixIcon: Icons.email_outlined,
-              ),
+              decoration: _buildInputDecoration(hintText: 'Enter your email', prefixIcon: Icons.email_outlined),
             ),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(
-              'Cancel',
-              style: TextStyle(color: AppColors.primaryTextInfo),
-            ),
+            child: Text('Cancel', style: TextStyle(color: AppColors.primaryTextInfo)),
           ),
           ElevatedButton(
             onPressed: () {
               final email = resetEmailController.text.trim();
               if (email.isNotEmpty) {
-                context.read<AuthBloc>().add(
-                  AuthPasswordResetRequested(email),
-                );
+                context.read<AuthBloc>().add(AuthPasswordResetRequested(email));
                 Navigator.pop(context);
                 showSnackbar(context, 'Password reset link sent to $email');
               }
@@ -488,9 +397,7 @@ class _LoginViewState extends State<LoginView> {
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.darkGreen,
               foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             ),
             child: const Text('Send Link'),
           ),

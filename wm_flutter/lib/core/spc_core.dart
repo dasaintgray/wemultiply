@@ -11,6 +11,7 @@ class SpcCore {
   ) async {
     client = Client(
       host,
+      // ignore: deprecated_member_use
       authenticationKeyManager: FlutterAuthenticationKeyManager(),
     )..connectivityMonitor = FlutterConnectivityMonitor();
 
