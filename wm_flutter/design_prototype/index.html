@@ -1,0 +1,1966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=390, initial-scale=1.0">
+  <title>WeMultiply — Redesign Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ═══════════════════════════════════════════
+       DESIGN TOKENS
+       ═══════════════════════════════════════════ */
+    :root {
+      /* Core palette — lush, botanical e-commerce */
+      --forest: #0B3D2E;
+      --forest-mid: #145A3E;
+      --emerald: #1B9E6B;
+      --mint: #3DD9A0;
+      --sage: #A8D5BA;
+      --cream: #FBF8F3;
+      --pearl: #F4F1EC;
+      --warm-white: #FEFDFB;
+      --charcoal: #1A1A1A;
+      --graphite: #3D3D3D;
+      --slate: #6B7280;
+      --silver: #9CA3AF;
+      --mist: #E8E5E0;
+      --gold: #D4A853;
+      --gold-light: #F5E6C8;
+      --coral: #E8735A;
+      --coral-soft: #FFF0EC;
+
+      /* Shadows */
+      --shadow-sm: 0 1px 3px rgba(11,61,46,0.06);
+      --shadow-md: 0 4px 16px rgba(11,61,46,0.08);
+      --shadow-lg: 0 8px 32px rgba(11,61,46,0.12);
+      --shadow-xl: 0 16px 48px rgba(11,61,46,0.16);
+      --shadow-glow: 0 0 40px rgba(27,158,107,0.15);
+
+      /* Radius */
+      --r-sm: 8px;
+      --r-md: 14px;
+      --r-lg: 20px;
+      --r-xl: 28px;
+      --r-full: 999px;
+
+      /* Transitions */
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* ═══════════════════════════════════════════
+       RESET & BASE
+       ═══════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      background: #E8E5E0;
+      color: var(--charcoal);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 24px;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    /* Phone frame */
+    .phone {
+      width: 390px;
+      height: 844px;
+      background: var(--cream);
+      border-radius: 40px;
+      overflow: hidden;
+      position: relative;
+      box-shadow:
+        0 0 0 1px rgba(0,0,0,0.08),
+        var(--shadow-xl),
+        0 50px 100px rgba(11,61,46,0.2);
+      flex-shrink: 0;
+    }
+
+    .phone-inner {
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .phone-inner::-webkit-scrollbar { display: none; }
+
+    /* Status bar */
+    .status-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 24px 8px;
+      font-size: 13px;
+      font-weight: 600;
+      background: inherit;
+    }
+    .status-bar .time { letter-spacing: 0.5px; }
+    .status-bar .icons { display: flex; gap: 6px; align-items: center; }
+
+    /* Screen label */
+    .screen-label {
+      position: absolute;
+      top: -36px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--slate);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      white-space: nowrap;
+    }
+
+    /* ═══════════════════════════════════════════
+       BOTTOM NAVIGATION (shared)
+       ═══════════════════════════════════════════ */
+    .bottom-nav {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(254,253,251,0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(0,0,0,0.04);
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-end;
+      padding: 8px 12px 28px;
+      z-index: 50;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      transition: all 0.3s var(--ease-out);
+      position: relative;
+      padding: 4px 12px;
+    }
+
+    .nav-item svg {
+      width: 24px;
+      height: 24px;
+      stroke: var(--silver);
+      fill: none;
+      stroke-width: 1.8;
+      transition: all 0.3s var(--ease-out);
+    }
+
+    .nav-item span {
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--silver);
+      transition: all 0.3s var(--ease-out);
+    }
+
+    .nav-item.active svg { stroke: var(--emerald); }
+    .nav-item.active span { color: var(--emerald); font-weight: 600; }
+    .nav-item.active::before {
+      content: '';
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 20px;
+      height: 3px;
+      background: var(--emerald);
+      border-radius: 3px;
+    }
+
+    .nav-item .badge {
+      position: absolute;
+      top: 0;
+      right: 4px;
+      width: 16px;
+      height: 16px;
+      background: var(--coral);
+      color: white;
+      font-size: 9px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+
+    /* ═══════════════════════════════════════════
+       SCREEN 1: HOME / STOREFRONT
+       ═══════════════════════════════════════════ */
+    .home-screen .status-bar { background: var(--cream); }
+
+    .home-header {
+      padding: 0 20px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .home-header .greeting {
+      font-size: 14px;
+      color: var(--slate);
+      font-weight: 400;
+    }
+
+    .home-header .brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--forest);
+      letter-spacing: -0.5px;
+      margin-top: 2px;
+    }
+
+    .home-header .actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .icon-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--warm-white);
+      border: 1px solid var(--mist);
+      cursor: pointer;
+      transition: all 0.3s var(--ease-out);
+      position: relative;
+    }
+    .icon-btn:hover {
+      background: var(--pearl);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+    }
+    .icon-btn svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--graphite);
+      fill: none;
+      stroke-width: 1.8;
+    }
+    .icon-btn .dot {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 8px;
+      height: 8px;
+      background: var(--coral);
+      border-radius: 50%;
+      border: 2px solid var(--warm-white);
+    }
+
+    /* Search */
+    .search-bar {
+      margin: 0 20px 20px;
+      position: relative;
+    }
+    .search-bar input {
+      width: 100%;
+      height: 48px;
+      border: none;
+      background: var(--warm-white);
+      border: 1.5px solid var(--mist);
+      border-radius: var(--r-full);
+      padding: 0 48px 0 44px;
+      font-family: inherit;
+      font-size: 14px;
+      color: var(--charcoal);
+      transition: all 0.3s var(--ease-out);
+    }
+    .search-bar input::placeholder { color: var(--silver); }
+    .search-bar input:focus {
+      outline: none;
+      border-color: var(--emerald);
+      box-shadow: 0 0 0 4px rgba(27,158,107,0.1);
+    }
+    .search-bar .search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .search-bar .search-icon svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--silver);
+      fill: none;
+      stroke-width: 2;
+    }
+    .search-bar .filter-btn {
+      position: absolute;
+      right: 4px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      background: var(--forest);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s var(--ease-out);
+    }
+    .search-bar .filter-btn:hover { background: var(--forest-mid); }
+    .search-bar .filter-btn svg {
+      width: 16px;
+      height: 16px;
+      stroke: white;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    /* Hero banner */
+    .hero-banner {
+      margin: 0 20px 24px;
+      height: 180px;
+      border-radius: var(--r-xl);
+      background: linear-gradient(135deg, var(--forest) 0%, var(--emerald) 100%);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.4s var(--ease-out);
+    }
+    .hero-banner:hover { transform: scale(0.98); }
+
+    .hero-banner::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -30%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(61,217,160,0.3) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero-banner::after {
+      content: '';
+      position: absolute;
+      bottom: -40%;
+      left: -20%;
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, rgba(212,168,83,0.15) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 28px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(8px);
+      padding: 6px 14px;
+      border-radius: var(--r-full);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--gold-light);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      width: fit-content;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 600;
+      color: white;
+      line-height: 1.2;
+      max-width: 200px;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: white;
+      color: var(--forest);
+      padding: 10px 20px;
+      border-radius: var(--r-full);
+      font-size: 13px;
+      font-weight: 600;
+      width: fit-content;
+      transition: all 0.3s var(--ease-out);
+    }
+    .hero-cta:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+
+    .hero-dots {
+      position: absolute;
+      bottom: 16px;
+      right: 24px;
+      display: flex;
+      gap: 6px;
+      z-index: 3;
+    }
+    .hero-dots .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.4);
+      transition: all 0.3s ease;
+    }
+    .hero-dots .dot.active {
+      width: 20px;
+      border-radius: 3px;
+      background: white;
+    }
+
+    /* Categories */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--forest);
+    }
+    .section-link {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--emerald);
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .section-link:hover { color: var(--forest); }
+
+    .categories-scroll {
+      display: flex;
+      gap: 12px;
+      padding: 0 20px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      margin-bottom: 28px;
+    }
+    .categories-scroll::-webkit-scrollbar { display: none; }
+
+    .category-chip {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 18px 10px 10px;
+      background: var(--warm-white);
+      border: 1.5px solid var(--mist);
+      border-radius: var(--r-full);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.3s var(--ease-out);
+      flex-shrink: 0;
+    }
+    .category-chip:hover {
+      border-color: var(--sage);
+      background: rgba(168,213,186,0.1);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+    .category-chip.active {
+      background: var(--forest);
+      border-color: var(--forest);
+      color: white;
+    }
+
+    .category-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    .category-chip.active .category-icon { background: rgba(255,255,255,0.15); }
+    .category-chip:not(.active) .category-icon { background: var(--pearl); }
+
+    .category-name {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* Product grid */
+    .products-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      padding: 0 20px;
+      padding-bottom: 100px;
+    }
+
+    .product-card {
+      background: var(--warm-white);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.4s var(--ease-out);
+      border: 1px solid rgba(0,0,0,0.03);
+    }
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .product-img {
+      width: 100%;
+      height: 170px;
+      background: var(--pearl);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .product-img .placeholder {
+      font-size: 48px;
+      opacity: 0.6;
+    }
+    .product-img .wishlist {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s var(--ease-spring);
+    }
+    .product-img .wishlist:hover { transform: scale(1.15); background: white; }
+    .product-img .wishlist svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--graphite);
+      fill: none;
+      stroke-width: 2;
+    }
+    .product-img .tag {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      padding: 4px 10px;
+      border-radius: var(--r-full);
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .product-img .tag.new { background: var(--emerald); color: white; }
+    .product-img .tag.sale { background: var(--coral); color: white; }
+    .product-img .tag.hot { background: var(--gold); color: var(--forest); }
+
+    .product-info {
+      padding: 14px;
+    }
+    .product-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: 4px;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .product-rating {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 8px;
+    }
+    .product-rating .stars {
+      font-size: 11px;
+      color: var(--gold);
+      letter-spacing: 1px;
+    }
+    .product-rating .count {
+      font-size: 11px;
+      color: var(--silver);
+    }
+    .product-price-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .product-price {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--forest);
+    }
+    .product-price .currency {
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .product-add {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--forest);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s var(--ease-spring);
+    }
+    .product-add:hover { background: var(--emerald); transform: scale(1.1); }
+    .product-add svg {
+      width: 16px;
+      height: 16px;
+      stroke: white;
+      fill: none;
+      stroke-width: 2.5;
+    }
+
+    /* ═══════════════════════════════════════════
+       SCREEN 2: CART
+       ═══════════════════════════════════════════ */
+    .cart-screen { background: var(--pearl); }
+    .cart-screen .status-bar { background: var(--pearl); }
+
+    .cart-header {
+      padding: 8px 20px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cart-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--forest);
+    }
+    .cart-count {
+      font-size: 13px;
+      color: var(--slate);
+      background: var(--warm-white);
+      padding: 6px 14px;
+      border-radius: var(--r-full);
+      font-weight: 500;
+    }
+
+    .cart-items {
+      padding: 0 20px;
+    }
+
+    .cart-item {
+      background: var(--warm-white);
+      border-radius: var(--r-lg);
+      padding: 16px;
+      margin-bottom: 12px;
+      display: flex;
+      gap: 14px;
+      transition: all 0.3s var(--ease-out);
+      position: relative;
+      overflow: hidden;
+    }
+    .cart-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--emerald);
+      border-radius: 0 3px 3px 0;
+    }
+
+    .cart-item-img {
+      width: 80px;
+      height: 80px;
+      border-radius: var(--r-md);
+      background: var(--pearl);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      flex-shrink: 0;
+    }
+
+    .cart-item-details {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .cart-item-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--charcoal);
+    }
+    .cart-item-variant {
+      font-size: 12px;
+      color: var(--silver);
+    }
+    .cart-item-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+    }
+    .cart-item-price {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--forest);
+    }
+
+    .qty-control {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      background: var(--pearl);
+      border-radius: var(--r-full);
+      overflow: hidden;
+    }
+    .qty-btn {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      color: var(--graphite);
+      font-weight: 600;
+      transition: all 0.2s;
+      background: transparent;
+      border: none;
+    }
+    .qty-btn:hover { background: var(--mist); color: var(--forest); }
+    .qty-value {
+      width: 28px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--charcoal);
+    }
+
+    /* Cart summary */
+    .cart-summary {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--warm-white);
+      border-radius: var(--r-xl) var(--r-xl) 0 0;
+      padding: 24px 20px 32px;
+      box-shadow: 0 -8px 32px rgba(11,61,46,0.08);
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+    .summary-row .label { color: var(--slate); }
+    .summary-row .value { font-weight: 500; color: var(--charcoal); }
+    .summary-row.total {
+      font-size: 18px;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1.5px dashed var(--mist);
+    }
+    .summary-row.total .label { font-weight: 600; color: var(--charcoal); }
+    .summary-row.total .value { font-weight: 700; color: var(--forest); }
+
+    .checkout-btn {
+      width: 100%;
+      height: 56px;
+      background: var(--forest);
+      color: white;
+      border: none;
+      border-radius: var(--r-md);
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.3s var(--ease-out);
+      position: relative;
+      overflow: hidden;
+    }
+    .checkout-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      transition: left 0.6s ease;
+    }
+    .checkout-btn:hover::before { left: 100%; }
+    .checkout-btn:hover {
+      background: var(--forest-mid);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-lg);
+    }
+    .checkout-btn svg {
+      width: 18px;
+      height: 18px;
+      stroke: white;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    /* ═══════════════════════════════════════════
+       SCREEN 3: PROFILE
+       ═══════════════════════════════════════════ */
+    .profile-screen { background: var(--pearl); }
+    .profile-screen .status-bar { background: var(--forest); color: white; }
+
+    .profile-hero {
+      background: linear-gradient(160deg, var(--forest) 0%, var(--forest-mid) 40%, var(--emerald) 100%);
+      padding: 0 20px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .profile-hero::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(61,217,160,0.2) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .profile-hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0 24px;
+    }
+    .profile-hero-top .back svg {
+      width: 24px;
+      height: 24px;
+      stroke: white;
+      fill: none;
+      stroke-width: 2;
+    }
+    .profile-hero-top .title {
+      font-size: 16px;
+      font-weight: 600;
+      color: white;
+    }
+    .profile-hero-top .settings svg {
+      width: 22px;
+      height: 22px;
+      stroke: rgba(255,255,255,0.7);
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .profile-avatar-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .avatar-ring {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      padding: 3px;
+      background: linear-gradient(135deg, var(--gold), var(--mint));
+    }
+    .avatar-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: var(--forest-mid);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 700;
+      color: white;
+      border: 3px solid var(--forest);
+    }
+
+    .profile-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: white;
+      margin-top: 14px;
+    }
+    .profile-email {
+      font-size: 13px;
+      color: rgba(255,255,255,0.7);
+      margin-top: 4px;
+    }
+    .profile-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(212,168,83,0.2);
+      border: 1px solid rgba(212,168,83,0.3);
+      padding: 6px 16px;
+      border-radius: var(--r-full);
+      margin-top: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gold-light);
+    }
+
+    .profile-body {
+      padding: 0 20px;
+      margin-top: -20px;
+      position: relative;
+      z-index: 3;
+      padding-bottom: 100px;
+    }
+
+    /* Stats row */
+    .stats-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .stat-card {
+      background: var(--warm-white);
+      border-radius: var(--r-md);
+      padding: 18px 12px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+    }
+    .stat-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin: 0 auto 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .stat-icon svg {
+      width: 20px;
+      height: 20px;
+      stroke-width: 2;
+      fill: none;
+    }
+    .stat-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--charcoal);
+      margin-bottom: 2px;
+    }
+    .stat-label {
+      font-size: 11px;
+      color: var(--silver);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* QR section */
+    .qr-section {
+      background: var(--warm-white);
+      border-radius: var(--r-lg);
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-sm);
+      text-align: center;
+    }
+    .qr-section .qr-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .qr-section .qr-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--charcoal);
+    }
+    .qr-placeholder {
+      width: 140px;
+      height: 140px;
+      margin: 0 auto 16px;
+      background: var(--pearl);
+      border-radius: var(--r-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px dashed var(--sage);
+    }
+    .qr-placeholder svg {
+      width: 60px;
+      height: 60px;
+      stroke: var(--sage);
+      fill: none;
+      stroke-width: 1.5;
+    }
+    .referral-code {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: linear-gradient(135deg, var(--forest), var(--emerald));
+      padding: 12px 20px;
+      border-radius: var(--r-md);
+    }
+    .referral-code span {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: white;
+    }
+    .referral-code .copy {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .referral-code .copy svg {
+      width: 14px;
+      height: 14px;
+      stroke: white;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    /* Menu list */
+    .menu-list {
+      background: var(--warm-white);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+    .menu-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 64px;
+      right: 20px;
+      height: 1px;
+      background: var(--mist);
+    }
+    .menu-item:hover { background: rgba(168,213,186,0.06); }
+    .menu-item .menu-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--r-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .menu-item .menu-icon svg {
+      width: 20px;
+      height: 20px;
+      stroke-width: 1.8;
+      fill: none;
+    }
+    .menu-item .menu-text {
+      flex: 1;
+    }
+    .menu-item .menu-label {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--charcoal);
+    }
+    .menu-item .menu-sub {
+      font-size: 12px;
+      color: var(--silver);
+      margin-top: 2px;
+    }
+    .menu-item .chevron svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--silver);
+      fill: none;
+      stroke-width: 2;
+    }
+
+    /* ═══════════════════════════════════════════
+       SCREEN 4: LOGIN
+       ═══════════════════════════════════════════ */
+    .login-screen { background: var(--cream); }
+    .login-screen .status-bar { background: var(--cream); }
+
+    .login-decoration {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .login-decoration::before {
+      content: '';
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(27,158,107,0.08) 0%, transparent 70%);
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .login-logo {
+      width: 80px;
+      height: 80px;
+      background: var(--forest);
+      border-radius: var(--r-xl);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 2;
+      box-shadow: var(--shadow-lg);
+    }
+    .login-logo span {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: white;
+    }
+
+    .login-body {
+      padding: 0 28px;
+    }
+
+    .login-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--forest);
+      text-align: center;
+      margin-bottom: 6px;
+    }
+    .login-subtitle {
+      font-size: 14px;
+      color: var(--slate);
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--graphite);
+      margin-bottom: 8px;
+      display: block;
+    }
+    .form-input {
+      width: 100%;
+      height: 52px;
+      border: 1.5px solid var(--mist);
+      background: var(--warm-white);
+      border-radius: var(--r-md);
+      padding: 0 16px 0 48px;
+      font-family: inherit;
+      font-size: 15px;
+      color: var(--charcoal);
+      transition: all 0.3s var(--ease-out);
+      position: relative;
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: var(--emerald);
+      box-shadow: 0 0 0 4px rgba(27,158,107,0.08);
+    }
+    .form-input::placeholder { color: var(--silver); }
+
+    .input-wrapper {
+      position: relative;
+    }
+    .input-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+    }
+    .input-icon svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--slate);
+      fill: none;
+      stroke-width: 2;
+    }
+    .input-suffix {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+    }
+    .input-suffix svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--silver);
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .form-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+    .remember {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--slate);
+      cursor: pointer;
+    }
+    .remember .checkbox {
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--mist);
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .remember .checkbox.checked {
+      background: var(--emerald);
+      border-color: var(--emerald);
+    }
+    .remember .checkbox.checked::after {
+      content: '✓';
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .forgot {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--emerald);
+      cursor: pointer;
+    }
+
+    .login-btn {
+      width: 100%;
+      height: 56px;
+      background: linear-gradient(135deg, var(--forest), var(--emerald));
+      color: white;
+      border: none;
+      border-radius: var(--r-md);
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s var(--ease-out);
+      box-shadow: 0 4px 16px rgba(11,61,46,0.2);
+      margin-bottom: 24px;
+    }
+    .login-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(11,61,46,0.25);
+    }
+
+    .divider-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .divider-row .line {
+      flex: 1;
+      height: 1px;
+      background: var(--mist);
+    }
+    .divider-row .text {
+      font-size: 12px;
+      color: var(--silver);
+      white-space: nowrap;
+    }
+
+    .social-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+    .social-btn {
+      flex: 1;
+      height: 50px;
+      border: 1.5px solid var(--mist);
+      border-radius: var(--r-md);
+      background: var(--warm-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s var(--ease-out);
+      font-size: 20px;
+    }
+    .social-btn:hover {
+      border-color: var(--sage);
+      background: rgba(168,213,186,0.05);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .signup-link {
+      text-align: center;
+      font-size: 14px;
+      color: var(--slate);
+      padding-bottom: 40px;
+    }
+    .signup-link strong {
+      color: var(--emerald);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* ═══════════════════════════════════════════
+       ANIMATIONS
+       ═══════════════════════════════════════════ */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    .phone:nth-child(1) .hero-banner { animation: scaleIn 0.6s var(--ease-out) 0.2s both; }
+    .phone:nth-child(1) .category-chip { animation: fadeUp 0.5s var(--ease-out) both; }
+    .phone:nth-child(1) .category-chip:nth-child(1) { animation-delay: 0.3s; }
+    .phone:nth-child(1) .category-chip:nth-child(2) { animation-delay: 0.35s; }
+    .phone:nth-child(1) .category-chip:nth-child(3) { animation-delay: 0.4s; }
+    .phone:nth-child(1) .category-chip:nth-child(4) { animation-delay: 0.45s; }
+    .phone:nth-child(1) .product-card { animation: fadeUp 0.5s var(--ease-out) both; }
+    .phone:nth-child(1) .product-card:nth-child(1) { animation-delay: 0.5s; }
+    .phone:nth-child(1) .product-card:nth-child(2) { animation-delay: 0.55s; }
+    .phone:nth-child(1) .product-card:nth-child(3) { animation-delay: 0.6s; }
+    .phone:nth-child(1) .product-card:nth-child(4) { animation-delay: 0.65s; }
+
+    .cart-item { animation: fadeUp 0.5s var(--ease-out) both; }
+    .cart-item:nth-child(1) { animation-delay: 0.1s; }
+    .cart-item:nth-child(2) { animation-delay: 0.15s; }
+    .cart-item:nth-child(3) { animation-delay: 0.2s; }
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE / WRAPPER
+       ═══════════════════════════════════════════ */
+    @media (max-width: 900px) {
+      body {
+        padding: 12px;
+        gap: 12px;
+      }
+      .phone {
+        width: 100%;
+        max-width: 390px;
+        height: 780px;
+        border-radius: 24px;
+      }
+    }
+
+    .phone-wrapper {
+      position: relative;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════
+       SCREEN 1: HOME / STOREFRONT
+       ══════════════════════════════════════════ -->
+  <div class="phone-wrapper">
+    <div class="screen-label">Home — Storefront</div>
+    <div class="phone home-screen">
+      <div class="phone-inner">
+        <div class="status-bar">
+          <div class="time">9:41</div>
+          <div class="icons">
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><rect x="0" y="4" width="3" height="8" rx="1" fill="currentColor" opacity="0.3"/><rect x="4.5" y="2.5" width="3" height="9.5" rx="1" fill="currentColor" opacity="0.5"/><rect x="9" y="1" width="3" height="11" rx="1" fill="currentColor" opacity="0.7"/><rect x="13" y="0" width="3" height="12" rx="1" fill="currentColor"/></svg>
+            <svg width="24" height="12" viewBox="0 0 24 12"><rect x="0" y="0" width="20" height="12" rx="3" stroke="currentColor" stroke-width="1.5" fill="none"/><rect x="21" y="3" width="3" height="6" rx="1" fill="currentColor" opacity="0.4"/><rect x="2" y="2" width="14" height="8" rx="1.5" fill="var(--emerald)"/></svg>
+          </div>
+        </div>
+
+        <!-- Header -->
+        <div class="home-header">
+          <div>
+            <div class="greeting">Good morning, Juan</div>
+            <div class="brand">WeMultiply</div>
+          </div>
+          <div class="actions">
+            <div class="icon-btn">
+              <div class="dot"></div>
+              <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            </div>
+            <div class="icon-btn">
+              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Search -->
+        <div class="search-bar">
+          <div class="search-icon">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          </div>
+          <input type="text" placeholder="Search products, packages...">
+          <div class="filter-btn">
+            <svg viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="20" y2="12"/><line x1="12" y1="18" x2="20" y2="18"/><circle cx="6" cy="12" r="2" fill="white"/><circle cx="14" cy="18" r="2" fill="white"/></svg>
+          </div>
+        </div>
+
+        <!-- Hero Banner -->
+        <div class="hero-banner">
+          <div class="hero-content">
+            <div class="hero-tag">✦ Featured Collection</div>
+            <div>
+              <div class="hero-title">Multiply Your Wellness Journey</div>
+            </div>
+            <div class="hero-cta">
+              Shop Now
+              <svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+            </div>
+          </div>
+          <div class="hero-dots">
+            <div class="dot active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </div>
+        </div>
+
+        <!-- Categories -->
+        <div class="section-header">
+          <div class="section-title">Categories</div>
+          <div class="section-link">See all →</div>
+        </div>
+        <div class="categories-scroll">
+          <div class="category-chip active">
+            <div class="category-icon">🛍️</div>
+            <div class="category-name">E-Shop</div>
+          </div>
+          <div class="category-chip">
+            <div class="category-icon">💊</div>
+            <div class="category-name">Health</div>
+          </div>
+          <div class="category-chip">
+            <div class="category-icon">🧴</div>
+            <div class="category-name">Beauty</div>
+          </div>
+          <div class="category-chip">
+            <div class="category-icon">📦</div>
+            <div class="category-name">Packages</div>
+          </div>
+          <div class="category-chip">
+            <div class="category-icon">🎁</div>
+            <div class="category-name">Promos</div>
+          </div>
+        </div>
+
+        <!-- Products -->
+        <div class="section-header">
+          <div class="section-title">Popular Items</div>
+          <div class="section-link">View all →</div>
+        </div>
+        <div class="products-grid">
+          <div class="product-card">
+            <div class="product-img">
+              <div class="placeholder">🧴</div>
+              <div class="tag new">New</div>
+              <div class="wishlist">
+                <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </div>
+            </div>
+            <div class="product-info">
+              <div class="product-name">Premium Health Capsules</div>
+              <div class="product-rating">
+                <span class="stars">★★★★★</span>
+                <span class="count">(128)</span>
+              </div>
+              <div class="product-price-row">
+                <div class="product-price"><span class="currency">₱</span>1,250</div>
+                <div class="product-add">
+                  <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <div class="product-img">
+              <div class="placeholder">💊</div>
+              <div class="tag hot">Hot</div>
+              <div class="wishlist">
+                <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </div>
+            </div>
+            <div class="product-info">
+              <div class="product-name">Vitamin C Complex 1000mg</div>
+              <div class="product-rating">
+                <span class="stars">★★★★☆</span>
+                <span class="count">(89)</span>
+              </div>
+              <div class="product-price-row">
+                <div class="product-price"><span class="currency">₱</span>890</div>
+                <div class="product-add">
+                  <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <div class="product-img">
+              <div class="placeholder">🧃</div>
+              <div class="tag sale">-20%</div>
+              <div class="wishlist">
+                <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </div>
+            </div>
+            <div class="product-info">
+              <div class="product-name">Organic Green Juice Blend</div>
+              <div class="product-rating">
+                <span class="stars">★★★★★</span>
+                <span class="count">(256)</span>
+              </div>
+              <div class="product-price-row">
+                <div class="product-price"><span class="currency">₱</span>650</div>
+                <div class="product-add">
+                  <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <div class="product-img">
+              <div class="placeholder">🍵</div>
+              <div class="wishlist">
+                <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </div>
+            </div>
+            <div class="product-info">
+              <div class="product-name">Detox Tea Collection</div>
+              <div class="product-rating">
+                <span class="stars">★★★★☆</span>
+                <span class="count">(67)</span>
+              </div>
+              <div class="product-price-row">
+                <div class="product-price"><span class="currency">₱</span>480</div>
+                <div class="product-add">
+                  <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Nav -->
+      <div class="bottom-nav">
+        <div class="nav-item active">
+          <svg viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <span>Home</span>
+        </div>
+        <div class="nav-item">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <span>Explore</span>
+        </div>
+        <div class="nav-item">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+          <span>E-Points</span>
+        </div>
+        <div class="nav-item">
+          <div class="badge">3</div>
+          <svg viewBox="0 0 24 24"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+          <span>Cart</span>
+        </div>
+        <div class="nav-item">
+          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>Profile</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SCREEN 2: CART
+       ══════════════════════════════════════════ -->
+  <div class="phone-wrapper">
+    <div class="screen-label">Cart — Checkout</div>
+    <div class="phone cart-screen">
+      <div class="phone-inner">
+        <div class="status-bar">
+          <div class="time">9:41</div>
+          <div class="icons">
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><rect x="0" y="4" width="3" height="8" rx="1" fill="currentColor" opacity="0.3"/><rect x="4.5" y="2.5" width="3" height="9.5" rx="1" fill="currentColor" opacity="0.5"/><rect x="9" y="1" width="3" height="11" rx="1" fill="currentColor" opacity="0.7"/><rect x="13" y="0" width="3" height="12" rx="1" fill="currentColor"/></svg>
+            <svg width="24" height="12" viewBox="0 0 24 12"><rect x="0" y="0" width="20" height="12" rx="3" stroke="currentColor" stroke-width="1.5" fill="none"/><rect x="21" y="3" width="3" height="6" rx="1" fill="currentColor" opacity="0.4"/><rect x="2" y="2" width="14" height="8" rx="1.5" fill="var(--emerald)"/></svg>
+          </div>
+        </div>
+
+        <div class="cart-header">
+          <h1>My Cart</h1>
+          <div class="cart-count">3 items</div>
+        </div>
+
+        <div class="cart-items">
+          <div class="cart-item">
+            <div class="cart-item-img">🧴</div>
+            <div class="cart-item-details">
+              <div class="cart-item-name">Premium Health Capsules</div>
+              <div class="cart-item-variant">60 capsules • Original</div>
+              <div class="cart-item-bottom">
+                <div class="qty-control">
+                  <button class="qty-btn">−</button>
+                  <div class="qty-value">2</div>
+                  <button class="qty-btn">+</button>
+                </div>
+                <div class="cart-item-price">₱2,500</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cart-item">
+            <div class="cart-item-img">💊</div>
+            <div class="cart-item-details">
+              <div class="cart-item-name">Vitamin C Complex</div>
+              <div class="cart-item-variant">1000mg • 30 tablets</div>
+              <div class="cart-item-bottom">
+                <div class="qty-control">
+                  <button class="qty-btn">−</button>
+                  <div class="qty-value">1</div>
+                  <button class="qty-btn">+</button>
+                </div>
+                <div class="cart-item-price">₱890</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cart-item">
+            <div class="cart-item-img">🧃</div>
+            <div class="cart-item-details">
+              <div class="cart-item-name">Organic Green Juice Blend</div>
+              <div class="cart-item-variant">500ml • Mixed Berry</div>
+              <div class="cart-item-bottom">
+                <div class="qty-control">
+                  <button class="qty-btn">−</button>
+                  <div class="qty-value">1</div>
+                  <button class="qty-btn">+</button>
+                </div>
+                <div class="cart-item-price">₱650</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cart Summary -->
+        <div class="cart-summary">
+          <div class="summary-row">
+            <span class="label">Subtotal</span>
+            <span class="value">₱4,040.00</span>
+          </div>
+          <div class="summary-row">
+            <span class="label">Shipping Fee</span>
+            <span class="value">₱38.00</span>
+          </div>
+          <div class="summary-row">
+            <span class="label">Discount</span>
+            <span class="value" style="color: var(--emerald);">−₱0.00</span>
+          </div>
+          <div class="summary-row total">
+            <span class="label">Total</span>
+            <span class="value">₱4,078.00</span>
+          </div>
+          <button class="checkout-btn">
+            Proceed to Checkout
+            <svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SCREEN 3: PROFILE
+       ══════════════════════════════════════════ -->
+  <div class="phone-wrapper">
+    <div class="screen-label">Profile — Account</div>
+    <div class="phone profile-screen">
+      <div class="phone-inner">
+        <div class="status-bar">
+          <div class="time">9:41</div>
+          <div class="icons" style="color: rgba(255,255,255,0.9);">
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><rect x="0" y="4" width="3" height="8" rx="1" fill="currentColor" opacity="0.3"/><rect x="4.5" y="2.5" width="3" height="9.5" rx="1" fill="currentColor" opacity="0.5"/><rect x="9" y="1" width="3" height="11" rx="1" fill="currentColor" opacity="0.7"/><rect x="13" y="0" width="3" height="12" rx="1" fill="currentColor"/></svg>
+            <svg width="24" height="12" viewBox="0 0 24 12"><rect x="0" y="0" width="20" height="12" rx="3" stroke="currentColor" stroke-width="1.5" fill="none"/><rect x="21" y="3" width="3" height="6" rx="1" fill="currentColor" opacity="0.4"/><rect x="2" y="2" width="14" height="8" rx="1.5" fill="var(--mint)"/></svg>
+          </div>
+        </div>
+
+        <!-- Profile Hero -->
+        <div class="profile-hero">
+          <div class="profile-hero-top">
+            <div class="back">
+              <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+            </div>
+            <div class="title">My Profile</div>
+            <div class="settings">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            </div>
+          </div>
+
+          <div class="profile-avatar-section">
+            <div class="avatar-ring">
+              <div class="avatar-inner">J</div>
+            </div>
+            <div class="profile-name">Juan Dela Cruz</div>
+            <div class="profile-email">juan@wemultiply.store</div>
+            <div class="profile-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" stroke="var(--gold)" fill="var(--gold)" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              Gold Member
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-body">
+          <!-- Stats -->
+          <div class="stats-row">
+            <div class="stat-card">
+              <div class="stat-icon" style="background: rgba(22,36,138,0.08);">
+                <svg viewBox="0 0 24 24" stroke="var(--forest-mid)"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <div class="stat-value">24</div>
+              <div class="stat-label">Referrals</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon" style="background: rgba(27,158,107,0.08);">
+                <svg viewBox="0 0 24 24" stroke="var(--emerald)"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+              </div>
+              <div class="stat-value">₱12.8k</div>
+              <div class="stat-label">Earnings</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon" style="background: rgba(212,168,83,0.1);">
+                <svg viewBox="0 0 24 24" stroke="var(--gold)"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+              </div>
+              <div class="stat-value">18</div>
+              <div class="stat-label">Orders</div>
+            </div>
+          </div>
+
+          <!-- QR Code -->
+          <div class="qr-section">
+            <div class="qr-header">
+              <div class="qr-title">Referral QR Code</div>
+              <div class="icon-btn" style="width: 36px; height: 36px;">
+                <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:var(--emerald);fill:none;stroke-width:2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+              </div>
+            </div>
+            <div class="qr-placeholder">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3z"/><path d="M18 18h3v3h-3z"/><path d="M14 18h3v3h-3z"/><path d="M18 14h3v3h-3z"/></svg>
+            </div>
+            <div class="referral-code">
+              <span>WM-JUAN24</span>
+              <div class="copy">
+                <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Menu -->
+          <div class="menu-list">
+            <div class="menu-item">
+              <div class="menu-icon" style="background: rgba(27,158,107,0.08);">
+                <svg viewBox="0 0 24 24" stroke="var(--emerald)"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </div>
+              <div class="menu-text">
+                <div class="menu-label">Edit Profile</div>
+                <div class="menu-sub">Update your personal details</div>
+              </div>
+              <div class="chevron"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-icon" style="background: rgba(232,115,90,0.08);">
+                <svg viewBox="0 0 24 24" stroke="var(--coral)"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div>
+              <div class="menu-text">
+                <div class="menu-label">Delivery Addresses</div>
+                <div class="menu-sub">Manage shipping locations</div>
+              </div>
+              <div class="chevron"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-icon" style="background: rgba(22,36,138,0.08);">
+                <svg viewBox="0 0 24 24" stroke="var(--forest-mid)"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div class="menu-text">
+                <div class="menu-label">Transaction History</div>
+              </div>
+              <div class="chevron"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-icon" style="background: rgba(212,168,83,0.1);">
+                <svg viewBox="0 0 24 24" stroke="var(--gold)"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <div class="menu-text">
+                <div class="menu-label">My Network</div>
+                <div class="menu-sub">View downlines & referrals</div>
+              </div>
+              <div class="chevron"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SCREEN 4: LOGIN
+       ══════════════════════════════════════════ -->
+  <div class="phone-wrapper">
+    <div class="screen-label">Login — Authentication</div>
+    <div class="phone login-screen">
+      <div class="phone-inner">
+        <div class="status-bar">
+          <div class="time">9:41</div>
+          <div class="icons">
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><rect x="0" y="4" width="3" height="8" rx="1" fill="currentColor" opacity="0.3"/><rect x="4.5" y="2.5" width="3" height="9.5" rx="1" fill="currentColor" opacity="0.5"/><rect x="9" y="1" width="3" height="11" rx="1" fill="currentColor" opacity="0.7"/><rect x="13" y="0" width="3" height="12" rx="1" fill="currentColor"/></svg>
+            <svg width="24" height="12" viewBox="0 0 24 12"><rect x="0" y="0" width="20" height="12" rx="3" stroke="currentColor" stroke-width="1.5" fill="none"/><rect x="21" y="3" width="3" height="6" rx="1" fill="currentColor" opacity="0.4"/><rect x="2" y="2" width="14" height="8" rx="1.5" fill="var(--emerald)"/></svg>
+          </div>
+        </div>
+
+        <!-- Decoration -->
+        <div class="login-decoration">
+          <div class="login-logo">
+            <span>W</span>
+          </div>
+        </div>
+
+        <div class="login-body">
+          <div class="login-title">Welcome Back</div>
+          <div class="login-subtitle">Sign in to your WeMultiply account</div>
+
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <div class="input-wrapper">
+              <div class="input-icon">
+                <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              </div>
+              <input type="email" class="form-input" placeholder="you@example.com">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <div class="input-wrapper">
+              <div class="input-icon">
+                <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </div>
+              <input type="password" class="form-input" placeholder="••••••••">
+              <div class="input-suffix">
+                <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="remember">
+              <div class="checkbox checked"></div>
+              Remember me
+            </div>
+            <div class="forgot">Forgot Password?</div>
+          </div>
+
+          <button class="login-btn">Sign In</button>
+
+          <div class="divider-row">
+            <div class="line"></div>
+            <div class="text">or continue with</div>
+            <div class="line"></div>
+          </div>
+
+          <div class="social-row">
+            <div class="social-btn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+            </div>
+            <div class="social-btn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </div>
+            <div class="social-btn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+            </div>
+          </div>
+
+          <div class="signup-link">
+            Don't have an account? <strong>Sign Up</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

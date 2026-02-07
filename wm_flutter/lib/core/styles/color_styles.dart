@@ -1,41 +1,65 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const Color primary = Color(0xFFAEDC81);
-  static const Color primaryDark = Color(0xFF6CC51D);
+  // ═══════════════════════════════════════════
+  // PRIMARY — Botanical Forest Palette
+  // ═══════════════════════════════════════════
+  static const Color forest = Color(0xFF0B3D2E);
+  static const Color forestMid = Color(0xFF145A3E);
+  static const Color emerald = Color(0xFF1B9E6B);
+  static const Color mint = Color(0xFF3DD9A0);
+  static const Color sage = Color(0xFFA8D5BA);
+
+  // ═══════════════════════════════════════════
+  // NEUTRALS — Warm, not clinical
+  // ═══════════════════════════════════════════
+  static const Color cream = Color(0xFFFBF8F3);
+  static const Color pearl = Color(0xFFF4F1EC);
+  static const Color warmWhite = Color(0xFFFEFDFB);
+  static const Color charcoal = Color(0xFF1A1A1A);
+  static const Color graphite = Color(0xFF3D3D3D);
+  static const Color slate = Color(0xFF6B7280);
+  static const Color silver = Color(0xFF9CA3AF);
+  static const Color mist = Color(0xFFE8E5E0);
+
+  // ═══════════════════════════════════════════
+  // ACCENTS
+  // ═══════════════════════════════════════════
+  static const Color gold = Color(0xFFD4A853);
+  static const Color goldLight = Color(0xFFF5E6C8);
+  static const Color coral = Color(0xFFE8735A);
+  static const Color coralSoft = Color(0xFFFFF0EC);
+
+  // ═══════════════════════════════════════════
+  // SEMANTIC
+  // ═══════════════════════════════════════════
+  static const Color success = emerald;
+  static const Color error = Color(0xFFDC3545);
+  static const Color warning = gold;
+  static const Color info = Color(0xFF306DD0);
+
+  // ═══════════════════════════════════════════
+  // BACKWARDS COMPATIBILITY
+  // Maps old names → new palette so existing code works.
+  // ═══════════════════════════════════════════
+  static const Color primary = sage;
+  static const Color primaryDark = emerald;
   static const Color primaryLight = Color(0xFFEBFFD7);
   static const Color primaryLink = Color(0xFF407EC7);
-  static const Color primaryTextInfo = Color(0xFF868889);
-  static const Color primaryTextTitle = Colors.black;
-  // static const Color secondary = Color(0xFF03DAC6);
-  // static const Color secondaryVariant = Color(0xFF018786);
-  // static const Color background = Color(0xFFFFFFFF);
-  // static const Color surface = Color(0xFFFFFFFF);
-  // static const Color error = Color(0xFFB00020);
-  // static const Color onPrimary = Color(0xFFFFFFFF);
-  // static const Color onSecondary = Color(0xFF000000);
-  // static const Color onBackground = Color(0xFF000000);
-  // static const Color onSurface = Color(0xFF000000);
-  // static const Color onError = Color(0xFFFFFFFF);
+  static const Color primaryTextInfo = slate;
+  static const Color primaryTextTitle = charcoal;
 
-  // // Additional custom colors
-  // static const Color lightGray = Color(0xFFF5F5F5);
-  // static const Color darkGray = Color(0xFF616161);
+  static const Color lightGreen = mint;
+  static const Color darkGreen = forest;
 
-  // Greens
-  static const Color lightGreen = Color(0xFF67D83E);
-  static const Color darkGreen = Color(0xFF02A044);
-
-  // Blues
   static const Color darkBlue = Color(0xFF16248A);
   static const Color lightBlue = Color(0xFF306DD0);
 
-  // Neutrals
-  static const Color lightBackground = Colors.white;
+  static const Color lightBackground = cream;
   static const Color darkBackground = Color(0xFF121212);
 
-  static const Color brandColor = Color(0xff38b6ff);
-  static const Color whiteShade = Color(0xfff0f0f0);
-  static const Color dangerColor = Color(0xff800200);
-  static const Color themeColor = Color(0xff02457a);
+  static const Color brandColor = emerald;
+  static const Color whiteShade = pearl;
+  static const Color dangerColor = coral;
+  static const Color themeColor = forest;
 }

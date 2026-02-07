@@ -8,10 +8,10 @@ class DevelopmentConfig implements EnvConfig {
   const DevelopmentConfig();
 
   @override
-  String get serverUrl => 'http://192.168.1.137:8080/';
+  String get serverUrl => 'http://192.168.1.17:8080/';
 
   @override
-  String get serverCDN => 'https://cdn.wemultiply.store/';
+  String get serverCDN => 'http://cdn.wemultiply.store:8888/';
 
   @override
   String get environment => 'Development';

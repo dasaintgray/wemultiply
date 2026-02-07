@@ -75,7 +75,7 @@ class _ProfileViewState extends State<ProfileView> {
       appBar: AppBar(
         title: const Text('My Profile'),
         centerTitle: true,
-        backgroundColor: AppColors.darkGreen,
+        backgroundColor: AppColors.forest,
         foregroundColor: Colors.white,
         elevation: 0,
         actions: [
@@ -117,9 +117,9 @@ class _ProfileViewState extends State<ProfileView> {
       width: double.infinity,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [AppColors.darkGreen, AppColors.lightGreen],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [AppColors.forest, AppColors.forestMid, AppColors.emerald],
         ),
         borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
       ),
