@@ -49,7 +49,12 @@ services:
   # Serverpod server running in staging mode
   serverpod:
     restart: on-failure
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: ghcr.io/${GHCR_ORG}/wm_server:latest
+    # image: wm_server:local
+    # pull_policy: never
     environment:
       # Database configuration
       - SERVERPOD_DATABASE_PASSWORD=${SERVERPOD_DATABASE_PASSWORD}

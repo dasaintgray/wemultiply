@@ -12,8 +12,10 @@ RUN dart compile exe bin/main.dart -o bin/server
 FROM alpine:latest
 
 # Environment variables
-ENV runmode=production
-ENV serverid=default
+# ENV runmode=production
+ENV runmode=staging
+# ENV serverid=default
+ENV serverid=staging
 ENV logging=normal
 ENV role=monolith
 
@@ -36,5 +38,6 @@ EXPOSE 8080
 EXPOSE 8081
 EXPOSE 8082
 
-# Define the entrypoint command
-ENTRYPOINT ./server --mode=$runmode --server-id=$serverid --logging=$logging --role=$role
+# Define the entrypoint command (exec form allows docker-compose `command:` to override CMD)
+ENTRYPOINT ["./server"]
+CMD ["--mode=staging", "--server-id=default", "--logging=normal", "--role=monolith"]
