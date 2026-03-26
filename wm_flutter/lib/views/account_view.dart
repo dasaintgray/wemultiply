@@ -13,24 +13,23 @@ class AccountView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveScaffold(
-      title: SpcCore.isSignedIn ? 'Profile' : 'Login',
-      actions: [
-        AdaptiveAppBarAction(
-          onPressed: () {
-            // Navigate to back
-            Navigator.of(context).pop();
-          },
-          iosSymbol: 'arrow.left',
-          // androidIcon: Icons.arrow_back,
-        ),
-      ],
+      appBar: AdaptiveAppBar(
+        title: SpcCore.isSignedIn ? 'Profile' : 'Login',
+        actions: [
+          AdaptiveAppBarAction(
+            onPressed: () {
+              // Navigate to back
+              Navigator.of(context).pop();
+            },
+            iosSymbol: 'arrow.left',
+            // androidIcon: Icons.arrow_back,
+          ),
+        ],
+      ),
       body: ListView(
         children: [
           ListTile(
-            contentPadding: EdgeInsets.symmetric(
-              horizontal: 16.0,
-              vertical: 8.0,
-            ),
+            contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             // leading: CircularUserImage(
             //   userInfo: sessionManager.signedInUser,
             //   size: 42,
@@ -45,10 +44,8 @@ class AccountView extends StatelessWidget {
             child: PrettyQrView.data(
               data: sessionManager.signedInUser!.userName ?? 'Guest User',
               decoration: const PrettyQrDecoration(
-                image: PrettyQrDecorationImage(
-                  image: AssetImage('assets/pngs/logo2.png'),
-                ),
-                quietZone: PrettyQrQuietZone.standart,
+                image: PrettyQrDecorationImage(image: AssetImage('assets/pngs/logo2.png')),
+                // quietZone: PrettyQrQuietZone.standart,
               ),
             ),
           ),
